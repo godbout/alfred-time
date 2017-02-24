@@ -68,7 +68,32 @@ class AlfredTime
         return $message;
     }
 
-    private function getConfiguration()
+    public function generateDefaultConfigurationFile()
+    {
+        $this->config = [
+            'workflow' => [
+                'is_timer_running' => false,
+                'current_timer_description' => '',
+            ],
+            'toggl' => [
+                'is_active' => true,
+                'api_token' => '',
+                'default_project_id' => '',
+                'default_tags' => '',
+            ],
+            'harvest' => [
+                'is_active' => true,
+                'domain' => '',
+                'api_token' => '',
+                'default_project_id' => '',
+                'default_task_id' => '',
+            ],
+        ];
+
+        $this->saveConfiguration();
+    }
+
+    private function loadConfiguration()
     {
         $config = null;
         $configFile = getenv('alfred_workflow_data') . '/config.json';
@@ -78,6 +103,12 @@ class AlfredTime
         }
 
         return $config;
+    }
+
+    private function saveConfiguration()
+    {
+        $configFile = getenv('alfred_workflow_data') . '/config.json';
+        file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
     }
 
     private function startTogglTimer($description)
