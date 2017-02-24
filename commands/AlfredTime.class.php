@@ -43,13 +43,17 @@ class AlfredTime
 
     public function stopRunningTimer()
     {
+        $message = '';
+
         if ($this->config['toggl']['is_active'] === '1') {
-            $this->stopTogglTimer();
+            $message .= $this->stopTogglTimer();
         }
 
         if ($this->config['harvest']['is_active'] === '1') {
-            $this->stopHarvestTimer();
+            $message .= "\r\n" . $this->stopHarvestTimer();
         }
+
+        return $message;
     }
 
     private function getConfiguration()
