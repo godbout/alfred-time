@@ -32,13 +32,21 @@ class AlfredTime
 
     public function startTimer($description = '')
     {
-        if ($this->config['toggl']['is_active'] === '1') {
-            $this->startTogglTimer($description);
+        $message = '';
+
+        if ($this->config['toggl']['is_active'] === true) {
+            $message .= $this->startTogglTimer($description);
         }
 
-        if ($this->config['harvest']['is_active'] === '1') {
-            $this->startHarvestTimer($description);
+        if ($this->config['harvest']['is_active'] === true) {
+            $message .= "\r\n" . $this->startHarvestTimer($description);
         }
+
+        $this->config['workflow']['is_timer_running'] = true;
+        $this->config['workflow']['current_timer_description'] = $description;
+        $this->saveConfiguration();
+
+        return $message;
     }
 
     public function stopRunningTimer()
@@ -102,6 +110,14 @@ class AlfredTime
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
         $response = curl_exec($ch);
         curl_close($ch);
+
+        if ($response === false) {
+            $message = '- Cannot start Toggl timer!';
+        } else {
+            $message = '- Toggl timer started';
+        }
+
+        return $message;
     }
 
     private function stopTogglTimer()
@@ -132,7 +148,7 @@ class AlfredTime
              * There was no timer running
              */
             if (empty($data['data']) === true) {
-                $message = 'No Toggl timer currently running!';
+                $message = '- No Toggl timer currently running!';
             } else {
                 $currentTimerId = $data['data']['id'];
 
@@ -150,9 +166,9 @@ class AlfredTime
                     curl_close($ch);
                 } else {
                     if (empty($data['data']) === true) {
-                        $message = 'Could not stop the Toggl timer currently running!';
+                        $message = '- Could not stop the Toggl timer currently running!';
                     } else {
-                        $message = 'Toggl timer stopped!';
+                        $message = '- Toggl timer stopped';
                     }
                     curl_close($ch);
                 }
@@ -190,6 +206,14 @@ class AlfredTime
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
         $response = curl_exec($ch);
         curl_close($ch);
+
+        if ($response === false) {
+            $message = '- Cannot start Harvest timer!';
+        } else {
+            $message = '- Harvest timer started';
+        }
+
+        return $message;
     }
 
     private function stopHarvestTimer()
