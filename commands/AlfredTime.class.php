@@ -6,7 +6,7 @@ class AlfredTime
 
     public function __construct()
     {
-        $this->config = $this->getConfiguration();
+        $this->config = $this->loadConfiguration();
     }
 
     public function isConfigured()
@@ -16,14 +16,14 @@ class AlfredTime
 
     public function hasTimerRunning()
     {
-        return $this->config['workflow']['is_timer_running'] === '0' ? false : true;
+        return $this->config['workflow']['is_timer_running'] === false ? false : true;
     }
 
     public function getRunningTimerDescription()
     {
         $description = '';
 
-        if ($this->config['workflow']['is_timer_running'] === '1') {
+        if ($this->config['workflow']['is_timer_running'] === true) {
             $description = $this->config['workflow']['current_timer_description'];
         }
 
@@ -45,13 +45,17 @@ class AlfredTime
     {
         $message = '';
 
-        if ($this->config['toggl']['is_active'] === '1') {
+        if ($this->config['toggl']['is_active'] === true) {
             $message .= $this->stopTogglTimer();
         }
 
-        if ($this->config['harvest']['is_active'] === '1') {
+        if ($this->config['harvest']['is_active'] === true) {
             $message .= "\r\n" . $this->stopHarvestTimer();
         }
+
+        $this->config['workflow']['is_timer_running'] = false;
+        $this->config['workflow']['current_timer_description'] = '';
+        $this->saveConfiguration();
 
         return $message;
     }
