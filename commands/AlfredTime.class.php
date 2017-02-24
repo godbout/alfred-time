@@ -98,40 +98,66 @@ class AlfredTime
 
     private function stopTogglTimer()
     {
-        // $url = 'https://www.toggl.com/api/v8/time_entries/start';
+        $message = '';
 
-        // $apiToken = $this->config['toggl']['api_token'];
+        $url = 'https://www.toggl.com/api/v8/time_entries/current';
 
-        // $headers = [
-        //     "Content-type: application/json",
-        //     "Accept: application/json",
-        //     'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        // ];
+        $apiToken = $this->config['toggl']['api_token'];
 
-        // $defaultProjectId = $this->config['toggl']['default_project_id'];
-        // $defaultTags = $this->config['toggl']['default_tags'];
+        $headers = [
+            "Content-type: application/json",
+            "Accept: application/json",
+            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
+        ];
 
-        // $item = [
-        //     'time_entry' => [
-        //         'description' => $description,
-        //         'pid' => $defaultProjectId,
-        //         'tags' => [$defaultTags],
-        //         'created_with' => 'Alfred Time Workflow',
-        //     ],
-        // ];
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
 
-        // $ch = curl_init($url);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
-        // $response = curl_exec($ch);
-        // curl_close($ch);
+        if ($response === false) {
+            $message = curl_error($ch);
+            curl_close($ch);
+        } else {
+            $data = json_decode($response, true);
+            /**
+             * There was no timer running
+             */
+            if (empty($data['data']) === true) {
+                $message = 'No Toggl timer currently running!';
+            } else {
+                $currentTimerId = $data['data']['id'];
+
+                curl_close($ch);
+
+                $url = 'https://www.toggl.com/api/v8/time_entries/' . $currentTimerId . '/stop';
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+
+                if ($response === false) {
+                    $message = curl_error($ch);
+                    curl_close($ch);
+                } else {
+                    if (empty($data['data']) === true) {
+                        $message = 'Could not stop the Toggl timer currently running!';
+                    } else {
+                        $message = 'Toggl timer stopped!';
+                    }
+                    curl_close($ch);
+                }
+            }
+        }
+
+        return $message;
     }
 
     private function startHarvestTimer($description)
     {
         $domain = $this->config['harvest']['domain'];
-        $url = 'https://'.$domain.'.harvestapp.com/daily/add';
+        $url = 'https://' . $domain . '.harvestapp.com/daily/add';
 
         $base64Token = $this->config['harvest']['api_token'];
 
