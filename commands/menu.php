@@ -18,12 +18,21 @@ $query = trim($argv[1]);
 if ($alfredTime->isConfigured() === false) {
     $workflow->result()
         ->uid('')
+        ->arg('config')
         ->title('No config file found')
-        ->subtitle('Create config file with correct information')
+        ->subtitle('Generate and edit the config file')
         ->type('default')
-        ->valid(false);
+        ->valid(true);
 } else {
-    if ($alfredTime->hasTimerRunning() === false) {
+    if ($query === 'config') {
+        $workflow->result()
+            ->uid('')
+            ->arg('edit')
+            ->title('Edit config file')
+            ->subtitle('Edit the config file')
+            ->type('default')
+            ->valid(true);
+    } elseif ($alfredTime->hasTimerRunning() === false) {
         $workflow->result()
             ->uid('')
             ->arg('start ' . $query)
