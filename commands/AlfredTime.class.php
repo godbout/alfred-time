@@ -191,17 +191,12 @@ class AlfredTime
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($ch);
+                curl_close($ch);
 
                 if ($response === false) {
-                    $message = curl_error($ch);
-                    curl_close($ch);
+                    $message = '- Could not stop the Toggl timer currently running!';
                 } else {
-                    if (empty($data['data']) === true) {
-                        $message = '- Could not stop the Toggl timer currently running!';
-                    } else {
-                        $message = '- Toggl timer stopped';
-                    }
-                    curl_close($ch);
+                    $message = '- Toggl timer stopped';
                 }
             }
         }
@@ -249,5 +244,53 @@ class AlfredTime
 
     private function stopHarvestTimer()
     {
+        $domain = $this->config['harvest']['domain'];
+        $url = 'https://' . $domain . '.harvestapp.com/daily?slim=1';
+
+        $base64Token = $this->config['harvest']['api_token'];
+
+        $headers = [
+            "Content-type: application/json",
+            "Accept: application/json",
+            'Authorization: Basic ' . $base64Token,
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            $message = curl_error($ch);
+            curl_close($ch);
+        } else {
+            $data = json_decode($response, true);
+
+            /**
+             * There was no timer running
+             */
+            if (empty($data['day_entries']) === true) {
+                $message = '- No Harvest timer currently running!';
+            } else {
+                $currentTimerId = end($data['day_entries'])['id'];
+
+                curl_close($ch);
+                $url = 'https://' . $domain . '.harvestapp.com/daily/timer/' . $currentTimerId;
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                if ($response === false) {
+                    $message = '- Could not stop the Harvest timer currently running!';
+                } else {
+                    $message = '- Harvest timer stopped';
+                }
+            }
+        }
+
+        return $message;
     }
 }
