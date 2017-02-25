@@ -33,6 +33,7 @@ if ($alfredTime->isConfigured() === false) {
             ->valid(true);
     } elseif ($alfredTime->hasTimerRunning() === false) {
         $services = $alfredTime->activatedServices();
+        
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
         } else {
@@ -41,7 +42,7 @@ if ($alfredTime->isConfigured() === false) {
                 if ($service === reset($services)) {
                     $subtitle .= $service;
                 } else {
-                    $subtitle .= ' and ' .$service;
+                    $subtitle .= ' and ' . $service;
                 }
             }
         }
@@ -55,6 +56,7 @@ if ($alfredTime->isConfigured() === false) {
             ->valid(true);
     } else {
         $services = $alfredTime->activatedServices();
+
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
         } else {
@@ -63,7 +65,7 @@ if ($alfredTime->isConfigured() === false) {
                 if ($service === reset($services)) {
                     $subtitle .= $service;
                 } else {
-                    $subtitle .= ' and ' .$service;
+                    $subtitle .= ' and ' . $service;
                 }
             }
         }
