@@ -4,7 +4,7 @@ Very (very) basic workflow to start and stop timers for [Toggl](https://toggl.co
 
 # Why
 
-I prefer using Toggl for tracking time, I like their dashboard and reports better. But I use Harvest for invoices. So instead of starting both services separately (😴) separately, I did the workflow so I can start and stop all services in one shot.
+I prefer using Toggl for tracking time, I like their dashboard and reports better. But I use Harvest for invoices. So instead of starting both services separately (😴), I did the workflow so I can start and stop all services in one shot.
 
 # Current features
 
