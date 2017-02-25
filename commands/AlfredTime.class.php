@@ -93,6 +93,21 @@ class AlfredTime
         $this->saveConfiguration();
     }
 
+    public function activatedServices()
+    {
+        $services = [];
+
+        if ($this->config['toggl']['is_active'] === true) {
+            array_push($services, 'Toggl');
+        }
+
+        if ($this->config['harvest']['is_active'] === true) {
+            array_push($services, 'Harvest');
+        }
+
+        return $services;
+    }
+
     private function loadConfiguration()
     {
         $config = null;

@@ -14,7 +14,6 @@ $query = trim($argv[1]);
  * Check for config file
  * If cannot find, Workflow is not usable
  */
-
 if ($alfredTime->isConfigured() === false) {
     $workflow->result()
         ->uid('')
@@ -29,23 +28,51 @@ if ($alfredTime->isConfigured() === false) {
             ->uid('')
             ->arg('edit')
             ->title('Edit config file')
-            ->subtitle('Edit the config file')
+            ->subtitle('Open the config file in your favorite editor!')
             ->type('default')
             ->valid(true);
     } elseif ($alfredTime->hasTimerRunning() === false) {
+        $services = $alfredTime->activatedServices();
+        if (empty($services) === true) {
+            $subtitle = 'No timer services activated. Edit config file to active services';
+        } else {
+            $subtitle = 'Start new timer for ';
+            foreach ($services as $service) {
+                if ($service === reset($services)) {
+                    $subtitle .= $service;
+                } else {
+                    $subtitle .= ' and ' .$service;
+                }
+            }
+        }
+
         $workflow->result()
             ->uid('')
             ->arg('start ' . $query)
             ->title('Start "' . $query . '"')
-            ->subtitle('Start new timer for Toggl and Harvest')
+            ->subtitle($subtitle)
             ->type('default')
             ->valid(true);
     } else {
+        $services = $alfredTime->activatedServices();
+        if (empty($services) === true) {
+            $subtitle = 'No timer services activated. Edit config file to active services';
+        } else {
+            $subtitle = 'Stop current timer for ';
+            foreach ($services as $service) {
+                if ($service === reset($services)) {
+                    $subtitle .= $service;
+                } else {
+                    $subtitle .= ' and ' .$service;
+                }
+            }
+        }
+
         $workflow->result()
             ->uid('')
             ->arg('stop')
             ->title('Stop "' . $alfredTime->getRunningTimerDescription() . '"')
-            ->subtitle('Stop current timer for Toggl and Harvest')
+            ->subtitle($subtitle)
             ->type('default')
             ->valid(true);
     }
