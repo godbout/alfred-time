@@ -19,19 +19,19 @@ I prefer using Toggl for tracking time, I like their dashboard and reports bette
 
 * First start, generate and edit config file
 
-[[https://github.com/godbout/alfred-time/blob/master/screenshots/time-set.gif]]
+![config](https://github.com/godbout/alfred-time/blob/master/screenshots/time-set.gif)
 
 * Edit config file when needed
 
-[[https://github.com/godbout/alfred-time/blob/master/screenshots/time-edit.gif]]
+![edit](https://github.com/godbout/alfred-time/blob/master/screenshots/time-edit.gif)
 
 * Start timer
 
-[[https://github.com/godbout/alfred-time/blob/master/screenshots/time-start.gif]]
+![start](https://github.com/godbout/alfred-time/blob/master/screenshots/time-start.gif)
 
 * Stop timer
 
-[[https://github.com/godbout/alfred-time/blob/master/screenshots/time-stop.gif]]
+![stop](https://github.com/godbout/alfred-time/blob/master/screenshots/time-stop.gif)
 
 ## Config file
 
