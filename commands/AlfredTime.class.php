@@ -122,7 +122,13 @@ class AlfredTime
 
     private function saveConfiguration()
     {
-        $configFile = getenv('alfred_workflow_data') . '/config.json';
+        $workflowDir = getenv('alfred_workflow_data');
+        $configFile = $workflowDir . '/config.json';
+
+        if (file_exists($workflowDir) === false) {
+            mkdir($workflowDir);
+        }
+        
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
     }
 
