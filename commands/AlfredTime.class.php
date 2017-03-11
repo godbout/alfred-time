@@ -161,9 +161,10 @@ class AlfredTime
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
         $response = curl_exec($ch);
+        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($response === false) {
+        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
             $message = '- Cannot start Toggl timer!';
         } else {
             $message = '- Toggl timer started';
@@ -252,9 +253,10 @@ class AlfredTime
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
         $response = curl_exec($ch);
+        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($response === false) {
+        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
             $message = '- Cannot start Harvest timer!';
         } else {
             $message = '- Harvest timer started';
