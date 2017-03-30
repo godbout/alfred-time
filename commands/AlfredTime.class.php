@@ -30,16 +30,41 @@ class AlfredTime
         return $description;
     }
 
-    public function startTimer($description = '')
+    public function startTimer($description = '', $projectId = null, $tagName = null)
     {
         $message = '';
 
         if ($this->isTogglActive() === true) {
-            $message .= $this->startTogglTimer($description);
+            $message .= $this->startTogglTimer($description, $projectId, $tagName);
         }
 
         if ($this->isHarvestActive() === true) {
-            $message .= "\r\n" . $this->startHarvestTimer($description);
+            $message .= "\r\n" . $this->startHarvestTimer($description, $projectId, $tagName);
+        }
+
+        $this->config['workflow']['is_timer_running'] = true;
+        $this->config['workflow']['current_timer_description'] = $description;
+        $this->saveConfiguration();
+
+        return $message;
+    }
+
+    public function startTimerWithDefaultOptions($description)
+    {
+        $message = '';
+
+        if ($this->isTogglActive() === true) {
+            $defaultProjectId = $this->config['toggl']['default_project_id'];
+            $defaultTags = $this->config['toggl']['default_tags'];
+
+            $message .= $this->startTogglTimer($description, $defaultProjectId, $defaultTags);
+        }
+
+        if ($this->isHarvestActive() === true) {
+            $defaultProjectId = $this->config['harvest']['default_project_id'];
+            $defaultTaskId = $this->config['harvest']['default_task_id'];
+
+            $message .= "\r\n" . $this->startHarvestTimer($description, $defaultProjectId, $defaultTaskId);
         }
 
         $this->config['workflow']['is_timer_running'] = true;
@@ -123,6 +148,28 @@ class AlfredTime
         return $message;
     }
 
+    public function getProjects()
+    {
+        $projects = [];
+
+        if ($this->isTogglActive() === true) {
+            $projects = array_merge($projects, $this->getTogglProjects());
+        }
+
+        return $projects;
+    }
+
+    public function getTags()
+    {
+        $tags = [];
+
+        if ($this->isTogglActive() === true) {
+            $tags = array_merge($tags, $this->getTogglTags());
+        }
+
+        return $tags;
+    }
+
     private function syncTogglOnlineDataToLocalCache()
     {
         $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
@@ -145,7 +192,7 @@ class AlfredTime
         if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
             $message = '- Cannot get Toggl online data!';
         } else {
-            $this->saveTogglDataCache($response);
+            $this->saveTogglDataCache(json_decode($response, true));
             $message = '- Toggl data cached';
         }
 
@@ -155,7 +202,7 @@ class AlfredTime
     private function saveTogglDataCache($data)
     {
         $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
-        file_put_contents($cacheFile, json_encode($data, JSON_PRETTY_PRINT));
+        file_put_contents($cacheFile, json_encode($data));
     }
 
     private function loadConfiguration()
@@ -178,11 +225,11 @@ class AlfredTime
         if (file_exists($workflowDir) === false) {
             mkdir($workflowDir);
         }
-        
+
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
     }
 
-    private function startTogglTimer($description)
+    private function startTogglTimer($description, $projectId = null, $tagNames = null)
     {
         $url = 'https://www.toggl.com/api/v8/time_entries/start';
 
@@ -194,14 +241,11 @@ class AlfredTime
             'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
         ];
 
-        $defaultProjectId = $this->config['toggl']['default_project_id'];
-        $defaultTags = explode(', ', $this->config['toggl']['default_tags']);
-
         $item = [
             'time_entry' => [
                 'description' => $description,
-                'pid' => $defaultProjectId,
-                'tags' => $defaultTags,
+                'pid' => $projectId,
+                'tags' => explode(', ', $tagNames),
                 'created_with' => 'Alfred Time Workflow',
             ],
         ];
@@ -276,7 +320,7 @@ class AlfredTime
         return $message;
     }
 
-    private function startHarvestTimer($description)
+    private function startHarvestTimer($description, $projectId = null, $taskId = null)
     {
         $domain = $this->config['harvest']['domain'];
         $url = 'https://' . $domain . '.harvestapp.com/daily/add';
@@ -289,13 +333,11 @@ class AlfredTime
             'Authorization: Basic ' . $base64Token,
         ];
 
-        $defaultProjectId = $this->config['harvest']['default_project_id'];
-        $defaultTaskId = $this->config['harvest']['default_task_id'];
-
+        // $projectId
         $item = [
             'notes' => $description,
-            'project_id' => $defaultProjectId,
-            'task_id' => $defaultTaskId,
+            'project_id' => $projectId,
+            'task_id' => $taskId,
         ];
 
         $ch = curl_init($url);
@@ -369,41 +411,34 @@ class AlfredTime
 
     private function getTogglProjects()
     {
-        $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
+        $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
 
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-
-        $item = [
-            'time_entry' => [
-                'description' => $description,
-                'pid' => $defaultProjectId,
-                'tags' => $defaultTags,
-                'created_with' => 'Alfred Time Workflow',
-            ],
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
-        // $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
-            $message = '- Cannot start Toggl timer!';
-        } else {
-            $message = '- Toggl timer started';
+        if (file_exists($cacheFile)) {
+            $cacheData = json_decode(file_get_contents($cacheFile), true);
         }
 
-        return $message;
+        /**
+         * To only show projects that are currently active
+         * The Toggl API is slightly weird on that
+         */
+        foreach ($cacheData['data']['projects'] as $key => $project) {
+            if (isset($project['server_deleted_at']) === true) {
+                unset($cacheData['data']['projects'][$key]);
+            }
+        }
+
+        return $cacheData['data']['projects'];
+    }
+
+    private function getTogglTags()
+    {
+        $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
+
+        if (file_exists($cacheFile)) {
+            $cacheData = json_decode(file_get_contents($cacheFile), true);
+        }
+
+        return $cacheData['data']['tags'];
     }
 
     private function isTogglActive()

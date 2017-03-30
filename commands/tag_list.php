@@ -15,8 +15,9 @@ $tags = $alfredTime->getTags();
 foreach ($tags as $tag) {
     $workflow->result()
         ->uid('')
-        ->arg($tag['id'])
+        ->arg($tag['name'])
         ->title($tag['name'])
+        ->subtitle('Toggl tag')
         ->type('default')
         ->valid(true);
 }

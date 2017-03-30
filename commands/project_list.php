@@ -17,6 +17,7 @@ foreach ($projects as $project) {
         ->uid('')
         ->arg($project['id'])
         ->title($project['name'])
+        ->subtitle('Toggl project')
         ->type('default')
         ->valid(true);
 }
