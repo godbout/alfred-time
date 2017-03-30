@@ -31,7 +31,15 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle('Open the config file in your favorite editor!')
             ->type('default')
             ->valid(true);
-    } elseif ($alfredTime->hasTimerRunning() === false) {
+    } elseif ($query === 'sync') {
+        $workflow->result()
+            ->uid('')
+            ->arg('sync')
+            ->title('Sync projects and tags from online to local cache')
+            ->subtitle('Update local projects and tags data')
+            ->type('default')
+            ->valid(true);
+    }elseif ($alfredTime->hasTimerRunning() === false) {
         $services = $alfredTime->activatedServices();
         
         if (empty($services) === true) {
@@ -53,6 +61,7 @@ if ($alfredTime->isConfigured() === false) {
             ->title('Start "' . $query . '"')
             ->subtitle($subtitle)
             ->type('default')
+            ->mod('cmd', $subtitle . ' with default project and tags', 'start_default ' . $query)
             ->valid(true);
     } else {
         $services = $alfredTime->activatedServices();
