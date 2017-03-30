@@ -78,7 +78,6 @@ class AlfredTime
             'toggl' => [
                 'is_active' => true,
                 'api_token' => '',
-                'workspace_id' => '',
                 'default_project_id' => '',
                 'default_tags' => '',
             ],
