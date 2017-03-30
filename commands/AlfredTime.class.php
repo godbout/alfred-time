@@ -34,11 +34,11 @@ class AlfredTime
     {
         $message = '';
 
-        if ($this->config['toggl']['is_active'] === true) {
+        if ($this->isTogglActive() === true) {
             $message .= $this->startTogglTimer($description);
         }
 
-        if ($this->config['harvest']['is_active'] === true) {
+        if ($this->isHarvestActive() === true) {
             $message .= "\r\n" . $this->startHarvestTimer($description);
         }
 
@@ -53,11 +53,11 @@ class AlfredTime
     {
         $message = '';
 
-        if ($this->config['toggl']['is_active'] === true) {
+        if ($this->isTogglActive() === true) {
             $message .= $this->stopTogglTimer();
         }
 
-        if ($this->config['harvest']['is_active'] === true) {
+        if ($this->isHarvestActive() === true) {
             $message .= "\r\n" . $this->stopHarvestTimer();
         }
 
@@ -97,11 +97,11 @@ class AlfredTime
     {
         $services = [];
 
-        if ($this->config['toggl']['is_active'] === true) {
+        if ($this->isTogglActive() === true) {
             array_push($services, 'Toggl');
         }
 
-        if ($this->config['harvest']['is_active'] === true) {
+        if ($this->isHarvestActive() === true) {
             array_push($services, 'Harvest');
         }
 
@@ -315,5 +315,54 @@ class AlfredTime
         }
 
         return $message;
+    }
+
+    private function getTogglProjects()
+    {
+        $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
+
+        $apiToken = $this->config['toggl']['api_token'];
+
+        $headers = [
+            "Content-type: application/json",
+            "Accept: application/json",
+            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
+        ];
+
+
+        $item = [
+            'time_entry' => [
+                'description' => $description,
+                'pid' => $defaultProjectId,
+                'tags' => $defaultTags,
+                'created_with' => 'Alfred Time Workflow',
+            ],
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
+        // $response = curl_exec($ch);
+        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
+            $message = '- Cannot start Toggl timer!';
+        } else {
+            $message = '- Toggl timer started';
+        }
+
+        return $message;
+    }
+
+    private function isTogglActive()
+    {
+        return $this->config['toggl']['is_active'];
+    }
+
+    private function isHarvestActive()
+    {
+        return $this->config['harvest']['is_active'];
     }
 }
