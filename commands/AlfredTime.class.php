@@ -108,6 +108,56 @@ class AlfredTime
         return $services;
     }
 
+    public function syncOnlineDataToLocalCache()
+    {
+        $message = '';
+
+        if ($this->isTogglActive() === true) {
+            $message .= $this->syncTogglOnlineDataToLocalCache();
+        }
+
+        // if ($this->isHarvestActive() === true) {
+        //     array_merge($data, $this->syncHarvestOnlineDataToLocalCache());
+        // }
+
+        return $message;
+    }
+
+    private function syncTogglOnlineDataToLocalCache()
+    {
+        $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
+
+        $apiToken = $this->config['toggl']['api_token'];
+
+        $headers = [
+            "Content-type: application/json",
+            "Accept: application/json",
+            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
+            $message = '- Cannot get Toggl online data!';
+        } else {
+            $this->saveTogglDataCache($response);
+            $message = '- Toggl data cached';
+        }
+
+        return $message;
+    }
+
+    private function saveTogglDataCache($data)
+    {
+        $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
+        file_put_contents($cacheFile, json_encode($data, JSON_PRETTY_PRINT));
+    }
+
     private function loadConfiguration()
     {
         $config = null;
