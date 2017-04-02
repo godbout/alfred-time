@@ -13,7 +13,6 @@ $query = trim($argv[1]);
 $tags = $alfredTime->getTags();
 
 $workflow->result()
-    ->uid()
     ->arg('')
     ->title('No Tag')
     ->subtitle('Timer will be created without any tag')
@@ -22,7 +21,6 @@ $workflow->result()
 
 foreach ($tags as $tag) {
     $workflow->result()
-        ->uid()
         ->arg($tag['name'])
         ->title($tag['name'])
         ->subtitle('Toggl tag')
