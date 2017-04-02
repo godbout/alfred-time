@@ -39,9 +39,18 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle('Update local projects and tags data')
             ->type('default')
             ->valid(true);
-    }elseif ($alfredTime->hasTimerRunning() === false) {
+    } elseif ($query === 'undo') {
+        $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer FOREVER' : 'Delete timer FOREVER';
+        $workflow->result()
+            ->uid('')
+            ->arg('undo')
+            ->title('Undo "' . $alfredTime->getTimerDescription() . '"')
+            ->subtitle($subtitle)
+            ->type('default')
+            ->valid(true);
+    } elseif ($alfredTime->hasTimerRunning() === false) {
         $services = $alfredTime->activatedServices();
-        
+
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
         } else {
@@ -82,7 +91,7 @@ if ($alfredTime->isConfigured() === false) {
         $workflow->result()
             ->uid('')
             ->arg('stop')
-            ->title('Stop "' . $alfredTime->getRunningTimerDescription() . '"')
+            ->title('Stop "' . $alfredTime->getTimerDescription() . '"')
             ->subtitle($subtitle)
             ->type('default')
             ->valid(true);

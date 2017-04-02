@@ -14,9 +14,23 @@ if (substr($query, 0, 6) === 'config') {
     $message = $alfredTime->syncOnlineDataToLocalCache();
 } elseif (substr($query, 0, 5) === 'edit') {
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
+} elseif (substr($query, 0, 4) === 'undo') {
+    $message = $alfredTime->UndoTimer();
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
-    $message = $alfredTime->startTimer($description, getenv('project_id'), getenv('tag_name'));
+
+    /**
+     * For now, only handle Toggl projects and tags
+     */
+    $projectsDefault = [
+        'toggl' => getenv('project_id'),
+    ];
+
+    $tagsDefault = [
+        'toggl' => getenv('tag_name')
+    ];
+
+    $message = $alfredTime->startTimer($description, $projectsDefault, $tagsDefault);
 } elseif (substr($query, 0, 14) === 'start_default ') {
     $description = substr($query, 14);
     $message = $alfredTime->startTimerWithDefaultOptions($description);
