@@ -136,10 +136,6 @@ class AlfredTime
             $message .= $this->syncTogglOnlineDataToLocalCache();
         }
 
-        // if ($this->isHarvestActive() === true) {
-        //     array_merge($data, $this->syncHarvestOnlineDataToLocalCache());
-        // }
-
         return $message;
     }
 
