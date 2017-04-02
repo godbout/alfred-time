@@ -12,9 +12,17 @@ $query = trim($argv[1]);
 
 $projects = $alfredTime->getProjects();
 
+$workflow->result()
+    ->uid()
+    ->arg('')
+    ->title('No Project')
+    ->subtitle('Timer will be created without a project')
+    ->type('default')
+    ->valid(true);
+
 foreach ($projects as $project) {
     $workflow->result()
-        ->uid('')
+        ->uid()
         ->arg($project['id'])
         ->title($project['name'])
         ->subtitle('Toggl project')
