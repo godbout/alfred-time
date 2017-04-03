@@ -74,7 +74,7 @@ class AlfredTime
 
         foreach ($this->activatedServices() as $service) {
             $functionName = 'stop' . ucfirst($service) . 'Timer';
-            if (call_user_func_array(['AlfredTime', $functionName], []) === true) {
+            if (call_user_func(['AlfredTime', $functionName]) === true) {
                 $atLeastOneServiceStopped = true;
             }
             $message .= $this->getLastMessage() . "\r\n";
@@ -187,7 +187,7 @@ class AlfredTime
 
         foreach ($this->activatedServices() as $service) {
             $functionName = 'delete' . ucfirst($service) . 'Timer';
-            if (call_user_func_array(['AlfredTime', $functionName], []) === true) {
+            if (call_user_func(['AlfredTime', $functionName]) === true) {
                 $this->config['workflow']['timer_' . $service . '_id'] = null;
                 $atLeastOneTimerDeleted = true;
             }
