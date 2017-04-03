@@ -14,7 +14,7 @@ $projects = $alfredTime->getProjects();
 
 $workflow->result()
     ->arg('')
-    ->title('No Project')
+    ->title('No project')
     ->subtitle('Timer will be created without a project')
     ->type('default')
     ->valid(true);

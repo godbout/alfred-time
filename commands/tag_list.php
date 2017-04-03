@@ -14,7 +14,7 @@ $tags = $alfredTime->getTags();
 
 $workflow->result()
     ->arg('')
-    ->title('No Tag')
+    ->title('No tag')
     ->subtitle('Timer will be created without any tag')
     ->type('default')
     ->valid(true);
