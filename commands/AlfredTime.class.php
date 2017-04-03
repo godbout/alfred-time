@@ -3,10 +3,12 @@
 class AlfredTime
 {
     private $config;
+    private $message;
 
     public function __construct()
     {
         $this->config = $this->loadConfiguration();
+        $this->message = '';
     }
 
     public function isConfigured()
@@ -26,29 +28,27 @@ class AlfredTime
 
     public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null)
     {
-        $message = '';
-        $togglId = null;
-        $harvestId = null;
+        $atLeastOneServiceStarted = false;
 
-        if ($this->isTogglActive() === true) {
-            $projectId = isset($projectsDefault['toggl']) ? $projectsDefault['toggl'] : null;
-            $tags = isset($tagsDefault['toggl']) ? $tagsDefault['toggl'] : null;
+        foreach ($this->activatedServices() as $service) {
+            $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
+            $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
-            $message .= $this->startTogglTimer($togglId, $description, $projectId, $tags);
+            $functionName = 'start' . ucfirst($service) . 'Timer';
+            $timerId = call_user_func_array(['AlfredTime', $functionName], [$description, $defaultProjectId, $defaultTags]);
+            if ($timerId !== null) {
+                $this->config['workflow']['timer_' . $service . '_id'] = $timerId;
+                $atLeastOneServiceStarted = true;
+            }
+
+            $message .= $this->getLastMessage() . "\r\n";
         }
 
-        if ($this->isHarvestActive() === true) {
-            $projectId = isset($projectsDefault['harvest']) ? $projectsDefault['harvest'] : null;
-            $taskId = isset($tagsDefault['harvest']) ? $tagsDefault['harvest'] : null;
-
-            $message .= "\r\n" . $this->startHarvestTimer($harvestId, $description, $projectId, $taskId);
+        if ($atLeastOneServiceStarted === true) {
+            $this->config['workflow']['timer_description'] = $description;
+            $this->config['workflow']['is_timer_running'] = true;
+            $this->saveConfiguration();
         }
-
-        $this->config['workflow']['is_timer_running'] = true;
-        $this->config['workflow']['timer_toggl_id'] = $togglId;
-        $this->config['workflow']['timer_harvest_id'] = $harvestId;
-        $this->config['workflow']['timer_description'] = $description;
-        $this->saveConfiguration();
 
         return $message;
     }
@@ -70,18 +70,20 @@ class AlfredTime
 
     public function stopRunningTimer()
     {
-        $message = '';
+        $atLeastOneServiceStopped = false;
 
-        if ($this->isTogglActive() === true) {
-            $message .= $this->stopTogglTimer();
+        foreach ($this->activatedServices() as $service) {
+            $functionName = 'stop' . ucfirst($service) . 'Timer';
+            if (call_user_func_array(['AlfredTime', $functionName], []) === true) {
+                $atLeastOneServiceStopped = true;
+            }
+            $message .= $this->getLastMessage() . "\r\n";
         }
 
-        if ($this->isHarvestActive() === true) {
-            $message .= "\r\n" . $this->stopHarvestTimer();
+        if ($atLeastOneServiceStopped === true) {
+            $this->config['workflow']['is_timer_running'] = false;
+            $this->saveConfiguration();
         }
-
-        $this->config['workflow']['is_timer_running'] = false;
-        $this->saveConfiguration();
 
         return $message;
     }
@@ -118,11 +120,11 @@ class AlfredTime
         $services = [];
 
         if ($this->isTogglActive() === true) {
-            array_push($services, 'Toggl');
+            array_push($services, 'toggl');
         }
 
         if ($this->isHarvestActive() === true) {
-            array_push($services, 'Harvest');
+            array_push($services, 'harvest');
         }
 
         return $services;
@@ -174,32 +176,35 @@ class AlfredTime
         return $message;
     }
 
+    private function getLastMessage()
+    {
+        return $this->message;
+    }
+
     private function deleteTimer()
     {
-        $message = '';
+        $atLeastOneTimerDeleted = false;
 
-        $togglId = $this->config['workflow']['timer_toggl_id'];
-        $harvestId = $this->config['workflow']['timer_harvest_id'];
-
-        if ($this->isTogglActive() === true) {
-            $message .= $this->deleteTogglTimer($togglId);
+        foreach ($this->activatedServices() as $service) {
+            $functionName = 'delete' . ucfirst($service) . 'Timer';
+            if (call_user_func_array(['AlfredTime', $functionName], []) === true) {
+                $this->config['workflow']['timer_' . $service . '_id'] = null;
+                $atLeastOneTimerDeleted = true;
+            }
+            $message .= $this->getLastMessage() . "\r\n";
         }
 
-        if ($this->isHarvestActive() === true) {
-            $message .= "\r\n" . $this->deleteHarvestTimer($harvestId);
+        if ($atLeastOneTimerDeleted === true) {
+            $this->config['workflow']['timer_description'] = '';
+            $this->saveConfiguration();
         }
-
-        $this->config['workflow']['timer_toggl_id'] = $togglId;
-        $this->config['workflow']['timer_harvest_id'] = $harvestId;
-        $this->config['workflow']['timer_description'] = '';
-        $this->saveConfiguration();
 
         return $message;
     }
 
-    private function deleteTogglTimer(&$togglId)
+    private function deleteTogglTimer()
     {
-        $message = '';
+        $res = false;
 
         $togglId = $this->config['workflow']['timer_toggl_id'];
 
@@ -222,17 +227,19 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $message = '- Could not delete last Toggl timer!';
+            $this->message = '- Could not delete last Toggl timer!';
         } else {
-            $togglId = null;
-            $message = '- Last Toggl timer deleted';
+            $this->message = '- Last Toggl timer deleted';
+            $res = true;
         }
 
-        return $message;
+        return $res;
     }
 
-    private function deleteHarvestTimer(&$harvestId)
+    private function deleteHarvestTimer()
     {
+        $res = false;
+
         $domain = $this->config['harvest']['domain'];
 
         $harvestId = $this->config['workflow']['timer_harvest_id'];
@@ -256,13 +263,13 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $message = '- Could not delete last Harvest timer!';
+            $this->message = '- Could not delete last Harvest timer!';
         } else {
-            $harvestId = null;
-            $message = '- Last Harvest timer deleted';
+            $this->message = '- Last Harvest timer deleted';
+            $res = true;
         }
 
-        return $message;
+        return $res;
     }
 
     private function syncTogglOnlineDataToLocalCache()
@@ -324,8 +331,10 @@ class AlfredTime
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
     }
 
-    private function startTogglTimer(&$togglId, $description, $projectId = null, $tagNames = null)
+    private function startTogglTimer($description, $projectId, $tagNames)
     {
+        $togglId = null;
+
         $url = 'https://www.toggl.com/api/v8/time_entries/start';
 
         $apiToken = $this->config['toggl']['api_token'];
@@ -354,19 +363,20 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
-            $togglId = null;
-            $message = '- Cannot start Toggl timer!';
+            $this->message = '- Cannot start Toggl timer!';
         } else {
             $data = json_decode($response, true);
             $togglId = $data['data']['id'];
-            $message = '- Toggl timer started';
+            $this->message = '- Toggl timer started';
         }
 
-        return $message;
+        return $togglId;
     }
 
     private function stopTogglTimer()
     {
+        $res = false;
+
         $message = '';
 
         $togglId = $this->config['workflow']['timer_toggl_id'];
@@ -389,16 +399,19 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false) {
-            $message = '- Could not stop the Toggl timer currently running!';
+            $this->message = '- Could not stop Toggl timer!';
         } else {
-            $message = '- Toggl timer stopped';
+            $this->message = '- Toggl timer stopped';
+            $res = true;
         }
 
-        return $message;
+        return $res;
     }
 
-    private function startHarvestTimer(&$harvestId, $description, $projectId = null, $taskId = null)
+    private function startHarvestTimer($description, $projectId, $taskId)
     {
+        $harvestId = null;
+
         $domain = $this->config['harvest']['domain'];
         $url = 'https://' . $domain . '.harvestapp.com/daily/add';
 
@@ -410,7 +423,6 @@ class AlfredTime
             'Authorization: Basic ' . $base64Token,
         ];
 
-        // $projectId
         $item = [
             'notes' => $description,
             'project_id' => $projectId,
@@ -426,19 +438,20 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 201) {
-            $harvestId = null;
-            $message = '- Cannot start Harvest timer!';
+            $this->message = '- Cannot start Harvest timer!';
         } else {
             $data = json_decode($response, true);
             $harvestId = $data['id'];
-            $message = '- Harvest timer started';
+            $this->message = '- Harvest timer started';
         }
 
-        return $message;
+        return $harvestId;
     }
 
     private function stopHarvestTimer()
     {
+        $res = false;
+
         $domain = $this->config['harvest']['domain'];
 
         $harvestId = $this->config['workflow']['timer_harvest_id'];
@@ -462,12 +475,13 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $message = '- Could not stop the Harvest timer currently running!';
+            $this->message = '- Could not stop Harvest timer!';
         } else {
-            $message = '- Harvest timer stopped';
+            $this->message = '- Harvest timer stopped';
+            $res = true;
         }
 
-        return $message;
+        return $res;
     }
 
     private function getTogglProjects()
