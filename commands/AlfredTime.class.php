@@ -36,8 +36,8 @@ class AlfredTime
 
             $functionName = 'start' . ucfirst($service) . 'Timer';
             $timerId = call_user_func_array(['AlfredTime', $functionName], [$description, $defaultProjectId, $defaultTags]);
+            $this->config['workflow']['timer_' . $service . '_id'] = $timerId;
             if ($timerId !== null) {
-                $this->config['workflow']['timer_' . $service . '_id'] = $timerId;
                 $atLeastOneServiceStarted = true;
             }
 
@@ -452,11 +452,51 @@ class AlfredTime
     {
         $res = false;
 
+        $harvestId = $this->config['workflow']['timer_harvest_id'];
+
+        if ($this->isHarvestTimerRunning($harvestId) === true) {
+            $domain = $this->config['harvest']['domain'];
+
+            $url = 'https://' . $domain . '.harvestapp.com/daily/timer/' . $harvestId;
+
+            $base64Token = $this->config['harvest']['api_token'];
+
+            $headers = [
+                "Content-type: application/json",
+                "Accept: application/json",
+                'Authorization: Basic ' . $base64Token,
+            ];
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($response === false || $lastHttpCode !== 200) {
+                $this->message = '- Could not stop Harvest timer!';
+            } else {
+                $this->message = '- Harvest timer stopped';
+                $res = true;
+            }
+        } else {
+            $this->message = '- Harvest timer was not running';
+        }
+
+        return $res;
+    }
+
+    private function isHarvestTimerRunning($harvestId)
+    {
+        $res = false;
+
         $domain = $this->config['harvest']['domain'];
 
         $harvestId = $this->config['workflow']['timer_harvest_id'];
 
-        $url = 'https://' . $domain . '.harvestapp.com/daily/timer/' . $harvestId;
+        $url = 'https://' . $domain . '.harvestapp.com/daily/show/' . $harvestId;
 
         $base64Token = $this->config['harvest']['api_token'];
 
@@ -474,11 +514,11 @@ class AlfredTime
         $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not stop Harvest timer!';
-        } else {
-            $this->message = '- Harvest timer stopped';
-            $res = true;
+        if ($response !== false && $lastHttpCode === 200) {
+            $data = json_decode($response, true);
+            if (isset($data['timer_started_at']) === true) {
+                $res = true;
+            }
         }
 
         return $res;
