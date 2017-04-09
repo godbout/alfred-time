@@ -57,9 +57,9 @@ if ($alfredTime->isConfigured() === false) {
             $subtitle = 'Start new timer for ';
             foreach ($services as $service) {
                 if ($service === reset($services)) {
-                    $subtitle .= $service;
+                    $subtitle .= ucfirst($service);
                 } else {
-                    $subtitle .= ' and ' . $service;
+                    $subtitle .= ' and ' . ucfirst($service);
                 }
             }
         }
