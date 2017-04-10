@@ -25,6 +25,7 @@ foreach ($tags as $tag) {
         ->title($tag['name'])
         ->subtitle('Toggl tag')
         ->type('default')
+        ->icon('icons/toggl.png')
         ->valid(true);
 }
 

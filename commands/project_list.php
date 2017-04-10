@@ -25,6 +25,7 @@ foreach ($projects as $project) {
         ->title($project['name'])
         ->subtitle('Toggl project')
         ->type('default')
+        ->icon('icons/toggl.png')
         ->valid(true);
 }
 
