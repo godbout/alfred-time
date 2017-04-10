@@ -171,9 +171,73 @@ class AlfredTime
             $this->stopRunningTimer();
         }
 
-        $message = $this->deleteTimer();
+        $atLeastOneTimerDeleted = false;
+        foreach ($this->activatedServices() as $service) {
+            $functionName = 'delete' . ucfirst($service) . 'Timer';
+            if (call_user_func_array(['AlfredTime', $functionName], [$this->config['workflow']['timer_' . $service . '_id']]) === true) {
+                $this->config['workflow']['timer_' . $service . '_id'] = null;
+                $atLeastOneTimerDeleted = true;
+            }
+
+            $message .= $this->getLastMessage() . "\r\n";
+        }
+
+        if ($atLeastOneTimerDeleted === true) {
+            $this->saveConfiguration();
+        }
 
         return $message;
+    }
+
+    public function getRecentTimers()
+    {
+        $timers = [];
+
+        if ($this->isTogglActive() === true) {
+            $timers = array_merge($timers, $this->getRecentTogglTimers());
+        }
+
+        return $timers;
+    }
+
+    public function deleteTimer($timerId)
+    {
+        $message = '';
+
+        if ($this->isTogglActive() === true) {
+            $this->deleteTogglTimer($timerId);
+            $message .= $this->getLastMessage() . "\r\n";
+        }
+
+        return $message;
+    }
+
+    private function getRecentTogglTimers()
+    {
+        $timers = [];
+
+        $url = 'https://www.toggl.com/api/v8/time_entries';
+
+        $apiToken = $this->config['toggl']['api_token'];
+
+        $headers = [
+            "Content-type: application/json",
+            "Accept: application/json",
+            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($response !== false && $lastHttpCode === 200) {
+            $timers = json_decode($response, true);
+        }
+
+        return array_reverse($timers);
     }
 
     private function getLastMessage()
@@ -181,32 +245,9 @@ class AlfredTime
         return $this->message;
     }
 
-    private function deleteTimer()
-    {
-        $atLeastOneTimerDeleted = false;
-
-        foreach ($this->activatedServices() as $service) {
-            $functionName = 'delete' . ucfirst($service) . 'Timer';
-            if (call_user_func(['AlfredTime', $functionName]) === true) {
-                $this->config['workflow']['timer_' . $service . '_id'] = null;
-                $atLeastOneTimerDeleted = true;
-            }
-            $message .= $this->getLastMessage() . "\r\n";
-        }
-
-        if ($atLeastOneTimerDeleted === true) {
-            $this->config['workflow']['timer_description'] = '';
-            $this->saveConfiguration();
-        }
-
-        return $message;
-    }
-
-    private function deleteTogglTimer()
+    private function deleteTogglTimer($togglId)
     {
         $res = false;
-
-        $togglId = $this->config['workflow']['timer_toggl_id'];
 
         $url = 'https://www.toggl.com/api/v8/time_entries/' . $togglId;
 
@@ -227,22 +268,20 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not delete last Toggl timer!';
+            $this->message = '- Could not delete Toggl timer!';
         } else {
-            $this->message = '- Last Toggl timer deleted';
+            $this->message = '- Toggl timer deleted';
             $res = true;
         }
 
         return $res;
     }
 
-    private function deleteHarvestTimer()
+    private function deleteHarvestTimer($harvestId)
     {
         $res = false;
 
         $domain = $this->config['harvest']['domain'];
-
-        $harvestId = $this->config['workflow']['timer_harvest_id'];
 
         $url = 'https://' . $domain . '.harvestapp.com/daily/delete/' . $harvestId;
 
@@ -263,9 +302,9 @@ class AlfredTime
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not delete last Harvest timer!';
+            $this->message = '- Could not delete Harvest timer!';
         } else {
-            $this->message = '- Last Harvest timer deleted';
+            $this->message = '- Harvest timer deleted';
             $res = true;
         }
 

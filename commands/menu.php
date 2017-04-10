@@ -48,6 +48,14 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle($subtitle)
             ->type('default')
             ->valid(true);
+    } elseif ($query === 'delete') {
+        $workflow->result()
+            ->uid('')
+            ->arg('delete')
+            ->title('Delete a timer')
+            ->subtitle('Press enter to load recent timers list')
+            ->type('default')
+            ->valid(true);
     } elseif ($alfredTime->hasTimerRunning() === false) {
         $services = $alfredTime->activatedServices();
 

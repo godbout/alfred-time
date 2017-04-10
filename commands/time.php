@@ -16,6 +16,12 @@ if (substr($query, 0, 6) === 'config') {
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'undo') {
     $message = $alfredTime->UndoTimer();
+} elseif (substr($query, 0, 6) === 'delete') {
+    /**
+     * For now, only handle Toggl
+     */
+    $timerId = getenv('timer_id');
+    $message = $alfredTime->deleteTimer($timerId);
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 
