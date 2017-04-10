@@ -40,14 +40,34 @@ if ($alfredTime->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($query === 'undo') {
-        $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer FOREVER' : 'Delete timer FOREVER';
-        $workflow->result()
-            ->uid('')
-            ->arg('undo')
-            ->title('Undo "' . $alfredTime->getTimerDescription() . '"')
-            ->subtitle($subtitle)
-            ->type('default')
-            ->valid(true);
+        $servicesToUndo = $alfredTime->servicesToUndo();
+
+        if (empty($servicesToUndo) === true) {
+            $workflow->result()
+                ->uid('')
+                ->arg('')
+                ->title('Undo ""')
+                ->subtitle('Nothing to undo!')
+                ->type('default')
+                ->valid(false);
+        } else {
+            $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
+            foreach ($servicesToUndo as $service) {
+                if ($service === reset($servicesToUndo)) {
+                    $subtitle .= ucfirst($service);
+                } else {
+                    $subtitle .= ' and ' . ucfirst($service);
+                }
+            }
+
+            $workflow->result()
+                ->uid('')
+                ->arg('undo')
+                ->title('Undo "' . $alfredTime->getTimerDescription() . '"')
+                ->subtitle($subtitle)                
+                ->type('default')
+                ->valid(true);
+        }
     } elseif ($query === 'delete') {
         $workflow->result()
             ->uid('')

@@ -130,6 +130,19 @@ class AlfredTime
         return $services;
     }
 
+    public function servicesToUndo()
+    {
+        $services = [];
+
+        foreach ($this->activatedServices() as $service) {
+            if ($this->config['workflow']['timer_' .$service .'_id'] !== null) {
+                array_push($services, $service);
+            }
+        }
+
+        return $services;
+    }
+
     public function syncOnlineDataToLocalCache()
     {
         $message = '';
