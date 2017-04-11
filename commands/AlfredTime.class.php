@@ -254,6 +254,21 @@ class AlfredTime
         return $services;
     }
 
+    public function getProjectName($projectId)
+    {
+        $projectName = '';
+
+        $projects = $this->getProjects();
+        foreach ($projects as $project) {
+            if ($project['id'] === $projectId) {
+                $projectName = $project['name'];
+                break;
+            }
+        }
+
+        return $projectName;
+    }
+
     private function getRecentTogglTimers()
     {
         $timers = [];

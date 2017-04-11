@@ -19,12 +19,24 @@ if (getenv('description') === 'delete') {
 }
 
 $timers = $alfredTime->getRecentTimers();
+$projects = $alfredTime->getProjects();
 
 foreach ($timers as $timer) {
+
+    $projectName = $alfredTime->getProjectName($timer['pid']);
+    $tags = $timer['tags'];
+    $startTime = $timer['start'];
+    $stopTime = $timer['stop'];
+    $duration = $timer['duration'];
+
+    $subtitle = (empty($projectName) === true ? 'No project' : $projectName) .', '
+        .(empty($tags) === true ? 'No tag' : '[' .implode(', ', $tags) .']') .', '
+        .gmdate('H:i:s', $duration);
+
     $workflow->result()
         ->arg($timer['id'])
         ->title($timer['description'])
-        ->subtitle('Delete the timer FOREVER')
+        ->subtitle($subtitle)
         ->type('default')
         ->icon('icons/toggl.png')
         ->valid(true);
