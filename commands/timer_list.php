@@ -10,6 +10,14 @@ $alfredTime = new AlfredTime;
 
 $query = trim($argv[1]);
 
+if (getenv('description') === 'delete') {
+    $workflow->result()
+        ->title('Choose a timer to delete below')
+        ->subtitle('_____________________ BE CAREFUL, NO RECOVERY POSSIBLE _____________________')
+        ->type('default')
+        ->valid(false);
+}
+
 $timers = $alfredTime->getRecentTimers();
 
 foreach ($timers as $timer) {
