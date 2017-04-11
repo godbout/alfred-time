@@ -107,6 +107,7 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle($subtitle)
             ->type('default')
             ->mod('cmd', $subtitle . ' and Harvest with default project and tags', 'start_default ' . $query)
+            ->mod('alt', 'Continue timer for Toggl and Harvest ("'.$alfredTime->getTimerDescription() .'") with default project and tags', 'start_default ' . $alfredTime->getTimerDescription())
             ->valid(true);
     } else {
         $services = $alfredTime->activatedServices();
