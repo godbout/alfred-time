@@ -24,8 +24,6 @@ $projects = $alfredTime->getProjects();
 foreach ($timers as $timer) {
     $projectName = $alfredTime->getProjectName($timer['pid']);
     $tags = $timer['tags'];
-    $startTime = $timer['start'];
-    $stopTime = $timer['stop'];
     $duration = $timer['duration'];
 
     $timerData = [
@@ -37,7 +35,7 @@ foreach ($timers as $timer) {
 
     $subtitle = (empty($projectName) === true ? 'No project' : $projectName) .', '
         .(empty($tags) === true ? 'No tag' : '[' .implode(', ', $tags) .']') .', '
-        .gmdate('H:i:s', $duration);
+        .($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
 
     $workflow->result()
         ->arg(json_encode($timerData))
