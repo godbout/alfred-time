@@ -77,7 +77,7 @@ if ($alfredTime->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($alfredTime->hasTimerRunning() === false) {
-        $services = $alfredTime->activatedServices();
+        $services = $alfredTime->implementedServicesForFeature('start');
 
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
@@ -98,7 +98,7 @@ if ($alfredTime->isConfigured() === false) {
             ->title('Start "' . $query . '"')
             ->subtitle($subtitle)
             ->type('default')
-            ->mod('cmd', $subtitle . ' with default project and tags', 'start_default ' . $query)
+            ->mod('cmd', $subtitle . ' and Harvest with default project and tags', 'start_default ' . $query)
             ->valid(true);
     } else {
         $services = $alfredTime->activatedServices();

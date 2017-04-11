@@ -28,15 +28,15 @@ if (substr($query, 0, 6) === 'config') {
     /**
      * For now, only handle Toggl projects and tags
      */
-    $projectsDefault = [
+    $project = [
         'toggl' => getenv('project_id'),
     ];
 
-    $tagsDefault = [
+    $tag = [
         'toggl' => getenv('tag_name')
     ];
 
-    $message = $alfredTime->startTimer($description, $projectsDefault, $tagsDefault);
+    $message = $alfredTime->startTimer($description, $project, $tag);
 } elseif (substr($query, 0, 14) === 'start_default ') {
     $description = substr($query, 14);
     $message = $alfredTime->startTimerWithDefaultOptions($description);

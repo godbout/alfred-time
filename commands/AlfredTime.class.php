@@ -4,6 +4,12 @@ class AlfredTime
 {
     private $config;
     private $message;
+    private $currentImplementation = [
+        'start' => ['toggl'],
+        'start_default' => ['toggl', 'harvest'],
+        'stop' => ['toggl', 'harvest'],
+        'delete' => ['toggl'],
+    ];
 
     public function __construct()
     {
@@ -26,11 +32,12 @@ class AlfredTime
         return $this->config['workflow']['timer_description'];
     }
 
-    public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null)
+    public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
     {
+        $startType = $startDefault === true ? 'start_default' : 'start';
         $atLeastOneServiceStarted = false;
 
-        foreach ($this->activatedServices() as $service) {
+        foreach ($this->implementedServicesForFeature($startType) as $service) {
             $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
             $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
@@ -65,7 +72,7 @@ class AlfredTime
             'harvest' => $this->config['harvest']['default_task_id'],
         ];
 
-        return $this->startTimer($description, $projectsDefault, $tagsDefault);
+        return $this->startTimer($description, $projectsDefault, $tagsDefault, true);
     }
 
     public function stopRunningTimer()
@@ -135,7 +142,7 @@ class AlfredTime
         $services = [];
 
         foreach ($this->activatedServices() as $service) {
-            if ($this->config['workflow']['timer_' .$service .'_id'] !== null) {
+            if ($this->config['workflow']['timer_' . $service . '_id'] !== null) {
                 array_push($services, $service);
             }
         }
@@ -185,7 +192,7 @@ class AlfredTime
         }
 
         $atLeastOneTimerDeleted = false;
-        foreach ($this->activatedServices() as $service) {
+        foreach ($this->servicesToUndo() as $service) {
             $functionName = 'delete' . ucfirst($service) . 'Timer';
             if (call_user_func_array(['AlfredTime', $functionName], [$this->config['workflow']['timer_' . $service . '_id']]) === true) {
                 $this->config['workflow']['timer_' . $service . '_id'] = null;
@@ -217,12 +224,34 @@ class AlfredTime
     {
         $message = '';
 
-        if ($this->isTogglActive() === true) {
-            $this->deleteTogglTimer($timerId);
+        $atLeastOneTimerDeleted = false;
+        foreach ($this->implementedServicesForFeature('delete') as $service) {
+            $functionName = 'delete' . ucfirst($service) . 'Timer';
+            if (call_user_func_array(['AlfredTime', $functionName], [$this->config['workflow']['timer_' . $service . '_id']]) === true) {
+                $this->config['workflow']['timer_' . $service . '_id'] = null;
+                $atLeastOneTimerDeleted = true;
+            }
+
             $message .= $this->getLastMessage() . "\r\n";
         }
 
+        if ($atLeastOneTimerDeleted === true) {
+            $this->config['workflow']['is_timer_running'] = false;
+            $this->saveConfiguration();
+        }
+
         return $message;
+    }
+
+    public function implementedServicesForFeature($feature = null)
+    {
+        $services = [];
+
+        if (isset($this->currentImplementation[$feature]) === true) {
+            $services = $this->currentImplementation[$feature];
+        }
+
+        return $services;
     }
 
     private function getRecentTogglTimers()
