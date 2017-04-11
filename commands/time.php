@@ -20,8 +20,13 @@ if (substr($query, 0, 6) === 'config') {
     /**
      * For now, only handle Toggl
      */
-    $timerId = getenv('timer_id');
-    $message = $alfredTime->deleteTimer($timerId);
+    $timerData = json_decode(getenv('timer_data'), true);
+    $message = $alfredTime->deleteTimer($timerData['id']);
+} elseif (substr($query, 0, 8) === 'continue') {
+    $timerData = json_decode(getenv('timer_data'), true);
+    $project = ['toggl' => $timerData['pid']];
+    $tag = ['toggl' => $timerData['tags']];
+    $message = $alfredTime->startTimer($timerData['description'], $project, $tag);
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 

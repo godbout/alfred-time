@@ -22,19 +22,25 @@ $timers = $alfredTime->getRecentTimers();
 $projects = $alfredTime->getProjects();
 
 foreach ($timers as $timer) {
-
     $projectName = $alfredTime->getProjectName($timer['pid']);
     $tags = $timer['tags'];
     $startTime = $timer['start'];
     $stopTime = $timer['stop'];
     $duration = $timer['duration'];
 
+    $timerData = [
+        'id' => $timer['id'],
+        'pid' => $timer['pid'],
+        'tags' => $timer['tags'],
+        'description' => $timer['description']
+    ];
+
     $subtitle = (empty($projectName) === true ? 'No project' : $projectName) .', '
         .(empty($tags) === true ? 'No tag' : '[' .implode(', ', $tags) .']') .', '
         .gmdate('H:i:s', $duration);
 
     $workflow->result()
-        ->arg($timer['id'])
+        ->arg(json_encode($timerData))
         ->title($timer['description'])
         ->subtitle($subtitle)
         ->type('default')

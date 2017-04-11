@@ -76,6 +76,14 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle('Press enter to load recent timers list')
             ->type('default')
             ->valid(true);
+    } elseif ($query === 'continue') {
+        $workflow->result()
+            ->uid('')
+            ->arg('continue')
+            ->title('Continue a timer')
+            ->subtitle('Press enter to load the list of recent timers')
+            ->type('default')
+            ->valid(true);
     } elseif ($alfredTime->hasTimerRunning() === false) {
         $services = $alfredTime->implementedServicesForFeature('start');
 
