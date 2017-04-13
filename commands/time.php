@@ -25,8 +25,8 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 8) === 'continue') {
     $timerData = json_decode(getenv('timer_data'), true);
     $project = ['toggl' => $timerData['pid']];
-    $tag = ['toggl' => $timerData['tags']];
-    $message = $alfredTime->startTimer($timerData['description'], $project, $tag);
+    $tags = ['toggl' => implode(', ', (empty($timerData['tags']) === true ? [] : $timerData['tags']))];
+    $message = $alfredTime->startTimer($timerData['description'], $project, $tags);
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 
