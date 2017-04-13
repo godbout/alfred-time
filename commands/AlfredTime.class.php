@@ -36,8 +36,23 @@ class AlfredTime
     {
         $startType = $startDefault === true ? 'start_default' : 'start';
         $atLeastOneServiceStarted = false;
+        $implementedServices = $this->implementedServicesForFeature($startType);
 
-        foreach ($this->implementedServicesForFeature($startType) as $service) {
+        /**
+         * When starting a new timer, all the services timer IDs have to be put to null
+         * so that when the user uses the UNDO feature, it doesn't delete old previous
+         * other services timers. The timer IDs are used for the UNDO feature and
+         * should then contain the IDs of the last starts through the workflow, not
+         * through each individual service
+         */
+        if (empty($implementedServices) === false) {
+            foreach ($this->activatedServices() as $service) {
+                $this->config['workflow']['timer_' . $service . '_id'] = null;
+                $this->saveConfiguration();
+            }
+        }
+
+        foreach ($implementedServices as $service) {
             $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
             $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
