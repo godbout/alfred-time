@@ -34,6 +34,7 @@ class AlfredTime
 
     public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
     {
+        $message = '';
         $startType = $startDefault === true ? 'start_default' : 'start';
         $atLeastOneServiceStarted = false;
         $implementedServices = $this->implementedServicesForFeature($startType);
@@ -92,6 +93,7 @@ class AlfredTime
 
     public function stopRunningTimer()
     {
+        $message = '';
         $atLeastOneServiceStopped = false;
 
         foreach ($this->activatedServices() as $service) {
@@ -488,8 +490,6 @@ class AlfredTime
     {
         $res = false;
 
-        $message = '';
-
         $togglId = $this->config['workflow']['timer_toggl_id'];
 
         $url = 'https://www.toggl.com/api/v8/time_entries/' . $togglId . '/stop';
@@ -637,6 +637,7 @@ class AlfredTime
 
     private function getTogglProjects()
     {
+        $cacheData = [];
         $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
 
         if (file_exists($cacheFile)) {
