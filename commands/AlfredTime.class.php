@@ -605,8 +605,6 @@ class AlfredTime
 
         $domain = $this->config['harvest']['domain'];
 
-        $harvestId = $this->config['workflow']['timer_harvest_id'];
-
         $url = 'https://' . $domain . '.harvestapp.com/daily/show/' . $harvestId;
 
         $base64Token = $this->config['harvest']['api_token'];
