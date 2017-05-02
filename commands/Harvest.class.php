@@ -99,12 +99,14 @@ class Harvest
     {
         $res = false;
 
-        $url = 'https://www.toggl.com/api/v8/time_entries/' . $timerId;
+        $url = 'https://' . $this->domain . '.harvestapp.com/daily/delete/' . $timerId;
+
+        $base64Token = $this->apiToken;
 
         $headers = [
             "Content-type: application/json",
             "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($this->apiToken . ':api_token'),
+            'Authorization: Basic ' . $base64Token,
         ];
 
         $ch = curl_init($url);
@@ -116,68 +118,13 @@ class Harvest
         curl_close($ch);
 
         if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not delete Toggl timer!';
+            $this->message = '- Could not delete Harvest timer!';
         } else {
-            $this->message = '- Toggl timer deleted';
+            $this->message = '- Harvest timer deleted';
             $res = true;
         }
 
         return $res;
-    }
-
-    public function getRecentTimers()
-    {
-        $timers = [];
-
-        $url = 'https://www.toggl.com/api/v8/time_entries';
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($this->apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response !== false && $lastHttpCode === 200) {
-            $timers = json_decode($response, true);
-        }
-
-        return array_reverse($timers);
-    }
-
-    public function getOnlineData()
-    {
-        $data = [];
-
-        $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($this->apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
-            $this->message = '- Cannot get Toggl online data!';
-        } else {
-            $data = json_decode($response, true);
-            $this->message = '- Toggl data cached';
-        }
-
-        return $data;
     }
 
     private function isTimerRunning($timerId)

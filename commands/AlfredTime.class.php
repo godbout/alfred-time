@@ -313,34 +313,8 @@ class AlfredTime
 
     private function deleteHarvestTimer($harvestId)
     {
-        $res = false;
-
-        $domain = $this->config['harvest']['domain'];
-
-        $url = 'https://' . $domain . '.harvestapp.com/daily/delete/' . $harvestId;
-
-        $base64Token = $this->config['harvest']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . $base64Token,
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not delete Harvest timer!';
-        } else {
-            $this->message = '- Harvest timer deleted';
-            $res = true;
-        }
+        $res = $this->harvest->deleteTimer($harvestId);
+        $this->message = $this->harvest->getLastMessage();
 
         return $res;
     }
