@@ -658,6 +658,7 @@ class AlfredTime
     private function getTogglTags()
     {
         $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
+        $cacheData = [];
 
         if (file_exists($cacheFile)) {
             $cacheData = json_decode(file_get_contents($cacheFile), true);
