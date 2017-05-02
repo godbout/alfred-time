@@ -244,7 +244,7 @@ class AlfredTime
         $atLeastOneTimerDeleted = false;
         foreach ($this->implementedServicesForFeature('delete') as $service) {
             $functionName = 'delete' . ucfirst($service) . 'Timer';
-            if (call_user_func_array(['AlfredTime', $functionName], [$this->config['workflow']['timer_' . $service . '_id']]) === true) {
+            if (call_user_func_array(['AlfredTime', $functionName], [$timerId]) === true) {
                 $this->config['workflow']['timer_' . $service . '_id'] = null;
                 $atLeastOneTimerDeleted = true;
             }
