@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
  */
 class Harvest
 {
+    private $client;
     private $message;
-    private $domain;
 
     public function __construct($domain = null, $apiToken = null)
     {
