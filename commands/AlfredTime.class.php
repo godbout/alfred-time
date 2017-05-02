@@ -1,5 +1,8 @@
 <?php
 
+require 'Toggl.class.php';
+require 'Harvest.class.php';
+
 class AlfredTime
 {
     private $config;
@@ -10,11 +13,15 @@ class AlfredTime
         'stop' => ['toggl', 'harvest'],
         'delete' => ['toggl'],
     ];
+    private $toggl;
+    private $harvest;
 
     public function __construct()
     {
         $this->config = $this->loadConfiguration();
         $this->message = '';
+        $this->toggl = new Toggl($this->config['toggl']['api_token']);
+        $this->harvest = new Harvest($this->config['harvest']['domain'], $this->config['harvest']['api_token']);
     }
 
     public function isConfigured()
@@ -288,30 +295,7 @@ class AlfredTime
 
     private function getRecentTogglTimers()
     {
-        $timers = [];
-
-        $url = 'https://www.toggl.com/api/v8/time_entries';
-
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response !== false && $lastHttpCode === 200) {
-            $timers = json_decode($response, true);
-        }
-
-        return array_reverse($timers);
+        return $this->toggl->getRecentTimers();
     }
 
     private function getLastMessage()
@@ -321,32 +305,8 @@ class AlfredTime
 
     private function deleteTogglTimer($togglId)
     {
-        $res = false;
-
-        $url = 'https://www.toggl.com/api/v8/time_entries/' . $togglId;
-
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || $lastHttpCode !== 200) {
-            $this->message = '- Could not delete Toggl timer!';
-        } else {
-            $this->message = '- Toggl timer deleted';
-            $res = true;
-        }
+        $res = $this->toggl->deleteTimer($togglId);
+        $this->message = $this->toggl->getLastMessage();
 
         return $res;
     }
@@ -387,31 +347,14 @@ class AlfredTime
 
     private function syncTogglOnlineDataToLocalCache()
     {
-        $url = 'https://www.toggl.com/api/v8/me?with_related_data=true';
+        $data = $this->toggl->getOnlineData();
+        $this->message = $this->toggl->getLastMessage();
 
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
-            $message = '- Cannot get Toggl online data!';
-        } else {
-            $this->saveTogglDataCache(json_decode($response, true));
-            $message = '- Toggl data cached';
+        if (empty($data) === false) {
+            $this->saveTogglDataCache($data);
         }
 
-        return $message;
+        return $this->message;
     }
 
     private function saveTogglDataCache($data)
@@ -446,189 +389,36 @@ class AlfredTime
 
     private function startTogglTimer($description, $projectId, $tagNames)
     {
-        $togglId = null;
-
-        $url = 'https://www.toggl.com/api/v8/time_entries/start';
-
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-        $item = [
-            'time_entry' => [
-                'description' => $description,
-                'pid' => $projectId,
-                'tags' => explode(', ', $tagNames),
-                'created_with' => 'Alfred Time Workflow',
-            ],
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || ($lastHttpCode < 200 || $lastHttpCode > 299)) {
-            $this->message = '- Cannot start Toggl timer!';
-        } else {
-            $data = json_decode($response, true);
-            $togglId = $data['data']['id'];
-            $this->message = '- Toggl timer started';
-        }
+        $togglId = $this->toggl->startTimer($description, $projectId, $tagNames);
+        $this->message = $this->toggl->getLastMessage();
 
         return $togglId;
     }
 
     private function stopTogglTimer()
     {
-        $res = false;
-
         $togglId = $this->config['workflow']['timer_toggl_id'];
 
-        $url = 'https://www.toggl.com/api/v8/time_entries/' . $togglId . '/stop';
-
-        $apiToken = $this->config['toggl']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . base64_encode($apiToken . ':api_token'),
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-
-        if ($response === false) {
-            $this->message = '- Could not stop Toggl timer!';
-        } else {
-            $this->message = '- Toggl timer stopped';
-            $res = true;
-        }
+        $res = $this->toggl->stopTimer($togglId);
+        $this->message = $this->toggl->getLastMessage();
 
         return $res;
     }
 
     private function startHarvestTimer($description, $projectId, $taskId)
     {
-        $harvestId = null;
-
-        $domain = $this->config['harvest']['domain'];
-        $url = 'https://' . $domain . '.harvestapp.com/daily/add';
-
-        $base64Token = $this->config['harvest']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . $base64Token,
-        ];
-
-        $item = [
-            'notes' => $description,
-            'project_id' => $projectId,
-            'task_id' => $taskId,
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($item, true));
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response === false || $lastHttpCode !== 201) {
-            $this->message = '- Cannot start Harvest timer!';
-        } else {
-            $data = json_decode($response, true);
-            $harvestId = $data['id'];
-            $this->message = '- Harvest timer started';
-        }
+        $harvestId = $this->harvest->startTimer($description, $projectId, $taskId);
+        $this->message = $this->harvest->getLastMessage();
 
         return $harvestId;
     }
 
     private function stopHarvestTimer()
     {
-        $res = false;
-
         $harvestId = $this->config['workflow']['timer_harvest_id'];
 
-        if ($this->isHarvestTimerRunning($harvestId) === true) {
-            $domain = $this->config['harvest']['domain'];
-
-            $url = 'https://' . $domain . '.harvestapp.com/daily/timer/' . $harvestId;
-
-            $base64Token = $this->config['harvest']['api_token'];
-
-            $headers = [
-                "Content-type: application/json",
-                "Accept: application/json",
-                'Authorization: Basic ' . $base64Token,
-            ];
-
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            if ($response === false || $lastHttpCode !== 200) {
-                $this->message = '- Could not stop Harvest timer!';
-            } else {
-                $this->message = '- Harvest timer stopped';
-                $res = true;
-            }
-        } else {
-            $this->message = '- Harvest timer was not running';
-        }
-
-        return $res;
-    }
-
-    private function isHarvestTimerRunning($harvestId)
-    {
-        $res = false;
-
-        $domain = $this->config['harvest']['domain'];
-
-        $url = 'https://' . $domain . '.harvestapp.com/daily/show/' . $harvestId;
-
-        $base64Token = $this->config['harvest']['api_token'];
-
-        $headers = [
-            "Content-type: application/json",
-            "Accept: application/json",
-            'Authorization: Basic ' . $base64Token,
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $lastHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($response !== false && $lastHttpCode === 200) {
-            $data = json_decode($response, true);
-            if (isset($data['timer_started_at']) === true) {
-                $res = true;
-            }
-        }
+        $res = $this->harvest->stopTimer($harvestId);
+        $this->message = $this->harvest->getLastMessage();
 
         return $res;
     }

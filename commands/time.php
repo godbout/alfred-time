@@ -38,7 +38,7 @@ if (substr($query, 0, 6) === 'config') {
     ];
 
     $tag = [
-        'toggl' => getenv('tag_name')
+        'toggl' => getenv('tag_name'),
     ];
 
     $message = $alfredTime->startTimer($description, $project, $tag);
