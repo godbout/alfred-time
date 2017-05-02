@@ -11,7 +11,6 @@ class Toggl
 {
     private $client;
     private $message;
-    private $apiToken;
 
     public function __construct($apiToken = null)
     {
