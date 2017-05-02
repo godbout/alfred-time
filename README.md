@@ -24,39 +24,39 @@ I prefer using Toggl for tracking time, I like their dashboard and reports bette
 
 * First start, generate and edit config file
 
-![config](https://github.com/godbout/alfred-time/blob/master/screenshots/time-set.gif)
+![config](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-set.gif)
 
 * Edit config file when needed
 
-![edit](https://github.com/godbout/alfred-time/blob/master/screenshots/time-edit.gif)
+![edit](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-edit.gif)
 
 * Start timer with default project and tag (with cmd modifier)
 
-![start-default](https://github.com/godbout/alfred-time/blob/master/screenshots/time-start-default.gif)
+![start-default](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-start-default.gif)
 
 * Start timer with choice of project and tag
 
-![start](https://github.com/godbout/alfred-time/blob/master/screenshots/time-start.gif)
+![start](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-start.gif)
 
 * Stop timer
 
-![stop](https://github.com/godbout/alfred-time/blob/master/screenshots/time-stop.gif)
+![stop](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-stop.gif)
 
 * Undo last timer
 
-![undo](https://github.com/godbout/alfred-time/blob/master/screenshots/time-undo.gif)
+![undo](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-undo.gif)
 
 * Delete a recent timer
 
-![delete](https://github.com/godbout/alfred-time/blob/master/screenshots/time-delete.gif)
+![delete](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-delete.gif)
 
 * Continue a recent timer
 
-![continue](https://github.com/godbout/alfred-time/blob/master/screenshots/time-continue.gif)
+![continue](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-continue.gif)
 
 * Sync projects and tags to local cache (automatic on first time, then you can resync manually)
 
-![sync](https://github.com/godbout/alfred-time/blob/master/screenshots/time-sync.gif)
+![sync](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/time-sync.gif)
 
 ## Config file
 
