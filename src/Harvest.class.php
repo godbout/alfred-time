@@ -11,8 +11,10 @@ use GuzzleHttp\Exception\ConnectException;
  */
 class Harvest
 {
-    private $client;
-    private $message;
+    private $client = null;
+    private $code = 0;
+    private $message = '';
+    private $data = [];
 
     public function __construct($domain = null, $apiToken = null)
     {
@@ -24,8 +26,6 @@ class Harvest
                 'Authorization' => 'Basic ' . $apiToken,
             ],
         ]);
-
-        $this->setMessage('Just init');
     }
 
     public function startTimer($description, $projectId, $taskId)
@@ -38,22 +38,13 @@ class Harvest
             'task_id' => $taskId,
         ];
 
-        try {
-            $response = $this->client->post('add', [
-                'json' => $item,
-            ]);
-
-            if ($response->getStatusCode() !== 201) {
-                $this->setMessage('cannot start timer!');
-            } else {
-                $data = json_decode($response->getBody(), true);
-                $harvestId = $data['id'];
+        if ($this->sendApiCall('post', 'add', ['json' => $item]) === true) {
+            if ($this->lastApiCall('success') === true) {
                 $this->setMessage('timer started');
+                $harvestId = $this->data['id'];
+            } else {
+                $this->setMessage('cannot start timer!');
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $harvestId;
@@ -90,19 +81,13 @@ class Harvest
     {
         $res = false;
 
-        try {
-        $response = $this->client->delete('delete/' . $timerId);
-
-        if ($response->getStatusCode() !== 200) {
-            $this->setMessage('could not delete timer!');
-        } else {
-            $this->setMessage('timer deleted');
-            $res = true;
-        }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
+        if ($this->sendApiCall('delete', 'delete/' . $timerId) === true) {
+            if ($this->lastApiCall('success') === true) {
+                $this->setMessage('timer deleted');
+                $res = true;
+            } else {
+                $this->setMessage('could not delete timer!');
+            }
         }
 
         return $res;
@@ -112,19 +97,12 @@ class Harvest
     {
         $res = false;
 
-        try {
-            $response = $this->client->get('show/' . $timerId);
-
-            if ($response->getStatusCode() === 200) {
-                $data = json_decode($response->getBody(), true);
-                if (isset($data['timer_started_at']) === true) {
+        if ($this->sendApiCall('get', 'show/' .$timerId) === true) {
+            if ($this->lastApiCall('success') === true) {
+                if (isset($this->data['timer_started_at']) === true) {
                     $res = true;
                 }
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $res;
@@ -138,5 +116,38 @@ class Harvest
     private function setMessage($message = null)
     {
         $this->message = '- Harvest: ' . $message;
+    }
+
+    private function sendApiCall($method, $uri = '', array $options = [])
+    {
+        $res = true;
+
+        try {
+            $response = $this->client->request(strtoupper($method), $uri, $options);
+            $this->code = $response->getStatusCode();
+            $this->data = json_decode($response->getBody(), true);
+        } catch (ConnectException $e) {
+            $this->setMessage('cannot connect to api!');
+            $res = false;
+        } catch (ClientException $e) {
+            $this->setMessage($e->getResponse()->getBody());
+        }
+
+        return $res;
+    }
+
+    private function lastApiCall($status = '')
+    {
+        $res = false;
+
+        switch ($status) {
+            case 'success':
+                if ($this->code === 200 || $this->code === 201) {
+                    $res = true;
+                }
+                break;
+        }
+
+        return $res;
     }
 }

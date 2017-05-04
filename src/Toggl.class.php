@@ -11,8 +11,10 @@ use GuzzleHttp\Exception\ConnectException;
  */
 class Toggl
 {
-    private $client;
-    private $message;
+    private $client = null;
+    private $code = 0;
+    private $message = '';
+    private $data = [];
 
     public function __construct($apiToken = null)
     {
@@ -24,8 +26,6 @@ class Toggl
                 'Authorization' => 'Basic ' . base64_encode($apiToken . ':api_token'),
             ],
         ]);
-
-        $this->setMessage('Just init');
     }
 
     public function startTimer($description, $projectId, $tagNames)
@@ -41,22 +41,13 @@ class Toggl
             ],
         ];
 
-        try {
-            $response = $this->client->post('time_entries/start', [
-                'json' => $item,
-            ]);
-
-            $code = $response->getStatusCode();
-
-            if ($code < 200 || $code > 299) {
-                $this->setMessage('cannot start timer!');
-            } else {
-                $data = json_decode($response->getBody(), true);
-                $togglId = $data['data']['id'];
+        if ($this->sendApiCall('post', 'time_entries/start', ['json' => $item]) === true) {
+            if ($this->lastApiCall('success') === true) {
                 $this->setMessage('timer started');
+                $togglId = $this->data['data']['id'];
+            } else {
+                $this->setMessage('cannot start timer!');
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
         }
 
         return $togglId;
@@ -66,19 +57,13 @@ class Toggl
     {
         $res = false;
 
-        try {
-            $response = $this->client->put('time_entries/' . $timerId . '/stop');
-
-            if ($response->getStatusCode() !== 200) {
-                $this->setMessage('could not stop timer!');
-            } else {
+        if ($this->sendApiCall('put', 'time_entries/' . $timerId . '/stop') === true) {
+            if ($this->lastApiCall('success') === true) {
                 $this->setMessage('timer stopped');
                 $res = true;
+            } else {
+                $this->setMessage('could not stop timer!');
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $res;
@@ -88,19 +73,13 @@ class Toggl
     {
         $res = false;
 
-        try {
-            $response = $this->client->delete('time_entries/' . $timerId);
-
-            if ($response->getStatusCode() !== 200) {
-                $this->setMessage('could not delete timer!');
-            } else {
+        if ($this->sendApiCall('delete', 'time_entries/' . $timerId) === true) {
+            if ($this->lastApiCall('success') === true) {
                 $this->setMessage('timer deleted');
                 $res = true;
+            } else {
+                $this->setMessage('could not delete timer!');
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $res;
@@ -110,16 +89,10 @@ class Toggl
     {
         $timers = [];
 
-        try {
-            $response = $this->client->get('time_entries');
-
-            if ($response->getStatusCode() === 200) {
-                $timers = json_decode($response->getBody(), true);
+        if ($this->sendApiCall('get', 'time_entries') === true) {
+            if ($this->lastApiCall('success') === true) {
+                $timers = $this->data;
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return array_reverse($timers);
@@ -129,21 +102,13 @@ class Toggl
     {
         $data = [];
 
-        try {
-            $response = $this->client->get('me?with_related_data=true');
-
-            $code = $response->getStatusCode();
-
-            if ($code < 200 || $code > 299) {
-                $this->setMessage('cannot get online data!');
-            } else {
-                $data = json_decode($response->getBody(), true);
+        if ($this->sendApiCall('get', 'me?with_related_data=true') === true) {
+            if ($this->lastApiCall('success') === true) {
                 $this->setMessage('data cached');
+                $data = $this->data;
+            } else {
+                $this->setMessage('cannot get online data!');
             }
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $data;
@@ -157,5 +122,38 @@ class Toggl
     private function setMessage($message = null)
     {
         $this->message = '- Toggl: ' . $message;
+    }
+
+    private function sendApiCall($method, $uri = '', array $options = [])
+    {
+        $res = true;
+
+        try {
+            $response = $this->client->request(strtoupper($method), $uri, $options);
+            $this->code = $response->getStatusCode();
+            $this->data = json_decode($response->getBody(), true);
+        } catch (ConnectException $e) {
+            $this->setMessage('cannot connect to api!');
+            $res = false;
+        } catch (ClientException $e) {
+            $this->setMessage($e->getResponse()->getBody());
+        }
+
+        return $res;
+    }
+
+    private function lastApiCall($status = '')
+    {
+        $res = false;
+
+        switch ($status) {
+            case 'success':
+                if ($this->code >= 200 || $this->code <= 299) {
+                    $res = true;
+                }
+                break;
+        }
+
+        return $res;
     }
 }
