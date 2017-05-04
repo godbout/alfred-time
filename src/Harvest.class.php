@@ -55,20 +55,13 @@ class Harvest
         $res = false;
 
         if ($this->isTimerRunning($timerId) === true) {
-            try {
-                $response = $this->client->get('timer/' . $timerId);
-
-                if ($response->getStatusCode() !== 200) {
-                    $this->setMessage('could not stop timer!');
-                } else {
+            if ($this->sendApiCall('get', 'timer/' . $timerId) === true) {
+                if ($this->lastApiCall('success') === true) {
                     $this->setMessage('timer stopped');
                     $res = true;
+                } else {
+                    $this->setMessage('could not stop timer!');
                 }
-            } catch (ConnectException $e) {
-                $this->setMessage('cannot connect to api!');
-
-            } catch (ClientException $e) {
-                $this->setMessage($e->getRequest()->getBody());
             }
         } else {
             $this->setMessage('timer was not running');
