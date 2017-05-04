@@ -14,7 +14,7 @@ class Harvest
     private $client = null;
     private $code = 0;
     private $message = '';
-    private $data = [];
+    private $data = null;
 
     public function __construct($domain = null, $apiToken = null)
     {
@@ -97,7 +97,7 @@ class Harvest
     {
         $res = false;
 
-        if ($this->sendApiCall('get', 'show/' .$timerId) === true) {
+        if ($this->sendApiCall('get', 'show/' . $timerId) === true) {
             if ($this->lastApiCall('success') === true) {
                 if (isset($this->data['timer_started_at']) === true) {
                     $res = true;

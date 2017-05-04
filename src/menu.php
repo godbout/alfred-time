@@ -52,7 +52,7 @@ if ($alfredTime->isConfigured() === false) {
                 ->valid(false);
         } else {
             $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
-            $subtitle.= implode(' and ', array_map('ucfirst', $servicesToUndo));
+            $subtitle .= implode(' and ', array_map('ucfirst', $servicesToUndo));
 
             $workflow->result()
                 ->uid('')

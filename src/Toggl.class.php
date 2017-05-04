@@ -14,7 +14,7 @@ class Toggl
     private $client = null;
     private $code = 0;
     private $message = '';
-    private $data = [];
+    private $data = null;
 
     public function __construct($apiToken = null)
     {
