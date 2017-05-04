@@ -52,13 +52,7 @@ if ($alfredTime->isConfigured() === false) {
                 ->valid(false);
         } else {
             $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
-            foreach ($servicesToUndo as $service) {
-                if ($service === reset($servicesToUndo)) {
-                    $subtitle .= ucfirst($service);
-                } else {
-                    $subtitle .= ' and ' . ucfirst($service);
-                }
-            }
+            $subtitle.= implode(' and ', array_map('ucfirst', $servicesToUndo));
 
             $workflow->result()
                 ->uid('')
@@ -90,14 +84,7 @@ if ($alfredTime->isConfigured() === false) {
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
         } else {
-            $subtitle = 'Start new timer for ';
-            foreach ($services as $service) {
-                if ($service === reset($services)) {
-                    $subtitle .= ucfirst($service);
-                } else {
-                    $subtitle .= ' and ' . ucfirst($service);
-                }
-            }
+            $subtitle = 'Start new timer for ' . implode(' and ', array_map('ucfirst', $services));
         }
 
         $workflow->result()
@@ -115,14 +102,7 @@ if ($alfredTime->isConfigured() === false) {
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
         } else {
-            $subtitle = 'Stop current timer for ';
-            foreach ($services as $service) {
-                if ($service === reset($services)) {
-                    $subtitle .= ucfirst($service);
-                } else {
-                    $subtitle .= ' and ' . ucfirst($service);
-                }
-            }
+            $subtitle = 'Stop current timer for ' . implode(' and ', array_map('ucfirst', $services));
         }
 
         $workflow->result()
