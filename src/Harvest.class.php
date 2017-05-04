@@ -3,6 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 
 /**
  *
@@ -22,7 +24,8 @@ class Harvest
                 'Authorization' => 'Basic ' . $apiToken,
             ],
         ]);
-        $this->message = '';
+
+        $this->setMessage('Just init');
     }
 
     public function startTimer($description, $projectId, $taskId)
@@ -35,16 +38,22 @@ class Harvest
             'task_id' => $taskId,
         ];
 
-        $response = $this->client->post('add', [
-            'json' => $item,
-        ]);
+        try {
+            $response = $this->client->post('add', [
+                'json' => $item,
+            ]);
 
-        if ($response->getStatusCode() !== 201) {
-            $this->message = '- Cannot start Harvest timer!';
-        } else {
-            $data = json_decode($response->getBody(), true);
-            $harvestId = $data['id'];
-            $this->message = '- Harvest timer started';
+            if ($response->getStatusCode() !== 201) {
+                $this->setMessage('cannot start timer!');
+            } else {
+                $data = json_decode($response->getBody(), true);
+                $harvestId = $data['id'];
+                $this->setMessage('timer started');
+            }
+        } catch (ConnectException $e) {
+            $this->setMessage('cannot connect to api!');
+        } catch (ClientException $e) {
+            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $harvestId;
@@ -55,16 +64,67 @@ class Harvest
         $res = false;
 
         if ($this->isTimerRunning($timerId) === true) {
-            $response = $this->client->get('timer/' . $timerId);
+            try {
+                $response = $this->client->get('timer/' . $timerId);
 
-            if ($response->getStatusCode() !== 200) {
-                $this->message = '- Could not stop Harvest timer!';
-            } else {
-                $this->message = '- Harvest timer stopped';
-                $res = true;
+                if ($response->getStatusCode() !== 200) {
+                    $this->setMessage('could not stop timer!');
+                } else {
+                    $this->setMessage('timer stopped');
+                    $res = true;
+                }
+            } catch (ConnectException $e) {
+                $this->setMessage('cannot connect to api!');
+
+            } catch (ClientException $e) {
+                $this->setMessage($e->getRequest()->getBody());
             }
         } else {
-            $this->message = '- Harvest timer was not running';
+            $this->setMessage('timer was not running');
+        }
+
+        return $res;
+    }
+
+    public function deleteTimer($timerId = null)
+    {
+        $res = false;
+
+        try {
+        $response = $this->client->delete('delete/' . $timerId);
+
+        if ($response->getStatusCode() !== 200) {
+            $this->setMessage('could not delete timer!');
+        } else {
+            $this->setMessage('timer deleted');
+            $res = true;
+        }
+        } catch (ConnectException $e) {
+            $this->setMessage('cannot connect to api!');
+        } catch (ClientException $e) {
+            $this->setMessage($e->getResponse()->getBody());
+        }
+
+        return $res;
+    }
+
+    private function isTimerRunning($timerId)
+    {
+        $res = false;
+
+        try {
+            $response = $this->client->get('show/' . $timerId);
+
+            if ($response->getStatusCode() === 200) {
+                $data = json_decode($response->getBody(), true);
+                if (isset($data['timer_started_at']) === true) {
+                    $res = true;
+                }
+            }
+        } catch (ConnectException $e) {
+            $this->setMessage('cannot connect to api!');
+        } catch (ClientException $e) {
+            $this->setMessage($e->getResponse()->getBody());
         }
 
         return $res;
@@ -75,35 +135,8 @@ class Harvest
         return $this->message;
     }
 
-    public function deleteTimer($timerId = null)
+    private function setMessage($message = null)
     {
-        $res = false;
-
-        $response = $this->client->delete('delete/' . $timerId);
-
-        if ($response->getStatusCode() !== 200) {
-            $this->message = '- Could not delete Harvest timer!';
-        } else {
-            $this->message = '- Harvest timer deleted';
-            $res = true;
-        }
-
-        return $res;
-    }
-
-    private function isTimerRunning($timerId)
-    {
-        $res = false;
-
-        $response = $this->client->get('show/' . $timerId);
-
-        if ($response->getStatusCode() === 200) {
-            $data = json_decode($response->getBody(), true);
-            if (isset($data['timer_started_at']) === true) {
-                $res = true;
-            }
-        }
-
-        return $res;
+        $this->message = '- Harvest: ' . $message;
     }
 }
