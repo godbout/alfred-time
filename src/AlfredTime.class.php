@@ -252,8 +252,10 @@ class AlfredTime
         foreach ($this->implementedServicesForFeature('delete') as $service) {
             $functionName = 'delete' . ucfirst($service) . 'Timer';
             if (call_user_func_array(['AlfredTime', $functionName], [$timerId]) === true) {
-                $this->config['workflow']['timer_' . $service . '_id'] = null;
-                $atLeastOneTimerDeleted = true;
+                if ($timerId === $this->config['workflow']['timer_' . $service . '_id']) {
+                    $this->config['workflow']['timer_' . $service . '_id'] = null;
+                    $atLeastOneTimerDeleted = true;
+                }
             }
 
             $message .= $this->getLastMessage() . "\r\n";
