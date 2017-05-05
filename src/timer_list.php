@@ -30,12 +30,12 @@ foreach ($timers as $timer) {
         'id' => $timer['id'],
         'pid' => $timer['pid'],
         'tags' => $timer['tags'],
-        'description' => $timer['description']
+        'description' => $timer['description'],
     ];
 
-    $subtitle = (empty($projectName) === true ? 'No project' : $projectName) .', '
-        .(empty($tags) === true ? 'No tag' : '[' .implode(', ', $tags) .']') .', '
-        .($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
+    $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '
+        . (empty($tags) === true ? 'No tag' : '[' . implode(', ', $tags) . ']') . ', '
+        . ($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
 
     $workflow->result()
         ->arg(json_encode($timerData))
