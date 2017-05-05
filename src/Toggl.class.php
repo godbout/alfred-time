@@ -1,24 +1,18 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
+require_once 'serviceApiCall.class.php';
 
 /**
  *
  */
 class Toggl
 {
-    private $client = null;
-    private $code = 0;
+    private $serviceApiCall = null;
     private $message = '';
-    private $data = null;
 
     public function __construct($apiToken = null)
     {
-        $this->client = new Client([
+        $this->serviceApiCall = new serviceApiCall([
             'base_uri' => 'https://www.toggl.com/api/v8/',
             'headers' => [
                 'Content-type' => 'application/json',
@@ -41,13 +35,15 @@ class Toggl
             ],
         ];
 
-        if ($this->sendApiCall('post', 'time_entries/start', ['json' => $item]) === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('post', 'time_entries/start', ['json' => $item]) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('timer started');
-                $togglId = $this->data['data']['id'];
+                $togglId = $this->serviceApiCall->getData()['data']['id'];
             } else {
                 $this->setMessage('cannot start timer!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $togglId;
@@ -57,13 +53,15 @@ class Toggl
     {
         $res = false;
 
-        if ($this->sendApiCall('put', 'time_entries/' . $timerId . '/stop') === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('put', 'time_entries/' . $timerId . '/stop') === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('timer stopped');
                 $res = true;
             } else {
                 $this->setMessage('could not stop timer!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $res;
@@ -73,13 +71,15 @@ class Toggl
     {
         $res = false;
 
-        if ($this->sendApiCall('delete', 'time_entries/' . $timerId) === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('delete', 'time_entries/' . $timerId) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('timer deleted');
                 $res = true;
             } else {
                 $this->setMessage('could not delete timer!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $res;
@@ -89,10 +89,12 @@ class Toggl
     {
         $timers = [];
 
-        if ($this->sendApiCall('get', 'time_entries') === true) {
-            if ($this->lastApiCall('success') === true) {
-                $timers = $this->data;
+        if ($this->serviceApiCall->send('get', 'time_entries') === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                $timers = $this->serviceApiCall->getData();
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return array_reverse($timers);
@@ -102,13 +104,15 @@ class Toggl
     {
         $data = [];
 
-        if ($this->sendApiCall('get', 'me?with_related_data=true') === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('get', 'me?with_related_data=true') === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('data cached');
-                $data = $this->data;
+                $data = $this->serviceApiCall->getData();
             } else {
                 $this->setMessage('cannot get online data!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $data;
@@ -122,38 +126,5 @@ class Toggl
     private function setMessage($message = null)
     {
         $this->message = '- Toggl: ' . $message;
-    }
-
-    private function sendApiCall($method, $uri = '', array $options = [])
-    {
-        $res = true;
-
-        try {
-            $response = $this->client->request(strtoupper($method), $uri, $options);
-            $this->code = $response->getStatusCode();
-            $this->data = json_decode($response->getBody(), true);
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-            $res = false;
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
-        }
-
-        return $res;
-    }
-
-    private function lastApiCall($status = '')
-    {
-        $res = false;
-
-        switch ($status) {
-            case 'success':
-                if ($this->code >= 200 || $this->code <= 299) {
-                    $res = true;
-                }
-                break;
-        }
-
-        return $res;
     }
 }

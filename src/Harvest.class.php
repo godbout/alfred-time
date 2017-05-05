@@ -1,24 +1,18 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
+require_once 'serviceApiCall.class.php';
 
 /**
  *
  */
 class Harvest
 {
-    private $client = null;
-    private $code = 0;
+    private $serviceApiCall = null;
     private $message = '';
-    private $data = null;
 
     public function __construct($domain = null, $apiToken = null)
     {
-        $this->client = new Client([
+        $this->serviceApiCall = new serviceApiCall([
             'base_uri' => 'https://' . $domain . '.harvestapp.com/daily/',
             'headers' => [
                 'Content-type' => 'application/json',
@@ -38,13 +32,15 @@ class Harvest
             'task_id' => $taskId,
         ];
 
-        if ($this->sendApiCall('post', 'add', ['json' => $item]) === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('post', 'add', ['json' => $item]) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('timer started');
-                $harvestId = $this->data['id'];
+                $harvestId = $this->serviceApiCall->getData()['id'];
             } else {
                 $this->setMessage('cannot start timer!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $harvestId;
@@ -55,13 +51,15 @@ class Harvest
         $res = false;
 
         if ($this->isTimerRunning($timerId) === true) {
-            if ($this->sendApiCall('get', 'timer/' . $timerId) === true) {
-                if ($this->lastApiCall('success') === true) {
+            if ($this->serviceApiCall->send('get', 'timer/' . $timerId) === true) {
+                if ($this->serviceApiCall->last('success') === true) {
                     $this->setMessage('timer stopped');
                     $res = true;
                 } else {
                     $this->setMessage('could not stop timer!');
                 }
+            } else {
+                $this->setMessage($this->serviceApiCall->getMessage());
             }
         } else {
             $this->setMessage('timer was not running');
@@ -74,13 +72,15 @@ class Harvest
     {
         $res = false;
 
-        if ($this->sendApiCall('delete', 'delete/' . $timerId) === true) {
-            if ($this->lastApiCall('success') === true) {
+        if ($this->serviceApiCall->send('delete', 'delete/' . $timerId) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
                 $this->setMessage('timer deleted');
                 $res = true;
             } else {
                 $this->setMessage('could not delete timer!');
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $res;
@@ -90,12 +90,14 @@ class Harvest
     {
         $res = false;
 
-        if ($this->sendApiCall('get', 'show/' . $timerId) === true) {
-            if ($this->lastApiCall('success') === true) {
-                if (isset($this->data['timer_started_at']) === true) {
+        if ($this->serviceApiCall->send('get', 'show/' . $timerId) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                if (isset($this->serviceApiCall->getData()['timer_started_at']) === true) {
                     $res = true;
                 }
             }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
         }
 
         return $res;
@@ -111,36 +113,4 @@ class Harvest
         $this->message = '- Harvest: ' . $message;
     }
 
-    private function sendApiCall($method, $uri = '', array $options = [])
-    {
-        $res = true;
-
-        try {
-            $response = $this->client->request(strtoupper($method), $uri, $options);
-            $this->code = $response->getStatusCode();
-            $this->data = json_decode($response->getBody(), true);
-        } catch (ConnectException $e) {
-            $this->setMessage('cannot connect to api!');
-            $res = false;
-        } catch (ClientException $e) {
-            $this->setMessage($e->getResponse()->getBody());
-        }
-
-        return $res;
-    }
-
-    private function lastApiCall($status = '')
-    {
-        $res = false;
-
-        switch ($status) {
-            case 'success':
-                if ($this->code === 200 || $this->code === 201) {
-                    $res = true;
-                }
-                break;
-        }
-
-        return $res;
-    }
 }
