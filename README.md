@@ -80,7 +80,7 @@ The config file contains 3 sections:
 * Allow choice of project and task for Harvest
 * See reports directly in Alfred
 * See info about current running timer (project, tags/tasks, running time, etc...)
-* Unit Tests
+* Add better tests suite
 
 # Contribute
 
