@@ -5,32 +5,25 @@ filter:
 
 build:
     nodes:
-        php55:
+        php: &default
             environment:
                 php: 5.5
-        tests:
-            override:
-                -
-                    command: 'vendor/bin/phpspec run'
+            tests:
+                override:
+                    -
+                        command: 'vendor/bin/phpspec run'
+
         php56:
+            <<: *default
             environment:
                 php: 5.6
-        tests:
-            override:
-                -
-                    command: 'vendor/bin/phpspec run'
+
         php70:
+            <<: *default
             environment:
                 php: 7.0
-        tests:
-            override:
-                -
-                    command: 'vendor/bin/phpspec run'
+
         php71:
+            <<: *default
             environment:
                 php: 7.1
-        tests:
-            override:
-                -
-                    command: 'vendor/bin/phpspec run'
-
