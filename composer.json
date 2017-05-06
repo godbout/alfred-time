@@ -2,5 +2,13 @@
     "require": {
         "joetannenbaum/alfred-workflow": "^0.1.0",
         "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
     }
 }
