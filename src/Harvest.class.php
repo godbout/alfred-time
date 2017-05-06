@@ -1,6 +1,6 @@
 <?php
 
-require_once 'serviceApiCall.class.php';
+require_once 'ServiceApiCall.class.php';
 
 /**
  *
