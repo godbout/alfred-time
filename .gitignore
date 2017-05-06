@@ -1,1 +1,7 @@
 .DS_Store
+
+vendor/*
+!vendor/composer
+!vendor/guzzlehttp
+!vendor/joetannenbaum
+!vendor/psr
