@@ -7,6 +7,7 @@ build:
     environment:
         php:
             version: 7.1
+        php:
             version: 5.6
     tests:
         override:
