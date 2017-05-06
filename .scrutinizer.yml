@@ -1,29 +1,29 @@
 filter:
-    excluded_paths:
-        - "tests/"               # Everything in a root level "tests" directory
-        - "vendor/"                # Without trailing "/", just ignores a single file name "tests"
+  excluded_paths:
+    - "tests/"               # Everything in a root level "tests" directory
+    - "vendor/"                # Without trailing "/", just ignores a single file name "tests"
 
 build:
-    nodes:
-        php: &default
-            environment:
-                php: 5.5
-            tests:
-                override:
-                    -
-                        command: 'vendor/bin/phpspec run'
+  nodes:
+    php: &default
+      environment:
+        php: 5.5
+      tests:
+        override:
+          -
+            command: 'vendor/bin/phpspec run'
 
-        php56:
-            <<: *default
-            environment:
-                php: 5.6
+    php56:
+      <<: *default
+      environment:
+        php: 5.6
 
-        php70:
-            <<: *default
-            environment:
-                php: 7.0
+    php70:
+      <<: *default
+      environment:
+        php: 7.0
 
-        php71:
-            <<: *default
-            environment:
-                php: 7.1
+    php71:
+      <<: *default
+      environment:
+        php: 7.1
