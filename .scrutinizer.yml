@@ -5,11 +5,9 @@ filter:
 
 build:
     environment:
-        php: 5.5
-        php: 5.6
-        php: 7.0
-        php: 7.1 
-
+        php:
+            version: 7.1
+            version: 5.6
     tests:
         override:
             -
