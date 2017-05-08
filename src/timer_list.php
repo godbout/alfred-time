@@ -12,10 +12,10 @@ $query = trim($argv[1]);
 
 if (getenv('description') === 'delete') {
     $workflow->result()
-             ->title('Choose a timer to delete below')
-             ->subtitle('_____________________ BE CAREFUL, NO RECOVERY POSSIBLE _____________________')
-             ->type('default')
-             ->valid(false);
+        ->title('Choose a timer to delete below')
+        ->subtitle('_____________________ BE CAREFUL, NO RECOVERY POSSIBLE _____________________')
+        ->type('default')
+        ->valid(false);
 }
 
 $timers = $alfredTime->getRecentTimers();
@@ -38,12 +38,12 @@ foreach ($timers as $timer) {
         . ($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
 
     $workflow->result()
-             ->arg(json_encode($timerData))
-             ->title($timer['description'])
-             ->subtitle($subtitle)
-             ->type('default')
-             ->icon('icons/toggl.png')
-             ->valid(true);
+        ->arg(json_encode($timerData))
+        ->title($timer['description'])
+        ->subtitle($subtitle)
+        ->type('default')
+        ->icon('icons/toggl.png')
+        ->valid(true);
 }
 
 $workflow->filterResults($query);

@@ -63,7 +63,7 @@ class AlfredTime
 
     /**
      * @param  $timerId
-     * @return mixed
+     * @return string
      */
     public function deleteTimer($timerId)
     {
