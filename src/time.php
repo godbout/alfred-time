@@ -15,7 +15,7 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 5) === 'edit') {
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'undo') {
-    $message = $alfredTime->UndoTimer();
+    $message = $alfredTime->undoTimer();
 } elseif (substr($query, 0, 6) === 'delete') {
     /**
      * For now, only handle Toggl

@@ -207,7 +207,7 @@ class AlfredTime
         return $tags;
     }
 
-    public function UndoTimer()
+    public function undoTimer()
     {
         $message = '';
 
