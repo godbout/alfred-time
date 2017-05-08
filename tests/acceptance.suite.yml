@@ -8,5 +8,5 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://ums.docker:8081/
+            url:
         - \Helper\Acceptance
