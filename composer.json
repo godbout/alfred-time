@@ -1,10 +1,16 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/godbout/alfred-workflow"
+        }
+    ],
     "require": {
-        "joetannenbaum/alfred-workflow": "^0.1.0",
+        "joetannenbaum/alfred-workflow": "dev-master",
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
-        "phpspec/phpspec": "^3.3"
+        "codeception/codeception": "^2.2"
     },
     "autoload": {
         "psr-4": {
