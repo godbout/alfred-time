@@ -570,6 +570,7 @@ class AlfredTime
     private function syncTogglOnlineDataToLocalCache()
     {
         $data = $this->toggl->getOnlineData();
+
         $this->message = $this->toggl->getLastMessage();
 
         if (empty($data) === false) {

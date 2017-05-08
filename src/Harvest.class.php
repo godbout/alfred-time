@@ -112,5 +112,4 @@ class Harvest
     {
         $this->message = '- Harvest: ' . $message;
     }
-
 }
