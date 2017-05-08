@@ -19,7 +19,7 @@ class Harvest
 
     /**
      * @param $domain
-     * @param null $apiToken
+     * @param null      $apiToken
      */
     public function __construct($domain = null, $apiToken = null)
     {
@@ -34,7 +34,7 @@ class Harvest
     }
 
     /**
-     * @param $timerId
+     * @param  $timerId
      * @return mixed
      */
     public function deleteTimer($timerId = null)
@@ -64,9 +64,9 @@ class Harvest
     }
 
     /**
-     * @param $description
-     * @param $projectId
-     * @param $taskId
+     * @param  $description
+     * @param  $projectId
+     * @param  $taskId
      * @return mixed
      */
     public function startTimer($description, $projectId, $taskId)
@@ -94,7 +94,7 @@ class Harvest
     }
 
     /**
-     * @param $timerId
+     * @param  $timerId
      * @return mixed
      */
     public function stopTimer($timerId = null)
@@ -120,7 +120,7 @@ class Harvest
     }
 
     /**
-     * @param $timerId
+     * @param  $timerId
      * @return mixed
      */
     private function isTimerRunning($timerId)

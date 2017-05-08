@@ -240,7 +240,7 @@ class AlfredTime
      * @param  $description
      * @param  $projectsDefault
      * @param  null               $tagsDefault
-     * @param  null               $startDefault
+     * @param  boolean            $startDefault
      * @return mixed
      */
     public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
@@ -255,7 +255,7 @@ class AlfredTime
  * so that when the user uses the UNDO feature, it doesn't delete old previous
  * other services timers. The timer IDs are used for the UNDO feature and
  * should then contain the IDs of the last starts through the workflow, not
- * through each individual service
+ * through each individual sefrvice
  */
         if (empty($implementedServices) === false) {
             foreach ($this->activatedServices() as $service) {
