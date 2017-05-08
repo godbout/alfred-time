@@ -11,16 +11,84 @@ use GuzzleHttp\Exception\ConnectException;
  */
 class ServiceApiCall
 {
+    /**
+     * @var mixed
+     */
     private $client = null;
+
+    /**
+     * @var string
+     */
     private $code = '';
-    private $message = '';
+
+    /**
+     * @var mixed
+     */
     private $data = null;
 
+    /**
+     * @var string
+     */
+    private $message = '';
+
+    /**
+     * @param array $config
+     */
     public function __construct(array $config = [])
     {
         $this->client = new Client($config);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param $status
+     * @return mixed
+     */
+    public function last($status = '')
+    {
+        $res = false;
+
+        switch ($status) {
+            case 'success':
+                if ($this->code >= 200 || $this->code <= 299) {
+                    $res = true;
+                }
+
+                break;
+        }
+
+        return $res;
+    }
+
+    /**
+     * @param $method
+     * @param $uri
+     * @param array $options
+     * @return mixed
+     */
     public function send($method, $uri = '', array $options = [])
     {
         $res = true;
@@ -38,35 +106,4 @@ class ServiceApiCall
 
         return $res;
     }
-
-    public function last($status = '')
-    {
-        $res = false;
-
-        switch ($status) {
-            case 'success':
-                if ($this->code >= 200 || $this->code <= 299) {
-                    $res = true;
-                }
-                break;
-        }
-
-        return $res;
-    }
-
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
 }
