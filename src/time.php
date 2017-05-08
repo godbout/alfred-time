@@ -2,7 +2,7 @@
 
 require 'AlfredTime.class.php';
 
-$alfredTime = new AlfredTime;
+$alfredTime = new AlfredTime();
 
 $query = getenv('description');
 $message = '';
@@ -17,7 +17,7 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 4) === 'undo') {
     $message = $alfredTime->undoTimer();
 } elseif (substr($query, 0, 6) === 'delete') {
-    /**
+    /*
      * For now, only handle Toggl
      */
     $timerData = json_decode(getenv('timer_data'), true);
@@ -30,7 +30,7 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 
-    /**
+    /*
      * For now, only handle Toggl projects and tags
      */
     $project = [

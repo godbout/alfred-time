@@ -7,66 +7,35 @@ require_once 'ServiceApiCall.class.php';
  */
 class Toggl
 {
-    private $serviceApiCall = null;
+    /**
+     * @var string
+     */
     private $message = '';
 
+    /**
+     * @var mixed
+     */
+    private $serviceApiCall = null;
+
+    /**
+     * @param $apiToken
+     */
     public function __construct($apiToken = null)
     {
         $this->serviceApiCall = new serviceApiCall([
             'base_uri' => 'https://www.toggl.com/api/v8/',
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Accept' => 'application/json',
+            'headers'  => [
+                'Content-type'  => 'application/json',
+                'Accept'        => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode($apiToken . ':api_token'),
             ],
         ]);
     }
 
-    public function startTimer($description, $projectId, $tagNames)
-    {
-        $togglId = null;
-
-        $item = [
-            'time_entry' => [
-                'description' => $description,
-                'pid' => $projectId,
-                'tags' => explode(', ', $tagNames),
-                'created_with' => 'Alfred Time Workflow',
-            ],
-        ];
-
-        if ($this->serviceApiCall->send('post', 'time_entries/start', ['json' => $item]) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer started');
-                $togglId = $this->serviceApiCall->getData()['data']['id'];
-            } else {
-                $this->setMessage('cannot start timer!');
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
-
-        return $togglId;
-    }
-
-    public function stopTimer($timerId = null)
-    {
-        $res = false;
-
-        if ($this->serviceApiCall->send('put', 'time_entries/' . $timerId . '/stop') === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer stopped');
-                $res = true;
-            } else {
-                $this->setMessage('could not stop timer!');
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
-
-        return $res;
-    }
-
+    /**
+     * @param  $timerId
+     * @return mixed
+     */
     public function deleteTimer($timerId = null)
     {
         $res = false;
@@ -85,21 +54,17 @@ class Toggl
         return $res;
     }
 
-    public function getRecentTimers()
+    /**
+     * @return mixed
+     */
+    public function getLastMessage()
     {
-        $timers = [];
-
-        if ($this->serviceApiCall->send('get', 'time_entries') === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $timers = $this->serviceApiCall->getData();
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
-
-        return array_reverse($timers);
+        return $this->message;
     }
 
+    /**
+     * @return mixed
+     */
     public function getOnlineData()
     {
         $data = [];
@@ -118,11 +83,79 @@ class Toggl
         return $data;
     }
 
-    public function getLastMessage()
+    public function getRecentTimers()
     {
-        return $this->message;
+        $timers = [];
+
+        if ($this->serviceApiCall->send('get', 'time_entries') === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                $timers = $this->serviceApiCall->getData();
+            }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
+        }
+
+        return array_reverse($timers);
     }
 
+    /**
+     * @param  $description
+     * @param  $projectId
+     * @param  $tagNames
+     * @return mixed
+     */
+    public function startTimer($description, $projectId, $tagNames)
+    {
+        $togglId = null;
+
+        $item = [
+            'time_entry' => [
+                'description'  => $description,
+                'pid'          => $projectId,
+                'tags'         => explode(', ', $tagNames),
+                'created_with' => 'Alfred Time Workflow',
+            ],
+        ];
+
+        if ($this->serviceApiCall->send('post', 'time_entries/start', ['json' => $item]) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                $this->setMessage('timer started');
+                $togglId = $this->serviceApiCall->getData()['data']['id'];
+            } else {
+                $this->setMessage('cannot start timer!');
+            }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
+        }
+
+        return $togglId;
+    }
+
+    /**
+     * @param  $timerId
+     * @return mixed
+     */
+    public function stopTimer($timerId = null)
+    {
+        $res = false;
+
+        if ($this->serviceApiCall->send('put', 'time_entries/' . $timerId . '/stop') === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                $this->setMessage('timer stopped');
+                $res = true;
+            } else {
+                $this->setMessage('could not stop timer!');
+            }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
+        }
+
+        return $res;
+    }
+
+    /**
+     * @param $message
+     */
     private function setMessage($message = null)
     {
         $this->message = '- Toggl: ' . $message;

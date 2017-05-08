@@ -7,29 +7,76 @@ require_once 'ServiceApiCall.class.php';
  */
 class Harvest
 {
-    private $serviceApiCall = null;
+    /**
+     * @var string
+     */
     private $message = '';
 
+    /**
+     * @var mixed
+     */
+    private $serviceApiCall = null;
+
+    /**
+     * @param $domain
+     * @param null $apiToken
+     */
     public function __construct($domain = null, $apiToken = null)
     {
         $this->serviceApiCall = new serviceApiCall([
             'base_uri' => 'https://' . $domain . '.harvestapp.com/daily/',
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Accept' => 'application/json',
+            'headers'  => [
+                'Content-type'  => 'application/json',
+                'Accept'        => 'application/json',
                 'Authorization' => 'Basic ' . $apiToken,
             ],
         ]);
     }
 
+    /**
+     * @param $timerId
+     * @return mixed
+     */
+    public function deleteTimer($timerId = null)
+    {
+        $res = false;
+
+        if ($this->serviceApiCall->send('delete', 'delete/' . $timerId) === true) {
+            if ($this->serviceApiCall->last('success') === true) {
+                $this->setMessage('timer deleted');
+                $res = true;
+            } else {
+                $this->setMessage('could not delete timer!');
+            }
+        } else {
+            $this->setMessage($this->serviceApiCall->getMessage());
+        }
+
+        return $res;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param $description
+     * @param $projectId
+     * @param $taskId
+     * @return mixed
+     */
     public function startTimer($description, $projectId, $taskId)
     {
         $harvestId = null;
 
         $item = [
-            'notes' => $description,
+            'notes'      => $description,
             'project_id' => $projectId,
-            'task_id' => $taskId,
+            'task_id'    => $taskId,
         ];
 
         if ($this->serviceApiCall->send('post', 'add', ['json' => $item]) === true) {
@@ -46,6 +93,10 @@ class Harvest
         return $harvestId;
     }
 
+    /**
+     * @param $timerId
+     * @return mixed
+     */
     public function stopTimer($timerId = null)
     {
         $res = false;
@@ -68,24 +119,10 @@ class Harvest
         return $res;
     }
 
-    public function deleteTimer($timerId = null)
-    {
-        $res = false;
-
-        if ($this->serviceApiCall->send('delete', 'delete/' . $timerId) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer deleted');
-                $res = true;
-            } else {
-                $this->setMessage('could not delete timer!');
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
-
-        return $res;
-    }
-
+    /**
+     * @param $timerId
+     * @return mixed
+     */
     private function isTimerRunning($timerId)
     {
         $res = false;
@@ -103,11 +140,9 @@ class Harvest
         return $res;
     }
 
-    public function getLastMessage()
-    {
-        return $this->message;
-    }
-
+    /**
+     * @param $message
+     */
     private function setMessage($message = null)
     {
         $this->message = '- Harvest: ' . $message;

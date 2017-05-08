@@ -64,7 +64,7 @@ class ServiceApiCall
     }
 
     /**
-     * @param $status
+     * @param  $status
      * @return mixed
      */
     public function last($status = '')
@@ -73,6 +73,7 @@ class ServiceApiCall
 
         switch ($status) {
             case 'success':
+
                 if ($this->code >= 200 || $this->code <= 299) {
                     $res = true;
                 }
@@ -84,9 +85,9 @@ class ServiceApiCall
     }
 
     /**
-     * @param $method
-     * @param $uri
-     * @param array $options
+     * @param  $method
+     * @param  $uri
+     * @param  array     $options
      * @return mixed
      */
     public function send($method, $uri = '', array $options = [])

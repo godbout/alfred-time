@@ -62,7 +62,7 @@ class AlfredTime
     }
 
     /**
-     * @param $timerId
+     * @param  $timerId
      * @return mixed
      */
     public function deleteTimer($timerId)
@@ -120,7 +120,7 @@ class AlfredTime
     }
 
     /**
-     * @param $projectId
+     * @param  $projectId
      * @return mixed
      */
     public function getProjectName($projectId)
@@ -198,7 +198,7 @@ class AlfredTime
     }
 
     /**
-     * @param $feature
+     * @param  $feature
      * @return mixed
      */
     public function implementedServicesForFeature($feature = null)
@@ -237,10 +237,10 @@ class AlfredTime
     }
 
     /**
-     * @param $description
-     * @param $projectsDefault
-     * @param null $tagsDefault
-     * @param null $startDefault
+     * @param  $description
+     * @param  $projectsDefault
+     * @param  null               $tagsDefault
+     * @param  null               $startDefault
      * @return mixed
      */
     public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
@@ -250,13 +250,13 @@ class AlfredTime
         $atLeastOneServiceStarted = false;
         $implementedServices = $this->implementedServicesForFeature($startType);
 
-        /*
-         * When starting a new timer, all the services timer IDs have to be put to null
-         * so that when the user uses the UNDO feature, it doesn't delete old previous
-         * other services timers. The timer IDs are used for the UNDO feature and
-         * should then contain the IDs of the last starts through the workflow, not
-         * through each individual service
-         */
+/*
+ * When starting a new timer, all the services timer IDs have to be put to null
+ * so that when the user uses the UNDO feature, it doesn't delete old previous
+ * other services timers. The timer IDs are used for the UNDO feature and
+ * should then contain the IDs of the last starts through the workflow, not
+ * through each individual service
+ */
         if (empty($implementedServices) === false) {
             foreach ($this->activatedServices() as $service) {
                 $this->config['workflow']['timer_' . $service . '_id'] = null;
@@ -289,7 +289,7 @@ class AlfredTime
     }
 
     /**
-     * @param $description
+     * @param  $description
      * @return mixed
      */
     public function startTimerWithDefaultOptions($description)
@@ -379,7 +379,7 @@ class AlfredTime
     }
 
     /**
-     * @param $harvestId
+     * @param  $harvestId
      * @return mixed
      */
     private function deleteHarvestTimer($harvestId)
@@ -391,7 +391,7 @@ class AlfredTime
     }
 
     /**
-     * @param $togglId
+     * @param  $togglId
      * @return mixed
      */
     private function deleteTogglTimer($togglId)
@@ -430,10 +430,10 @@ class AlfredTime
             $cacheData = json_decode(file_get_contents($cacheFile), true);
         }
 
-        /*
-         * To only show projects that are currently active
-         * The Toggl API is slightly weird on that
-         */
+/*
+ * To only show projects that are currently active
+ * The Toggl API is slightly weird on that
+ */
         foreach ($cacheData['data']['projects'] as $key => $project) {
             if (isset($project['server_deleted_at']) === true) {
                 unset($cacheData['data']['projects'][$key]);
@@ -511,9 +511,9 @@ class AlfredTime
     }
 
     /**
-     * @param $description
-     * @param $projectId
-     * @param $taskId
+     * @param  $description
+     * @param  $projectId
+     * @param  $taskId
      * @return mixed
      */
     private function startHarvestTimer($description, $projectId, $taskId)
@@ -525,9 +525,9 @@ class AlfredTime
     }
 
     /**
-     * @param $description
-     * @param $projectId
-     * @param $tagNames
+     * @param  $description
+     * @param  $projectId
+     * @param  $tagNames
      * @return mixed
      */
     private function startTogglTimer($description, $projectId, $tagNames)
