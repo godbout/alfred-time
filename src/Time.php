@@ -178,7 +178,7 @@ class Time
     }
 
     /**
-     * @param $service
+     * @param string $service
      */
     public function getServiceProjects($service)
     {
@@ -422,6 +422,7 @@ class Time
     }
 
     /**
+     * @param string $service
      * @return mixed
      */
     private function getRecentServiceTimers($service)
@@ -430,6 +431,7 @@ class Time
     }
 
     /**
+     * @param string $service
      * @return mixed
      */
     private function getServiceTags($service)
@@ -457,7 +459,7 @@ class Time
 
     /**
      * @param string $service
-     * @return mixed
+     * @return string
      */
     private function syncServiceOnlineDataToLocalCache($service)
     {
