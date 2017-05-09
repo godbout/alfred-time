@@ -76,16 +76,14 @@ class Time
         $atLeastOneTimerDeleted = false;
 
         foreach ($this->implementedServicesForFeature('delete') as $service) {
-            $functionName = 'delete' . ucfirst($service) . 'Timer';
-
-            if (call_user_func_array(['AlfredTime', $functionName], [$timerId]) === true) {
+            if ($this->$service->deleteTimer($timerId) === true) {
                 if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
                     $this->config->update('workflow', 'timer_' . $service . '_id', null);
                     $atLeastOneTimerDeleted = true;
                 }
             }
 
-            $message .= $this->getLastMessage() . "\r\n";
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneTimerDeleted === true) {
@@ -248,15 +246,14 @@ class Time
             $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
             $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
-            $functionName = 'start' . ucfirst($service) . 'Timer';
-            $timerId = call_user_func_array(['AlfredTime', $functionName], [$description, $defaultProjectId, $defaultTags]);
+            $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
             $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
 
             if ($timerId !== null) {
                 $atLeastOneServiceStarted = true;
             }
 
-            $message .= $this->getLastMessage() . "\r\n";
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneServiceStarted === true) {
@@ -295,13 +292,13 @@ class Time
         $atLeastOneServiceStopped = false;
 
         foreach ($this->activatedServices() as $service) {
-            $functionName = 'stop' . ucfirst($service) . 'Timer';
+            $timerId = $this->config->get('workflow', 'timer_' . $service . '_id');
 
-            if (call_user_func(['AlfredTime', $functionName]) === true) {
+            if ($this->$service->stopTimer($timerId) === true) {
                 $atLeastOneServiceStopped = true;
             }
 
-            $message .= $this->getLastMessage() . "\r\n";
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneServiceStopped === true) {
@@ -339,14 +336,12 @@ class Time
         $atLeastOneTimerDeleted = false;
 
         foreach ($this->servicesToUndo() as $service) {
-            $functionName = 'delete' . ucfirst($service) . 'Timer';
-
-            if (call_user_func_array(['AlfredTime', $functionName], [$this->config->get('workflow', 'timer_' . $service . '_id')]) === true) {
+            if ($this->$service->deleteTimer($this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
                 $this->config->update('workflow', 'timer_' . $service . '_id', null);
                 $atLeastOneTimerDeleted = true;
             }
 
-            $message .= $this->getLastMessage() . "\r\n";
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneTimerDeleted === true) {
@@ -354,30 +349,6 @@ class Time
         }
 
         return $message;
-    }
-
-    /**
-     * @param  $harvestId
-     * @return mixed
-     */
-    private function deleteHarvestTimer($harvestId)
-    {
-        $res = $this->harvest->deleteTimer($harvestId);
-        $this->message = $this->harvest->getLastMessage();
-
-        return $res;
-    }
-
-    /**
-     * @param  $togglId
-     * @return mixed
-     */
-    private function deleteTogglTimer($togglId)
-    {
-        $res = $this->toggl->deleteTimer($togglId);
-        $this->message = $this->toggl->getLastMessage();
-
-        return $res;
     }
 
     /**
@@ -459,60 +430,6 @@ class Time
     {
         $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
         file_put_contents($cacheFile, json_encode($data));
-    }
-
-    /**
-     * @param  $description
-     * @param  $projectId
-     * @param  $taskId
-     * @return mixed
-     */
-    private function startHarvestTimer($description, $projectId, $taskId)
-    {
-        $harvestId = $this->harvest->startTimer($description, $projectId, $taskId);
-        $this->message = $this->harvest->getLastMessage();
-
-        return $harvestId;
-    }
-
-    /**
-     * @param  $description
-     * @param  $projectId
-     * @param  $tagNames
-     * @return mixed
-     */
-    private function startTogglTimer($description, $projectId, $tagNames)
-    {
-        $togglId = $this->toggl->startTimer($description, $projectId, $tagNames);
-        $this->message = $this->toggl->getLastMessage();
-
-        return $togglId;
-    }
-
-    /**
-     * @return mixed
-     */
-    private function stopHarvestTimer()
-    {
-        $harvestId = $this->config->get('workflow', 'timer_harvest_id');
-
-        $res = $this->harvest->stopTimer($harvestId);
-        $this->message = $this->harvest->getLastMessage();
-
-        return $res;
-    }
-
-    /**
-     * @return mixed
-     */
-    private function stopTogglTimer()
-    {
-        $togglId = $this->config->get('workflow', 'timer_toggl_id');
-
-        $res = $this->toggl->stopTimer($togglId);
-        $this->message = $this->toggl->getLastMessage();
-
-        return $res;
     }
 
     /**
