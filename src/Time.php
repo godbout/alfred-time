@@ -131,7 +131,7 @@ class Time
     {
         $projects = [];
 
-        if ($this->isTogglActive() === true) {
+        if ($this->isServiceActive('toggl') === true) {
             $projects = array_merge($projects, $this->getTogglProjects());
         }
 
@@ -145,7 +145,7 @@ class Time
     {
         $timers = [];
 
-        if ($this->isTogglActive() === true) {
+        if ($this->isServiceActive('toggl') === true) {
             $timers = array_merge($timers, $this->getRecentTogglTimers());
         }
 
@@ -159,7 +159,7 @@ class Time
     {
         $tags = [];
 
-        if ($this->isTogglActive() === true) {
+        if ($this->isServiceActive('toggl') === true) {
             $tags = array_merge($tags, $this->getTogglTags());
         }
 
@@ -330,7 +330,7 @@ class Time
     {
         $message = '';
 
-        if ($this->isTogglActive() === true) {
+        if ($this->isServiceActive('toggl') === true) {
             $message .= $this->syncTogglOnlineDataToLocalCache();
         }
 
