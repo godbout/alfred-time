@@ -178,25 +178,40 @@ class Time
     }
 
     /**
+     * @param  $service
+     * @return mixed
+     */
+    public function getServiceDataCache($service)
+    {
+        $data = [];
+        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+
+        if (file_exists($cacheFile)) {
+            $data = json_decode(file_get_contents($cacheFile), true);
+        }
+
+        return $data;
+    }
+
+    /**
      * @param $service
      */
     public function getServiceProjects($service)
     {
-        $projects = [];
-        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+        $projects = $this->getServiceDataCache($service);
 
-        if (file_exists($cacheFile)) {
-            $projects = json_decode(file_get_contents($cacheFile), true)['data']['projects'];
-
+        if (isset($projects['data']['projects']) === true) {
 /*
  * To only show projects that are currently active
  * The Toggl API is slightly weird on that
  */
-            foreach ($projects as $key => $project) {
+            foreach ($projects['data']['projects'] as $key => $project) {
                 if (isset($project['server_deleted_at']) === true) {
-                    unset($projects[$key]);
+                    unset($projects['data']['projects'][$key]);
                 }
             }
+
+            $projects = $projects['data']['projects'];
         }
 
         return $projects;
@@ -436,10 +451,10 @@ class Time
     {
         $tags = [];
 
-        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+        $tags = $this->getServiceDataCache($service);
 
-        if (file_exists($cacheFile)) {
-            $tags = json_decode(file_get_contents($cacheFile), true)['data']['tags'];
+        if (isset($tags['data']['tags']) === true) {
+            $tags = $tags['data']['tags'];
         }
 
         return $tags;
