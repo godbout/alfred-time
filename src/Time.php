@@ -74,7 +74,7 @@ class Time
     /**
      * @param  $service
      * @param  $timerId
-     * @return mixed
+     * @return boolean
      */
     public function deleteServiceTimer($service, $timerId)
     {
@@ -190,7 +190,7 @@ class Time
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function hasTimerRunning()
     {
@@ -198,7 +198,7 @@ class Time
     }
 
     /**
-     * @param  $feature
+     * @param  string $feature
      * @return mixed
      */
     public function implementedServicesForFeature($feature = null)
@@ -213,7 +213,7 @@ class Time
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function isConfigured()
     {
@@ -250,7 +250,7 @@ class Time
      * @param  $projectsDefault
      * @param  null               $tagsDefault
      * @param  boolean            $startDefault
-     * @return mixed
+     * @return string
      */
     public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
     {
@@ -296,7 +296,7 @@ class Time
 
     /**
      * @param  $description
-     * @return mixed
+     * @return string
      */
     public function startTimerWithDefaultOptions($description)
     {
@@ -314,7 +314,7 @@ class Time
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function stopRunningTimer()
     {
@@ -339,7 +339,7 @@ class Time
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function syncOnlineDataToLocalCache()
     {
@@ -353,7 +353,7 @@ class Time
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function undoTimer()
     {
