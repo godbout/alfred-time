@@ -2,7 +2,3 @@ filter:
   excluded_paths:
     - "tests/"               # Everything in a root level "tests" directory
     - "vendor/"                # Without trailing "/", just ignores a single file name "tests"
-
-tools:
-  php_cs_fixer:
-    config: { level: psr2 }
