@@ -17,7 +17,6 @@ class Config
      */
     public function __construct($filename = null)
     {
-
         if ($filename !== null) {
             $this->load($filename);
         }
@@ -58,7 +57,6 @@ class Config
      */
     public function get($section = null, $param = null)
     {
-
         if ($section === null) {
             $res = $this->config;
         } elseif ($param === null) {
@@ -86,7 +84,6 @@ class Config
      */
     private function load($filename)
     {
-
         if (file_exists($filename)) {
             $this->config = json_decode(file_get_contents($filename), true);
         }
