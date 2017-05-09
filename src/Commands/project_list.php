@@ -1,16 +1,16 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once 'AlfredTime.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
+use AlfredTime\Time;
 use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
-$alfredTime = new AlfredTime();
+$time = new Time();
 
 $query = trim($argv[1]);
 
-$projects = $alfredTime->getProjects();
+$projects = $time->getProjects();
 
 $workflow->result()
     ->arg('')

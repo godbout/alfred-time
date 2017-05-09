@@ -1,12 +1,12 @@
 <?php
 
-require_once 'vendor/autoload.php';
-require_once 'AlfredTime.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
+use AlfredTime\Time;
 use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
-$alfredTime = new AlfredTime();
+$time = new Time();
 
 $query = trim($argv[1]);
 
@@ -18,11 +18,11 @@ if (getenv('description') === 'delete') {
         ->valid(false);
 }
 
-$timers = $alfredTime->getRecentTimers();
-$projects = $alfredTime->getProjects();
+$timers = $time->getRecentTimers();
+$projects = $time->getProjects();
 
 foreach ($timers as $timer) {
-    $projectName = $alfredTime->getProjectName($timer['pid']);
+    $projectName = $time->getProjectName($timer['pid']);
     $tags = $timer['tags'];
     $duration = $timer['duration'];
 
