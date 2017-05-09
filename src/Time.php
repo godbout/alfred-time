@@ -270,20 +270,20 @@ class Time
             foreach ($this->activatedServices() as $service) {
                 $this->config->update('workflow', 'timer_' . $service . '_id', null);
             }
-        }
 
-        foreach ($implementedServices as $service) {
-            $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
-            $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
+            foreach ($implementedServices as $service) {
+                $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
+                $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
-            $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
-            $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
+                $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
+                $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
 
-            if ($timerId !== null) {
-                $atLeastOneServiceStarted = true;
+                if ($timerId !== null) {
+                    $atLeastOneServiceStarted = true;
+                }
+
+                $message .= $this->$service->getLastMessage() . "\r\n";
             }
-
-            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneServiceStarted === true) {
