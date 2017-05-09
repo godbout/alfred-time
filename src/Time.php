@@ -366,8 +366,7 @@ class Time
         $atLeastOneTimerDeleted = false;
 
         foreach ($this->servicesToUndo() as $service) {
-            if ($this->$service->deleteTimer($this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
-                $this->config->update('workflow', 'timer_' . $service . '_id', null);
+            if ($this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
                 $atLeastOneTimerDeleted = true;
             }
 
