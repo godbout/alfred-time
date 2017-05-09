@@ -153,23 +153,7 @@ class Time
  */
         foreach ($tempServices as $service) {
             if ($this->isServiceActive($service) === true) {
-                $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
-
-                if (file_exists($cacheFile)) {
-                    $projects = json_decode(file_get_contents($cacheFile), true);
-
-/*
- * To only show projects that are currently active
- * The Toggl API is slightly weird on that
- */
-                    foreach ($projects['data']['projects'] as $key => $project) {
-                        if (isset($project['server_deleted_at']) === true) {
-                            unset($projects['data']['projects'][$key]);
-                        }
-                    }
-
-                    $projects = $projects['data']['projects'];
-                }
+                $projects = $this->getServiceProjects($service);
             }
         }
 
@@ -191,6 +175,31 @@ class Time
         }
 
         return $timers;
+    }
+
+    /**
+     * @param $service
+     */
+    public function getServiceProjects($service)
+    {
+        $projects = [];
+        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+
+        if (file_exists($cacheFile)) {
+            $projects = json_decode(file_get_contents($cacheFile), true)['data']['projects'];
+
+/*
+ * To only show projects that are currently active
+ * The Toggl API is slightly weird on that
+ */
+            foreach ($projects as $key => $project) {
+                if (isset($project['server_deleted_at']) === true) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+
+        return $projects;
     }
 
     /**
@@ -425,15 +434,15 @@ class Time
      */
     private function getServiceTags($service)
     {
-        $cacheData = [];
+        $tags = [];
 
         $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
 
         if (file_exists($cacheFile)) {
-            $cacheData = json_decode(file_get_contents($cacheFile), true)['data']['tags'];
+            $tags = json_decode(file_get_contents($cacheFile), true)['data']['tags'];
         }
 
-        return $cacheData;
+        return $tags;
     }
 
     /**
