@@ -1,7 +1,8 @@
 <?php
 
-require 'Toggl.class.php';
-require 'Harvest.class.php';
+require_once 'Config.php';
+require_once 'Toggl.class.php';
+require_once 'Harvest.class.php';
 
 class AlfredTime
 {
@@ -37,10 +38,10 @@ class AlfredTime
 
     public function __construct()
     {
-        $this->config = $this->loadConfiguration();
+        $this->config = new Config(getenv('alfred_workflow_data') . '/config.json');
+        $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
+        $this->harvest = new Harvest($this->config->get('harvest', 'domain'), $this->config->get('harvest', 'api_token'));
         $this->message = '';
-        $this->toggl = new Toggl($this->config['toggl']['api_token']);
-        $this->harvest = new Harvest($this->config['harvest']['domain'], $this->config['harvest']['api_token']);
     }
 
     /**
@@ -75,8 +76,8 @@ class AlfredTime
             $functionName = 'delete' . ucfirst($service) . 'Timer';
 
             if (call_user_func_array(['AlfredTime', $functionName], [$timerId]) === true) {
-                if ($timerId === $this->config['workflow']['timer_' . $service . '_id']) {
-                    $this->config['workflow']['timer_' . $service . '_id'] = null;
+                if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
+                    $this->config->update('workflow', 'timer_' . $service . '_id', null);
                     $atLeastOneTimerDeleted = true;
                 }
             }
@@ -85,8 +86,7 @@ class AlfredTime
         }
 
         if ($atLeastOneTimerDeleted === true) {
-            $this->config['workflow']['is_timer_running'] = false;
-            $this->saveConfiguration();
+            $this->config->update('workflow', 'is_timer_running', false);
         }
 
         return $message;
@@ -94,29 +94,7 @@ class AlfredTime
 
     public function generateDefaultConfigurationFile()
     {
-        $this->config = [
-            'workflow' => [
-                'is_timer_running'  => false,
-                'timer_toggl_id'    => null,
-                'timer_harvest_id'  => null,
-                'timer_description' => '',
-            ],
-            'toggl'    => [
-                'is_active'          => true,
-                'api_token'          => '',
-                'default_project_id' => '',
-                'default_tags'       => '',
-            ],
-            'harvest'  => [
-                'is_active'          => true,
-                'domain'             => '',
-                'api_token'          => '',
-                'default_project_id' => '',
-                'default_task_id'    => '',
-            ],
-        ];
-
-        $this->saveConfiguration();
+        $this->config->generateDefaultConfigurationFile();
     }
 
     /**
@@ -186,7 +164,7 @@ class AlfredTime
      */
     public function getTimerDescription()
     {
-        return $this->config['workflow']['timer_description'];
+        return $this->config->get('workflow', 'timer_description');
     }
 
     /**
@@ -194,7 +172,7 @@ class AlfredTime
      */
     public function hasTimerRunning()
     {
-        return $this->config['workflow']['is_timer_running'] === false ? false : true;
+        return $this->config->get('workflow', 'is_timer_running') === false ? false : true;
     }
 
     /**
@@ -228,7 +206,7 @@ class AlfredTime
         $services = [];
 
         foreach ($this->activatedServices() as $service) {
-            if ($this->config['workflow']['timer_' . $service . '_id'] !== null) {
+            if ($this->config->get('workflow', 'timer_' . $service . '_id') !== null) {
                 array_push($services, $service);
             }
         }
@@ -259,8 +237,7 @@ class AlfredTime
  */
         if (empty($implementedServices) === false) {
             foreach ($this->activatedServices() as $service) {
-                $this->config['workflow']['timer_' . $service . '_id'] = null;
-                $this->saveConfiguration();
+                $this->config->update('workflow', 'timer_' . $service . '_id', null);
             }
         }
 
@@ -270,7 +247,7 @@ class AlfredTime
 
             $functionName = 'start' . ucfirst($service) . 'Timer';
             $timerId = call_user_func_array(['AlfredTime', $functionName], [$description, $defaultProjectId, $defaultTags]);
-            $this->config['workflow']['timer_' . $service . '_id'] = $timerId;
+            $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
 
             if ($timerId !== null) {
                 $atLeastOneServiceStarted = true;
@@ -280,9 +257,8 @@ class AlfredTime
         }
 
         if ($atLeastOneServiceStarted === true) {
-            $this->config['workflow']['timer_description'] = $description;
-            $this->config['workflow']['is_timer_running'] = true;
-            $this->saveConfiguration();
+            $this->config->update('workflow', 'timer_description', $description);
+            $this->config->update('workflow', 'is_timer_running', true);
         }
 
         return $message;
@@ -295,13 +271,13 @@ class AlfredTime
     public function startTimerWithDefaultOptions($description)
     {
         $projectsDefault = [
-            'toggl'   => $this->config['toggl']['default_project_id'],
-            'harvest' => $this->config['harvest']['default_project_id'],
+            'toggl'   => $this->config->get('toggl', 'default_project_id'),
+            'harvest' => $this->config->get('harvest', 'default_project_id'),
         ];
 
         $tagsDefault = [
-            'toggl'   => $this->config['toggl']['default_tags'],
-            'harvest' => $this->config['harvest']['default_task_id'],
+            'toggl'   => $this->config->get('toggl', 'default_tags'),
+            'harvest' => $this->config->get('harvest', 'default_task_id'),
         ];
 
         return $this->startTimer($description, $projectsDefault, $tagsDefault, true);
@@ -326,8 +302,7 @@ class AlfredTime
         }
 
         if ($atLeastOneServiceStopped === true) {
-            $this->config['workflow']['is_timer_running'] = false;
-            $this->saveConfiguration();
+            $this->config->update('workflow', 'is_timer_running', false);
         }
 
         return $message;
@@ -363,8 +338,8 @@ class AlfredTime
         foreach ($this->servicesToUndo() as $service) {
             $functionName = 'delete' . ucfirst($service) . 'Timer';
 
-            if (call_user_func_array(['AlfredTime', $functionName], [$this->config['workflow']['timer_' . $service . '_id']]) === true) {
-                $this->config['workflow']['timer_' . $service . '_id'] = null;
+            if (call_user_func_array(['AlfredTime', $functionName], [$this->config->get('workflow', 'timer_' . $service . '_id')]) === true) {
+                $this->config->update('workflow', 'timer_' . $service . '_id', null);
                 $atLeastOneTimerDeleted = true;
             }
 
@@ -372,7 +347,7 @@ class AlfredTime
         }
 
         if ($atLeastOneTimerDeleted === true) {
-            $this->saveConfiguration();
+            $this->config->update('workflow', 'is_timer_running', false);
         }
 
         return $message;
@@ -463,7 +438,7 @@ class AlfredTime
      */
     private function isHarvestActive()
     {
-        return $this->config['harvest']['is_active'];
+        return $this->config->get('harvest', 'is_active');
     }
 
     /**
@@ -471,34 +446,7 @@ class AlfredTime
      */
     private function isTogglActive()
     {
-        return $this->config['toggl']['is_active'];
-    }
-
-    /**
-     * @return mixed
-     */
-    private function loadConfiguration()
-    {
-        $config = null;
-        $configFile = getenv('alfred_workflow_data') . '/config.json';
-
-        if (file_exists($configFile)) {
-            $config = json_decode(file_get_contents($configFile), true);
-        }
-
-        return $config;
-    }
-
-    private function saveConfiguration()
-    {
-        $workflowDir = getenv('alfred_workflow_data');
-        $configFile = $workflowDir . '/config.json';
-
-        if (file_exists($workflowDir) === false) {
-            mkdir($workflowDir);
-        }
-
-        file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
+        return $this->config->get('toggl', 'is_active');
     }
 
     /**
@@ -543,7 +491,7 @@ class AlfredTime
      */
     private function stopHarvestTimer()
     {
-        $harvestId = $this->config['workflow']['timer_harvest_id'];
+        $harvestId = $this->config->get('workflow', 'timer_harvest_id');
 
         $res = $this->harvest->stopTimer($harvestId);
         $this->message = $this->harvest->getLastMessage();
@@ -556,7 +504,7 @@ class AlfredTime
      */
     private function stopTogglTimer()
     {
-        $togglId = $this->config['workflow']['timer_toggl_id'];
+        $togglId = $this->config->get('workflow', 'timer_toggl_id');
 
         $res = $this->toggl->stopTimer($togglId);
         $this->message = $this->toggl->getLastMessage();
