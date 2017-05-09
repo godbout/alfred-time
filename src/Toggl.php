@@ -162,4 +162,9 @@ class Toggl
     {
         $this->message = '- Toggl: ' . $message;
     }
+
+    public function getProjects()
+    {
+        # code...
+    }
 }
