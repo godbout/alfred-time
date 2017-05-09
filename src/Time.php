@@ -144,8 +144,6 @@ class Time
      */
     public function getProjects()
     {
-        $services = ['toggl'];
-
         $tempServices = ['toggl'];
         $projects = [];
 
@@ -371,7 +369,7 @@ class Time
         $message = '';
 
         if ($this->isServiceActive('toggl') === true) {
-            $message .= $this->syncTogglOnlineDataToLocalCache();
+            $message .= $this->syncServiceOnlineDataToLocalCache('toggl');
         }
 
         return $message;
@@ -431,23 +429,26 @@ class Time
     /**
      * @param $data
      */
-    private function saveTogglDataCache($data)
+    private function saveServiceDataCache($service, $data)
     {
-        $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
+        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
         file_put_contents($cacheFile, json_encode($data));
     }
 
     /**
      * @return mixed
      */
-    private function syncTogglOnlineDataToLocalCache()
+    private function syncServiceOnlineDataToLocalCache($service)
     {
-        $data = $this->toggl->getOnlineData();
+        $tempServices = ['toggl'];
 
-        $this->message = $this->toggl->getLastMessage();
+        foreach ($tempServices as $service) {
+            $data = $this->$service->getOnlineData();
+            $this->message .= $this->$service->getLastMessage();
 
-        if (empty($data) === false) {
-            $this->saveTogglDataCache($data);
+            if (empty($data) === false) {
+                $this->saveServiceDataCache($service, $data);
+            }
         }
 
         return $this->message;
