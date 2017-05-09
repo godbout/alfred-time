@@ -354,14 +354,6 @@ class Time
     /**
      * @return mixed
      */
-    private function getLastMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return mixed
-     */
     private function getRecentTogglTimers()
     {
         return $this->toggl->getRecentTimers();
