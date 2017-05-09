@@ -51,7 +51,9 @@ class Config
     }
 
     /**
-     * @param array $options
+     * @param  $section
+     * @param  null       $param
+     * @return mixed
      */
     public function get($section = null, $param = null)
     {
@@ -68,7 +70,9 @@ class Config
     }
 
     /**
-     * @param array $options
+     * @param $section
+     * @param $param
+     * @param $value
      */
     public function update($section, $param, $value)
     {
