@@ -462,6 +462,7 @@ class Time
 
     /**
      * @param $data
+     * @param string $service
      */
     private function saveServiceDataCache($service, $data)
     {
@@ -470,6 +471,7 @@ class Time
     }
 
     /**
+     * @param string $service
      * @return mixed
      */
     private function syncServiceOnlineDataToLocalCache($service)
