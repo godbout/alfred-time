@@ -34,6 +34,14 @@ class Time
     private $message;
 
     /**
+     * @var array
+     */
+    private $services = [
+        'toggl',
+        'harvest',
+    ];
+
+    /**
      * @var mixed
      */
     private $toggl;
@@ -52,17 +60,15 @@ class Time
      */
     public function activatedServices()
     {
-        $services = [];
+        $activatedServices = [];
 
-        if ($this->isTogglActive() === true) {
-            array_push($services, 'toggl');
+        foreach ($this->services as $service) {
+            if ($this->isServiceActive($service) === true) {
+                array_push($activatedServices, $service);
+            }
         }
 
-        if ($this->isHarvestActive() === true) {
-            array_push($services, 'harvest');
-        }
-
-        return $services;
+        return $activatedServices;
     }
 
     /**
@@ -197,6 +203,15 @@ class Time
     public function isConfigured()
     {
         return $this->config === null ? false : true;
+    }
+
+    /**
+     * @param  $service
+     * @return mixed
+     */
+    public function isServiceActive($service)
+    {
+        return $this->config->get($service, 'is_active');
     }
 
     /**
@@ -397,22 +412,6 @@ class Time
         }
 
         return $cacheData['data']['tags'];
-    }
-
-    /**
-     * @return mixed
-     */
-    private function isHarvestActive()
-    {
-        return $this->config->get('harvest', 'is_active');
-    }
-
-    /**
-     * @return mixed
-     */
-    private function isTogglActive()
-    {
-        return $this->config->get('toggl', 'is_active');
     }
 
     /**
