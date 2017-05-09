@@ -449,8 +449,6 @@ class Time
      */
     private function getServiceTags($service)
     {
-        $tags = [];
-
         $tags = $this->getServiceDataCache($service);
 
         if (isset($tags['data']['tags']) === true) {
