@@ -144,10 +144,35 @@ class Time
      */
     public function getProjects()
     {
+        $services = ['toggl'];
+
+        $tempServices = ['toggl'];
         $projects = [];
 
-        if ($this->isServiceActive('toggl') === true) {
-            $projects = array_merge($projects, $this->getTogglProjects());
+/*
+ * Temporary, only get the projects of Toggl
+ * Later, we will get Harvest ones too
+ */
+        foreach ($tempServices as $service) {
+            if ($this->isServiceActive($service) === true) {
+                $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+
+                if (file_exists($cacheFile)) {
+                    $projects = json_decode(file_get_contents($cacheFile), true);
+
+/*
+ * To only show projects that are currently active
+ * The Toggl API is slightly weird on that
+ */
+                    foreach ($projects['data']['projects'] as $key => $project) {
+                        if (isset($project['server_deleted_at']) === true) {
+                            unset($projects['data']['projects'][$key]);
+                        }
+                    }
+
+                    $projects = $projects['data']['projects'];
+                }
+            }
         }
 
         return $projects;
@@ -198,7 +223,7 @@ class Time
     }
 
     /**
-     * @param  string $feature
+     * @param  string  $feature
      * @return mixed
      */
     public function implementedServicesForFeature($feature = null)
@@ -386,31 +411,6 @@ class Time
     private function getRecentTogglTimers()
     {
         return $this->toggl->getRecentTimers();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getTogglProjects()
-    {
-        $cacheData = [];
-        $cacheFile = getenv('alfred_workflow_data') . '/toggl_cache.json';
-
-        if (file_exists($cacheFile)) {
-            $cacheData = json_decode(file_get_contents($cacheFile), true);
-        }
-
-/*
- * To only show projects that are currently active
- * The Toggl API is slightly weird on that
- */
-        foreach ($cacheData['data']['projects'] as $key => $project) {
-            if (isset($project['server_deleted_at']) === true) {
-                unset($cacheData['data']['projects'][$key]);
-            }
-        }
-
-        return $cacheData['data']['projects'];
     }
 
     /**
