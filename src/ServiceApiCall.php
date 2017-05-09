@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+namespace AlfredTime;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -73,7 +73,6 @@ class ServiceApiCall
 
         switch ($status) {
             case 'success':
-
                 if ($this->code >= 200 || $this->code <= 299) {
                     $res = true;
                 }

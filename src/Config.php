@@ -1,5 +1,7 @@
 <?php
 
+namespace AlfredTime;
+
 /**
  * Config
  */
@@ -19,7 +21,6 @@ class Config
         if ($filename !== null) {
             $this->load($filename);
         }
-
     }
 
     public function generateDefaultConfigurationFile()
@@ -89,7 +90,6 @@ class Config
         if (file_exists($filename)) {
             $this->config = json_decode(file_get_contents($filename), true);
         }
-
     }
 
     private function save()
@@ -103,5 +103,4 @@ class Config
 
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
     }
-
 }

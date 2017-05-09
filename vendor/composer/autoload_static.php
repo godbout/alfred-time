@@ -64,6 +64,7 @@ class ComposerStaticInita05347a33fae9bdb6b099d5455d6f527
         'A' => 
         array (
             'Alfred\\Workflows\\' => 17,
+            'AlfredTime\\' => 11,
         ),
     );
 
@@ -166,10 +167,10 @@ class ComposerStaticInita05347a33fae9bdb6b099d5455d6f527
         array (
             0 => __DIR__ . '/..' . '/joetannenbaum/alfred-workflow/src',
         ),
-    );
-
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/../..' . '/src',
+        'AlfredTime\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -659,7 +660,6 @@ class ComposerStaticInita05347a33fae9bdb6b099d5455d6f527
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInita05347a33fae9bdb6b099d5455d6f527::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInita05347a33fae9bdb6b099d5455d6f527::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInita05347a33fae9bdb6b099d5455d6f527::$fallbackDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInita05347a33fae9bdb6b099d5455d6f527::$prefixesPsr0;
             $loader->classMap = ComposerStaticInita05347a33fae9bdb6b099d5455d6f527::$classMap;
 

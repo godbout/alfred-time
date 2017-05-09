@@ -30,5 +30,5 @@ return array(
     'Codeception\\Extension\\' => array($vendorDir . '/codeception/codeception/ext'),
     'Codeception\\' => array($vendorDir . '/codeception/codeception/src/Codeception'),
     'Alfred\\Workflows\\' => array($vendorDir . '/joetannenbaum/alfred-workflow/src'),
-    '' => array($baseDir . '/src'),
+    'AlfredTime\\' => array($baseDir . '/src'),
 );

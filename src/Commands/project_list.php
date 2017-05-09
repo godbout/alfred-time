@@ -1,7 +1,7 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require 'AlfredTime.class.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'AlfredTime.php';
 
 use Alfred\Workflows\Workflow;
 
@@ -10,20 +10,20 @@ $alfredTime = new AlfredTime();
 
 $query = trim($argv[1]);
 
-$tags = $alfredTime->getTags();
+$projects = $alfredTime->getProjects();
 
 $workflow->result()
     ->arg('')
-    ->title('No tag')
-    ->subtitle('Timer will be created without any tag')
+    ->title('No project')
+    ->subtitle('Timer will be created without a project')
     ->type('default')
     ->valid(true);
 
-foreach ($tags as $tag) {
+foreach ($projects as $project) {
     $workflow->result()
-        ->arg($tag['name'])
-        ->title($tag['name'])
-        ->subtitle('Toggl tag')
+        ->arg($project['id'])
+        ->title($project['name'])
+        ->subtitle('Toggl project')
         ->type('default')
         ->icon('icons/toggl.png')
         ->valid(true);

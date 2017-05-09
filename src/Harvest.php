@@ -1,6 +1,8 @@
 <?php
 
-require_once 'ServiceApiCall.class.php';
+namespace AlfredTime;
+
+use AlfredTime\ServiceApiCall;
 
 /**
  *

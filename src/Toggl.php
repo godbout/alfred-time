@@ -1,6 +1,8 @@
 <?php
 
-require_once 'ServiceApiCall.class.php';
+namespace AlfredTime;
+
+use AlfredTime\ServiceApiCall;
 
 /**
  *
@@ -22,7 +24,7 @@ class Toggl
      */
     public function __construct($apiToken = null)
     {
-        $this->serviceApiCall = new serviceApiCall([
+        $this->serviceApiCall = new ServiceApiCall([
             'base_uri' => 'https://www.toggl.com/api/v8/',
             'headers'  => [
                 'Content-type'  => 'application/json',

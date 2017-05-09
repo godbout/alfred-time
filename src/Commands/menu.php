@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require 'AlfredTime.class.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Alfred\Workflows\Workflow;
+use AlfredTime\Time;
 
 $workflow = new Workflow();
-$alfredTime = new AlfredTime();
+$time = new Time();
 
 $query = trim($argv[1]);
 
@@ -14,7 +14,7 @@ $query = trim($argv[1]);
  * Check for config file
  * If cannot find, Workflow is not usable
  */
-if ($alfredTime->isConfigured() === false) {
+if ($time->isConfigured() === false) {
     $workflow->result()
         ->uid('')
         ->arg('config')
@@ -40,7 +40,7 @@ if ($alfredTime->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($query === 'undo') {
-        $servicesToUndo = $alfredTime->servicesToUndo();
+        $servicesToUndo = $time->servicesToUndo();
 
         if (empty($servicesToUndo) === true) {
             $workflow->result()
@@ -51,13 +51,13 @@ if ($alfredTime->isConfigured() === false) {
                 ->type('default')
                 ->valid(false);
         } else {
-            $subtitle = $alfredTime->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
+            $subtitle = $time->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
             $subtitle .= implode(' and ', array_map('ucfirst', $servicesToUndo));
 
             $workflow->result()
                 ->uid('')
                 ->arg('undo')
-                ->title('Undo "' . $alfredTime->getTimerDescription() . '"')
+                ->title('Undo "' . $time->getTimerDescription() . '"')
                 ->subtitle($subtitle)
                 ->type('default')
                 ->valid(true);
@@ -78,8 +78,8 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle('Press enter to load the list of recent timers')
             ->type('default')
             ->valid(true);
-    } elseif ($alfredTime->hasTimerRunning() === false) {
-        $services = $alfredTime->implementedServicesForFeature('start');
+    } elseif ($time->hasTimerRunning() === false) {
+        $services = $time->implementedServicesForFeature('start');
 
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
@@ -94,10 +94,10 @@ if ($alfredTime->isConfigured() === false) {
             ->subtitle($subtitle)
             ->type('default')
             ->mod('cmd', $subtitle . ' and Harvest with default project and tags', 'start_default ' . $query)
-            ->mod('alt', 'Continue timer for Toggl and Harvest ("' . $alfredTime->getTimerDescription() . '") with default project and tags', 'start_default ' . $alfredTime->getTimerDescription())
+            ->mod('alt', 'Continue timer for Toggl and Harvest ("' . $time->getTimerDescription() . '") with default project and tags', 'start_default ' . $time->getTimerDescription())
             ->valid(true);
     } else {
-        $services = $alfredTime->activatedServices();
+        $services = $time->activatedServices();
 
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
@@ -108,7 +108,7 @@ if ($alfredTime->isConfigured() === false) {
         $workflow->result()
             ->uid('')
             ->arg('stop')
-            ->title('Stop "' . $alfredTime->getTimerDescription() . '"')
+            ->title('Stop "' . $time->getTimerDescription() . '"')
             ->subtitle($subtitle)
             ->type('default')
             ->valid(true);
