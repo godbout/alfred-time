@@ -72,21 +72,36 @@ class Time
     }
 
     /**
+     * @param  $service
+     * @param  $timerId
+     * @return mixed
+     */
+    public function deleteServiceTimer($service, $timerId)
+    {
+        $res = false;
+
+        if ($this->$service->deleteTimer($timerId) === true) {
+            if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
+                $this->config->update('workflow', 'timer_' . $service . '_id', null);
+                $res = true;
+            }
+        }
+
+        return $res;
+    }
+
+    /**
      * @param  $timerId
      * @return string
      */
     public function deleteTimer($timerId)
     {
         $message = '';
-
         $atLeastOneTimerDeleted = false;
 
         foreach ($this->implementedServicesForFeature('delete') as $service) {
-            if ($this->$service->deleteTimer($timerId) === true) {
-                if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
-                    $this->config->update('workflow', 'timer_' . $service . '_id', null);
-                    $atLeastOneTimerDeleted = true;
-                }
+            if ($this->deleteServiceTimer($service, $timerId) === true) {
+                $atLeastOneTimerDeleted = true;
             }
 
             $message .= $this->$service->getLastMessage() . "\r\n";

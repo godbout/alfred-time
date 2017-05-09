@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Alfred\Workflows\Workflow;
 use AlfredTime\Time;
+use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
 $time = new Time();
