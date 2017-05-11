@@ -64,8 +64,6 @@ class Toggl
      */
     public function getOnlineData()
     {
-        $data = [];
-
         $data = $this->timerAction('get_online_data', 'me?with_related_data=true');
 
         if (empty($data) === false) {
