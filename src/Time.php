@@ -471,7 +471,7 @@ class Time
 
     /**
      * @param  string  $service
-     * @return mixed
+     * @return string
      */
     private function syncServiceOnlineDataToLocalCache($service)
     {
