@@ -45,7 +45,7 @@ class Toggl
         if ($res === true) {
             $this->setMessage('time deleted');
         } else {
-            $this->setMessage('could not delete timer!' . $this->message);
+            $this->setMessage('could not delete timer! [' . $this->message . ']');
         }
 
         return $res;
@@ -142,8 +142,8 @@ class Toggl
     }
 
     /**
-     * @param  string $action
-     * @param  string $apiUri
+     * @param  string  $action
+     * @param  string  $apiUri
      * @return mixed
      */
     private function timerAction($action, $apiUri, array $options = [])
