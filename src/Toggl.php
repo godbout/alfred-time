@@ -149,7 +149,6 @@ class Toggl
     private function timerAction($action, $apiUri, array $options = [])
     {
         $res = false;
-        $method = '';
         $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
         $methods = [
             'start'             => 'post',
