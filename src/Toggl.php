@@ -40,17 +40,12 @@ class Toggl
      */
     public function deleteTimer($timerId = null)
     {
-        $res = false;
+        $res = $this->timerAction('delete', 'time_entries/' . $timerId);
 
-        if ($this->serviceApiCall->send('delete', 'time_entries/' . $timerId) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer deleted');
-                $res = true;
-            } else {
-                $this->setMessage('could not delete timer!');
-            }
+        if ($res === true) {
+            $this->setMessage('time deleted');
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('could not delete timer!' . $this->message);
         }
 
         return $res;
@@ -71,33 +66,25 @@ class Toggl
     {
         $data = [];
 
-        if ($this->serviceApiCall->send('get', 'me?with_related_data=true') === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('data cached');
-                $data = $this->serviceApiCall->getData();
-            } else {
-                $this->setMessage('cannot get online data!');
-            }
+        $data = $this->timerAction('get_online_data', 'me?with_related_data=true');
+
+        if (empty($data) === false) {
+            $this->setMessage('data cached');
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('cannot get online data! [' . $this->message . ']');
         }
 
         return $data;
     }
 
+    public function getProjects()
+    {
+        # code...
+    }
+
     public function getRecentTimers()
     {
-        $timers = [];
-
-        if ($this->serviceApiCall->send('get', 'time_entries') === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $timers = $this->serviceApiCall->getData();
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
-
-        return array_reverse($timers);
+        return array_reverse($this->timerAction('get_recent_timers', 'time_entries'));
     }
 
     /**
@@ -119,15 +106,13 @@ class Toggl
             ],
         ];
 
-        if ($this->serviceApiCall->send('post', 'time_entries/start', ['json' => $item]) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer started');
-                $togglId = $this->serviceApiCall->getData()['data']['id'];
-            } else {
-                $this->setMessage('cannot start timer!');
-            }
+        $data = $this->timerAction('start', 'time_entries/start', ['json' => $item]);
+
+        if (isset($data['data']['id']) === true) {
+            $this->setMessage('timer started');
+            $togglId = $data['data']['id'];
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('could not start timer! [' . $this->message . ']');
         }
 
         return $togglId;
@@ -139,17 +124,12 @@ class Toggl
      */
     public function stopTimer($timerId = null)
     {
-        $res = false;
+        $res = $this->timerAction('stop', 'time_entries/' . $timerId . '/stop');
 
-        if ($this->serviceApiCall->send('put', 'time_entries/' . $timerId . '/stop') === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer stopped');
-                $res = true;
-            } else {
-                $this->setMessage('could not stop timer!');
-            }
+        if ($res === true) {
+            $this->setMessage('timer stopped');
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('could not stop timer! [' . $this->message . ']');
         }
 
         return $res;
@@ -163,8 +143,44 @@ class Toggl
         $this->message = '- Toggl: ' . $message;
     }
 
-    public function getProjects()
+    /**
+     * @param  $action
+     * @param  $apiUri
+     * @return mixed
+     */
+    private function timerAction($action, $apiUri, array $options = [])
     {
-        # code...
+        $res = false;
+        $method = '';
+        $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
+
+        switch ($action) {
+            case 'delete':
+                $method = 'delete';
+                break;
+            case 'stop':
+                $method = 'put';
+                break;
+            case 'start':
+                $method = 'post';
+                break;
+            case 'get_recent_timers':
+            // no break
+            case 'get_online_data':
+                $method = 'get';
+                break;
+        }
+
+        if ($this->serviceApiCall->send($methods, $apiUri, $options) === true) {
+            $res = $this->serviceApiCall->last('success');
+
+            if (in_array($action, $returnDataFor) === true) {
+                $res = $this->serviceApiCall->getData();
+            }
+        } else {
+            $this->message = $this->serviceApiCall->getMessage();
+        }
+
+        return $res;
     }
 }

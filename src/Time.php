@@ -203,11 +203,10 @@ class Time
         $projects = $this->getServiceDataCache($service);
 
         if (isset($projects['data']['projects']) === true) {
-
-            /*
-             * To only show projects that are currently active
-             * The Toggl API is slightly weird on that
-             */
+/*
+ * To only show projects that are currently active
+ * The Toggl API is slightly weird on that
+ */
             foreach ($projects['data']['projects'] as $key => $project) {
                 if (isset($project['server_deleted_at']) === true) {
                     unset($projects['data']['projects'][$key]);
@@ -314,13 +313,13 @@ class Time
         $atLeastOneServiceStarted = false;
         $implementedServices = $this->implementedServicesForFeature($startType);
 
-        /*
-         * When starting a new timer, all the services timer IDs have to be put to null
-         * so that when the user uses the UNDO feature, it doesn't delete old previous
-         * other services timers. The timer IDs are used for the UNDO feature and
-         * should then contain the IDs of the last starts through the workflow, not
-         * through each individual sefrvice
-         */
+/*
+ * When starting a new timer, all the services timer IDs have to be put to null
+ * so that when the user uses the UNDO feature, it doesn't delete old previous
+ * other services timers. The timer IDs are used for the UNDO feature and
+ * should then contain the IDs of the last starts through the workflow, not
+ * through each individual sefrvice
+ */
         if (empty($implementedServices) === false) {
             foreach ($this->activatedServices() as $service) {
                 $this->config->update('workflow', 'timer_' . $service . '_id', null);

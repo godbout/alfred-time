@@ -73,7 +73,7 @@ class ServiceApiCall
 
         switch ($status) {
             case 'success':
-                if ($this->code >= 200 || $this->code <= 299) {
+                if ($this->code >= 200 && $this->code <= 299) {
                     $res = true;
                 }
 
@@ -101,6 +101,8 @@ class ServiceApiCall
             $this->message = 'cannot connect to api!';
             $res = false;
         } catch (ClientException $e) {
+            $res = false;
+            $this->code = $e->getResponse()->getStatusCode();
             $this->message = $e->getResponse()->getBody();
         }
 
