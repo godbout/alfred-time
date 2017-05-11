@@ -1,3 +1,9 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master)
+[![StyleCI](https://styleci.io/repos/83111813/shield?branch=master)](https://styleci.io/repos/83111813)
+[![Build Status](https://www.travis-ci.org/godbout/alfred-time.svg?branch=master)](https://www.travis-ci.org/godbout/alfred-time)
+
+(Code is working on php5.5 but travis fails due to some of the tests tools requiring php7.0. Will figure out later how to handle that)
+
 # Alfred-Time
 
 Basic workflow to start and stop timers for [Toggl](https://toggl.com/) and/or [Harvest](https://www.getharvest.com/) services through [Alfred](http://alfredapp.com/).
