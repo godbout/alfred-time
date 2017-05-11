@@ -1,0 +1,4 @@
+filter:
+  excluded_paths:
+    - "tests/"               # Everything in a root level "tests" directory
+    - "vendor/"                # Without trailing "/", just ignores a single file name "tests"
