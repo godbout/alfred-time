@@ -43,7 +43,7 @@ class Toggl
         $res = $this->timerAction('delete', 'time_entries/' . $timerId);
 
         if ($res === true) {
-            $this->setMessage('time deleted');
+            $this->setMessage('timer deleted');
         } else {
             $this->setMessage('could not delete timer! [' . $this->message . ']');
         }
@@ -151,23 +151,14 @@ class Toggl
         $res = false;
         $method = '';
         $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
-
-        switch ($action) {
-            case 'delete':
-                $method = 'delete';
-                break;
-            case 'stop':
-                $method = 'put';
-                break;
-            case 'start':
-                $method = 'post';
-                break;
-            case 'get_recent_timers':
-            // no break
-            case 'get_online_data':
-                $method = 'get';
-                break;
-        }
+        $methods = [
+            'start'             => 'post',
+            'stop'              => 'put',
+            'delete'            => 'delete',
+            'get_recent_timers' => 'get',
+            'get_online_data'   => 'get',
+        ];
+        $method = isset($methods[$action]) ? $methods[$action] : '';
 
         if ($this->serviceApiCall->send($method, $apiUri, $options) === true) {
             $res = $this->serviceApiCall->last('success');
