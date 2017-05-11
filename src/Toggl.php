@@ -52,7 +52,7 @@ class Toggl
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastMessage()
     {
@@ -134,7 +134,7 @@ class Toggl
     }
 
     /**
-     * @param $message
+     * @param string $message
      */
     private function setMessage($message = null)
     {
@@ -142,8 +142,8 @@ class Toggl
     }
 
     /**
-     * @param  $action
-     * @param  $apiUri
+     * @param  string $action
+     * @param  string $apiUri
      * @return mixed
      */
     private function timerAction($action, $apiUri, array $options = [])
