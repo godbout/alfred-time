@@ -21,6 +21,10 @@ class Time
         'start_default' => ['toggl', 'harvest'],
         'stop'          => ['toggl', 'harvest'],
         'delete'        => ['toggl'],
+        'get_projects'  => ['toggl'],
+        'get_tags'      => ['toggl'],
+        'get_timers'    => ['toggl'],
+        'sync_data'     => ['toggl'],
     ];
 
     /**
@@ -144,14 +148,13 @@ class Time
      */
     public function getProjects()
     {
-        $tempServices = ['toggl'];
         $projects = [];
 
         /*
-        * Temporary, only get the projects of Toggl
-        * Later, we will get Harvest ones too
-        */
-        foreach ($tempServices as $service) {
+         * Temporary, only get the projects of Toggl
+         * Later, we will get Harvest ones too
+         */
+        foreach ($this->implementedServicesForFeature('get_projects') as $service) {
             if ($this->isServiceActive($service) === true) {
                 $projects = $this->getServiceProjects($service);
             }
@@ -165,10 +168,9 @@ class Time
      */
     public function getRecentTimers()
     {
-        $tempServices = ['toggl'];
         $timers = [];
 
-        foreach ($tempServices as $service) {
+        foreach ($this->implementedServicesForFeature('get_timers') as $service) {
             if ($this->isServiceActive($service) === true) {
                 $timers = array_merge($timers, $this->getRecentServiceTimers($service));
             }
@@ -223,10 +225,9 @@ class Time
      */
     public function getTags()
     {
-        $tempServices = ['toggl'];
         $tags = [];
 
-        foreach ($tempServices as $service) {
+        foreach ($this->implementedServicesForFeature('get_tags') as $service) {
             if ($this->isServiceActive($service) === true) {
                 $tags = array_merge($tags, $this->getServiceTags($service));
             }
@@ -397,10 +398,9 @@ class Time
      */
     public function syncOnlineDataToLocalCache()
     {
-        $tempServices = ['toggl'];
         $message = '';
 
-        foreach ($tempServices as $service) {
+        foreach ($this->implementedServicesForFeature('sync_data') as $service) {
             if ($this->isServiceActive($service) === true) {
                 $message .= $this->syncServiceOnlineDataToLocalCache($service);
             }
