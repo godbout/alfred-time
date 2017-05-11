@@ -171,7 +171,7 @@ class Toggl
                 break;
         }
 
-        if ($this->serviceApiCall->send($methods, $apiUri, $options) === true) {
+        if ($this->serviceApiCall->send($method, $apiUri, $options) === true) {
             $res = $this->serviceApiCall->last('success');
 
             if (in_array($action, $returnDataFor) === true) {
