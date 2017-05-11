@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
-        "codeception/codeception": "^2.2"
+        "codeception/codeception": "^2.2",
+        "phpstan/phpstan": "^0.6.4"
     },
     "autoload": {
         "psr-4": {
