@@ -204,7 +204,7 @@ class Time
         $projects = $this->getServiceDataCache($service);
 
         if (isset($projects['data']['projects']) === true) {
-/*
+            /*
  * To only show projects that are currently active
  * The Toggl API is slightly weird on that
  */
