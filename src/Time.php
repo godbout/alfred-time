@@ -483,8 +483,8 @@ class Time
         if (empty($data) === false) {
             $this->saveServiceDataCache($service, $data);
             $message .= '- ' . ucfirst($service) .': data cached'."\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) .': cannot cache data'."\r\n";
+        } else {
+            $message .= '- ' . ucfirst($service) .': cannot cache data'."\r\n";
         }
 
         return $this->message;
