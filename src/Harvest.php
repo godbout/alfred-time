@@ -41,17 +41,12 @@ class Harvest
      */
     public function deleteTimer($timerId = null)
     {
-        $res = false;
+        $res = $this->timerAction('delete', 'delete/' . $timerId);
 
-        if ($this->serviceApiCall->send('delete', 'delete/' . $timerId) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer deleted');
-                $res = true;
-            } else {
-                $this->setMessage('could not delete timer!');
-            }
+        if ($res === true) {
+            $this->setMessage('timer deleted');
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('could not delete timer! [' . $this->message . ']');
         }
 
         return $res;
@@ -81,15 +76,13 @@ class Harvest
             'task_id'    => $taskId,
         ];
 
-        if ($this->serviceApiCall->send('post', 'add', ['json' => $item]) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                $this->setMessage('timer started');
-                $harvestId = $this->serviceApiCall->getData()['id'];
-            } else {
-                $this->setMessage('cannot start timer!');
-            }
+        $data = $this->timerAction('start', 'add', ['json' => $item]);
+
+        if (isset($data['id']) === true) {
+            $this->setMessage('timer started');
+            $harvestId = $data['id'];
         } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
+            $this->setMessage('could not start timer! [' . $this->message . ']');
         }
 
         return $harvestId;
@@ -104,15 +97,12 @@ class Harvest
         $res = false;
 
         if ($this->isTimerRunning($timerId) === true) {
-            if ($this->serviceApiCall->send('get', 'timer/' . $timerId) === true) {
-                if ($this->serviceApiCall->last('success') === true) {
-                    $this->setMessage('timer stopped');
-                    $res = true;
-                } else {
-                    $this->setMessage('could not stop timer!');
-                }
+            $res = $this->timerAction('stop', 'timer/' . $timerId);
+
+            if ($res === true) {
+                $this->setMessage('timer stopped');
             } else {
-                $this->setMessage($this->serviceApiCall->getMessage());
+                $this->setMessage('could not stop timer! [' . $this->message . ']');
             }
         } else {
             $this->setMessage('timer was not running');
@@ -127,17 +117,8 @@ class Harvest
      */
     private function isTimerRunning($timerId)
     {
-        $res = false;
-
-        if ($this->serviceApiCall->send('get', 'show/' . $timerId) === true) {
-            if ($this->serviceApiCall->last('success') === true) {
-                if (isset($this->serviceApiCall->getData()['timer_started_at']) === true) {
-                    $res = true;
-                }
-            }
-        } else {
-            $this->setMessage($this->serviceApiCall->getMessage());
-        }
+        $data = $this->timerAction('timer_running', 'show/' . $timerId);
+        $res = isset($data['timer_started_at']);
 
         return $res;
     }
@@ -148,5 +129,35 @@ class Harvest
     private function setMessage($message = null)
     {
         $this->message = '- Harvest: ' . $message;
+    }
+
+    /**
+     * @param  string  $action
+     * @param  string  $apiUri
+     * @return mixed
+     */
+    private function timerAction($action, $apiUri, array $options = [])
+    {
+        $res = false;
+        $returnDataFor = ['start', 'timer_running'];
+        $methods = [
+            'start'         => 'post',
+            'stop'          => 'get',
+            'delete'        => 'delete',
+            'timer_running' => 'get',
+        ];
+        $method = isset($methods[$action]) ? $methods[$action] : '';
+
+        if ($this->serviceApiCall->send($method, $apiUri, $options) === true) {
+            $res = $this->serviceApiCall->last('success');
+
+            if (in_array($action, $returnDataFor) === true) {
+                $res = $this->serviceApiCall->getData();
+            }
+        } else {
+            $this->message = $this->serviceApiCall->getMessage();
+        }
+
+        return $res;
     }
 }
