@@ -41,15 +41,7 @@ class Harvest
      */
     public function deleteTimer($timerId = null)
     {
-        $res = $this->timerAction('delete', 'delete/' . $timerId);
-
-        if ($res === true) {
-            $this->setMessage('timer deleted');
-        } else {
-            $this->setMessage('could not delete timer! [' . $this->message . ']');
-        }
-
-        return $res;
+        return $this->timerAction('delete', 'delete/' . $timerId);
     }
 
     /**
@@ -69,7 +61,6 @@ class Harvest
     public function startTimer($description, $projectId, $taskId)
     {
         $harvestId = null;
-
         $item = [
             'notes'      => $description,
             'project_id' => $projectId,
@@ -77,12 +68,8 @@ class Harvest
         ];
 
         $data = $this->timerAction('start', 'add', ['json' => $item]);
-
         if (isset($data['id']) === true) {
-            $this->setMessage('timer started');
             $harvestId = $data['id'];
-        } else {
-            $this->setMessage('could not start timer! [' . $this->message . ']');
         }
 
         return $harvestId;
@@ -94,19 +81,11 @@ class Harvest
      */
     public function stopTimer($timerId = null)
     {
-        $res = false;
-
-        if ($this->isTimerRunning($timerId) === true) {
-            $res = $this->timerAction('stop', 'timer/' . $timerId);
-
-            if ($res === true) {
-                $this->setMessage('timer stopped');
-            } else {
-                $this->setMessage('could not stop timer! [' . $this->message . ']');
-            }
-        } else {
-            $this->setMessage('timer was not running');
+        if ($this->isTimerRunning($timerID) === false) {
+            return false;
         }
+
+        $res = $this->timerAction('stop', 'timer/' . $timerId);
 
         return $res;
     }
@@ -121,14 +100,6 @@ class Harvest
         $res = isset($data['timer_started_at']);
 
         return $res;
-    }
-
-    /**
-     * @param $message
-     */
-    private function setMessage($message = null)
-    {
-        $this->message = '- Harvest: ' . $message;
     }
 
     /**

@@ -11,7 +11,8 @@
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
-        "phpstan/phpstan": "^0.6.4"
+        "phpstan/phpstan": "^0.6.4",
+        "phpmd/phpmd" : "@stable"
     },
     "autoload": {
         "psr-4": {

@@ -78,7 +78,6 @@ class Toggl
     public function startTimer($description, $projectId, $tagNames)
     {
         $togglId = null;
-
         $item = [
             'time_entry' => [
                 'description'  => $description,
