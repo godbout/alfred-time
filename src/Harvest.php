@@ -68,6 +68,7 @@ class Harvest
         ];
 
         $data = $this->timerAction('start', 'add', ['json' => $item]);
+
         if (isset($data['id']) === true) {
             $harvestId = $data['id'];
         }
@@ -81,7 +82,7 @@ class Harvest
      */
     public function stopTimer($timerId = null)
     {
-        if ($this->isTimerRunning($timerID) === false) {
+        if ($this->isTimerRunning($timerId) === false) {
             return false;
         }
 
