@@ -40,15 +40,7 @@ class Toggl
      */
     public function deleteTimer($timerId = null)
     {
-        $res = $this->timerAction('delete', 'time_entries/' . $timerId);
-
-        if ($res === true) {
-            $this->setMessage('timer deleted');
-        } else {
-            $this->setMessage('could not delete timer! [' . $this->message . ']');
-        }
-
-        return $res;
+        return $this->timerAction('delete', 'time_entries/' . $timerId);
     }
 
     /**
@@ -64,15 +56,7 @@ class Toggl
      */
     public function getOnlineData()
     {
-        $data = $this->timerAction('get_online_data', 'me?with_related_data=true');
-
-        if (empty($data) === false) {
-            $this->setMessage('data cached');
-        } else {
-            $this->setMessage('cannot get online data! [' . $this->message . ']');
-        }
-
-        return $data;
+        return $this->timerAction('get_online_data', 'me?with_related_data=true');
     }
 
     public function getProjects()
@@ -107,10 +91,7 @@ class Toggl
         $data = $this->timerAction('start', 'time_entries/start', ['json' => $item]);
 
         if (isset($data['data']['id']) === true) {
-            $this->setMessage('timer started');
             $togglId = $data['data']['id'];
-        } else {
-            $this->setMessage('could not start timer! [' . $this->message . ']');
         }
 
         return $togglId;
@@ -122,23 +103,7 @@ class Toggl
      */
     public function stopTimer($timerId = null)
     {
-        $res = $this->timerAction('stop', 'time_entries/' . $timerId . '/stop');
-
-        if ($res === true) {
-            $this->setMessage('timer stopped');
-        } else {
-            $this->setMessage('could not stop timer! [' . $this->message . ']');
-        }
-
-        return $res;
-    }
-
-    /**
-     * @param string $message
-     */
-    private function setMessage($message = null)
-    {
-        $this->message = '- Toggl: ' . $message;
+        return $this->timerAction('stop', 'time_entries/' . $timerId . '/stop');
     }
 
     /**

@@ -106,10 +106,9 @@ class Time
         foreach ($this->implementedServicesForFeature('delete') as $service) {
             if ($this->deleteServiceTimer($service, $timerId) === true) {
                 $atLeastOneTimerDeleted = true;
-                $message .= '- ' . ucfirst($service) .': deleted'."\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) .': cannot delete'."\r\n";
             }
+
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneTimerDeleted === true) {
@@ -335,10 +334,9 @@ class Time
 
                 if ($timerId !== null) {
                     $atLeastOneServiceStarted = true;
-                    $message .= '- ' . ucfirst($service) .': started'."\r\n";
-                } else {
-                    $message .= '- ' . ucfirst($service) .': cannot start'."\r\n";
                 }
+
+                $message .= $this->$service->getLastMessage() . "\r\n";
             }
         }
 
@@ -382,10 +380,9 @@ class Time
 
             if ($this->$service->stopTimer($timerId) === true) {
                 $atLeastOneServiceStopped = true;
-                $message .= '- ' . ucfirst($service) .': stopped'."\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) .': cannot stop'."\r\n";
             }
+
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneServiceStopped === true) {
@@ -427,10 +424,9 @@ class Time
         foreach ($this->servicesToUndo() as $service) {
             if ($this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
                 $atLeastOneTimerDeleted = true;
-                $message .= '- ' . ucfirst($service) .': undid'."\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) .': cannot undo'."\r\n";
             }
+
+            $message .= $this->$service->getLastMessage() . "\r\n";
         }
 
         if ($atLeastOneTimerDeleted === true) {
@@ -479,12 +475,10 @@ class Time
     private function syncServiceOnlineDataToLocalCache($service)
     {
         $data = $this->$service->getOnlineData();
+        $this->message .= $this->$service->getLastMessage();
 
         if (empty($data) === false) {
             $this->saveServiceDataCache($service, $data);
-            $message .= '- ' . ucfirst($service) .': data cached'."\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) .': cannot cache data'."\r\n";
         }
 
         return $this->message;
