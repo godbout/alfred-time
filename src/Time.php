@@ -33,11 +33,6 @@ class Time
     private $harvest;
 
     /**
-     * @var mixed
-     */
-    private $message;
-
-    /**
      * @var array
      */
     private $services = [
@@ -56,7 +51,6 @@ class Time
 
         $this->harvest = new Harvest($this->config->get('harvest', 'domain'), $this->config->get('harvest', 'api_token'));
         $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
-        $this->message = '';
     }
 
     /**
@@ -478,6 +472,7 @@ class Time
      */
     private function syncServiceOnlineDataToLocalCache($service)
     {
+        $message = '';
         $data = $this->$service->getOnlineData();
 
         if (empty($data) === false) {
@@ -487,6 +482,6 @@ class Time
             $message .= '- ' . ucfirst($service) . ': cannot cache data' . "\r\n";
         }
 
-        return $this->message;
+        return $message;
     }
 }
