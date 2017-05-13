@@ -58,19 +58,13 @@ class Time
     public function deleteTimer($timerId)
     {
         $message = '';
-        $atLeastOneTimerDeleted = false;
 
         foreach ($this->config->implementedServicesForFeature('delete') as $service) {
             if ($this->deleteServiceTimer($service, $timerId) === true) {
-                $atLeastOneTimerDeleted = true;
                 $message .= '- ' . ucfirst($service) . ': deleted' . "\r\n";
             } else {
                 $message .= '- ' . ucfirst($service) . ': cannot delete' . "\r\n";
             }
-        }
-
-        if ($atLeastOneTimerDeleted === true) {
-            $this->config->update('workflow', 'is_timer_running', false);
         }
 
         return $message;
@@ -109,7 +103,7 @@ class Time
  */
         foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $projects = $this->getServiceProjects($service);
+                $projects = $this->$service->getProjects($this->getServiceDataCache($service));
             }
         }
 
@@ -149,30 +143,6 @@ class Time
     }
 
     /**
-     * @param $service
-     */
-    public function getServiceProjects($service)
-    {
-        $projects = $this->getServiceDataCache($service);
-
-        if (isset($projects['data']['projects']) === true) {
-/*
- * To only show projects that are currently active
- * The Toggl API is slightly weird on that
- */
-            foreach ($projects['data']['projects'] as $key => $project) {
-                if (isset($project['server_deleted_at']) === true) {
-                    unset($projects['data']['projects'][$key]);
-                }
-            }
-
-            $projects = $projects['data']['projects'];
-        }
-
-        return $projects;
-    }
-
-    /**
      * @return mixed
      */
     public function getTags()
@@ -181,7 +151,7 @@ class Time
 
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $tags = array_merge($tags, $this->getServiceTags($service));
+                $tags = $this->$service->getTags($this->getServiceDataCache($service));
             }
         }
 
@@ -350,20 +320,6 @@ class Time
     private function getRecentServiceTimers($service)
     {
         return $this->$service->getRecentTimers();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getServiceTags($service)
-    {
-        $tags = $this->getServiceDataCache($service);
-
-        if (isset($tags['data']['tags']) === true) {
-            $tags = $tags['data']['tags'];
-        }
-
-        return $tags;
     }
 
     /**

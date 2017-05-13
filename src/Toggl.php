@@ -59,14 +59,45 @@ class Toggl
         return $this->timerAction('get_online_data', 'me?with_related_data=true');
     }
 
-    public function getProjects()
+    /**
+     * @param  $data
+     * @return mixed
+     */
+    public function getProjects($data)
     {
-        # code...
+        if (isset($data['data']['projects']) === false) {
+            return [];
+        }
+
+/*
+ * To only show projects that are currently active
+ * The Toggl API is slightly weird on that
+ */
+        foreach ($data['data']['projects'] as $key => $project) {
+            if (isset($project['server_deleted_at']) === true) {
+                unset($data['data']['projects'][$key]);
+            }
+        }
+
+        return $data['data']['projects'];
     }
 
     public function getRecentTimers()
     {
         return array_reverse($this->timerAction('get_recent_timers', 'time_entries'));
+    }
+
+    /**
+     * @param  $data
+     * @return mixed
+     */
+    public function getTags($data)
+    {
+        if (isset($data['data']['tags']) === false) {
+            return [];
+        }
+
+        return $data['data']['tags'];
     }
 
     /**
@@ -110,7 +141,7 @@ class Toggl
      * @param  string  $apiUri
      * @return mixed
      */
-    private function timerAction($action, $apiUri, array $options = [])
+    public function timerAction($action, $apiUri, array $options = [])
     {
         $res = false;
         $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
