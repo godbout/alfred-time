@@ -40,16 +40,15 @@ class Time
      */
     public function deleteServiceTimer($service, $timerId)
     {
-        $res = false;
-
-        if ($this->$service->deleteTimer($timerId) === true) {
-            if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
-                $this->config->update('workflow', 'timer_' . $service . '_id', null);
-                $res = true;
-            }
+        if ($this->$service->deleteTimer($timerId) === false) {
+            return false;
         }
 
-        return $res;
+        if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
+            $this->config->update('workflow', 'timer_' . $service . '_id', null);
+        }
+
+        return true;
     }
 
     /**
