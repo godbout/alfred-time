@@ -169,11 +169,10 @@ class Time
      * @param  boolean            $startDefault
      * @return string
      */
-    public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startDefault = false)
+    public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startType = 'start')
     {
         $message = '';
-        $startType = $startDefault === true ? 'start_default' : 'start';
-        $atLeastOneServiceStarted = false;
+        $oneServiceStarted = false;
         $implementedServices = $this->config->implementedServicesForFeature($startType);
 
 /*
@@ -183,28 +182,30 @@ class Time
  * should then contain the IDs of the last starts through the workflow, not
  * through each individual sefrvice
  */
-        if (empty($implementedServices) === false) {
-            foreach ($this->config->activatedServices() as $service) {
-                $this->config->update('workflow', 'timer_' . $service . '_id', null);
-            }
+        if (empty($implementedServices) === true) {
+            return '';
+        }
 
-            foreach ($implementedServices as $service) {
-                $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
-                $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
+        foreach ($this->config->activatedServices() as $service) {
+            $this->config->update('workflow', 'timer_' . $service . '_id', null);
+        }
 
-                $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
-                $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
+        foreach ($implementedServices as $service) {
+            $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
+            $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
-                if ($timerId !== null) {
-                    $atLeastOneServiceStarted = true;
-                    $message .= '- ' . ucfirst($service) . ': started' . "\r\n";
-                } else {
-                    $message .= '- ' . ucfirst($service) . ': cannot start' . "\r\n";
-                }
+            $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
+            $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
+
+            if ($timerId !== null) {
+                $oneServiceStarted = true;
+                $message .= '- ' . ucfirst($service) . ': started' . "\r\n";
+            } else {
+                $message .= '- ' . ucfirst($service) . ': cannot start' . "\r\n";
             }
         }
 
-        if ($atLeastOneServiceStarted === true) {
+        if ($oneServiceStarted === true) {
             $this->config->update('workflow', 'timer_description', $description);
             $this->config->update('workflow', 'is_timer_running', true);
         }
@@ -228,7 +229,9 @@ class Time
             'harvest' => $this->config->get('harvest', 'default_task_id'),
         ];
 
-        return $this->startTimer($description, $projectsDefault, $tagsDefault, true);
+
+
+        return $this->startTimer($description, $projectsDefault, $tagsDefault, 'start_default');
     }
 
     /**
@@ -237,20 +240,20 @@ class Time
     public function stopRunningTimer()
     {
         $message = '';
-        $atLeastOneServiceStopped = false;
+        $oneServiceStopped = false;
 
         foreach ($this->config->activatedServices() as $service) {
             $timerId = $this->config->get('workflow', 'timer_' . $service . '_id');
 
             if ($this->$service->stopTimer($timerId) === true) {
-                $atLeastOneServiceStopped = true;
+                $oneServiceStopped = true;
                 $message .= '- ' . ucfirst($service) . ': stopped' . "\r\n";
             } else {
                 $message .= '- ' . ucfirst($service) . ': cannot stop' . "\r\n";
             }
         }
 
-        if ($atLeastOneServiceStopped === true) {
+        if ($oneServiceStopped === true) {
             $this->config->update('workflow', 'is_timer_running', false);
         }
 
@@ -284,18 +287,18 @@ class Time
             $this->stopRunningTimer();
         }
 
-        $atLeastOneTimerDeleted = false;
+        $oneTimerDeleted = false;
 
         foreach ($this->config->servicesToUndo() as $service) {
             if ($this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
-                $atLeastOneTimerDeleted = true;
+                $oneTimerDeleted = true;
                 $message .= '- ' . ucfirst($service) . ': undid' . "\r\n";
             } else {
                 $message .= '- ' . ucfirst($service) . ': cannot undo' . "\r\n";
             }
         }
 
-        if ($atLeastOneTimerDeleted === true) {
+        if ($oneTimerDeleted === true) {
             $this->config->update('workflow', 'is_timer_running', false);
         }
 
