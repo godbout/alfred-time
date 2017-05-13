@@ -307,8 +307,8 @@ class Time
     {
         $message = '';
 
-        foreach ($this->implementedServicesForFeature('sync_data') as $service) {
-            if ($this->isServiceActive($service) === true) {
+        foreach ($this->config->implementedServicesForFeature('sync_data') as $service) {
+            if ($this->config->isServiceActive($service) === true) {
                 $message .= $this->syncServiceOnlineDataToLocalCache($service);
             }
         }
