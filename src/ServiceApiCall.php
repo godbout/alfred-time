@@ -17,9 +17,9 @@ class ServiceApiCall
     private $client = null;
 
     /**
-     * @var string
+     * @var int
      */
-    private $code = '';
+    private $code = 0;
 
     /**
      * @var mixed
