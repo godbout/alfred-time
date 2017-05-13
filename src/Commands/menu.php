@@ -53,13 +53,13 @@ if ($config->isConfigured() === false) {
                 ->type('default')
                 ->valid(false);
         } else {
-            $subtitle = $time->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
+            $subtitle = $config->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
             $subtitle .= implode(' and ', array_map('ucfirst', $servicesToUndo));
 
             $workflow->result()
                 ->uid('')
                 ->arg('undo')
-                ->title('Undo "' . $time->getTimerDescription() . '"')
+                ->title('Undo "' . $config->getTimerDescription() . '"')
                 ->subtitle($subtitle)
                 ->type('default')
                 ->valid(true);
@@ -80,7 +80,7 @@ if ($config->isConfigured() === false) {
             ->subtitle('Press enter to load the list of recent timers')
             ->type('default')
             ->valid(true);
-    } elseif ($time->hasTimerRunning() === false) {
+    } elseif ($config->hasTimerRunning() === false) {
         $services = $config->implementedServicesForFeature('start');
 
         if (empty($services) === true) {
@@ -96,7 +96,7 @@ if ($config->isConfigured() === false) {
             ->subtitle($subtitle)
             ->type('default')
             ->mod('cmd', $subtitle . ' and Harvest with default project and tags', 'start_default ' . $query)
-            ->mod('alt', 'Continue timer for Toggl and Harvest ("' . $time->getTimerDescription() . '") with default project and tags', 'start_default ' . $time->getTimerDescription())
+            ->mod('alt', 'Continue timer for Toggl and Harvest ("' . $config->getTimerDescription() . '") with default project and tags', 'start_default ' . $config->getTimerDescription())
             ->valid(true);
     } else {
         $services = $config->activatedServices();
@@ -110,7 +110,7 @@ if ($config->isConfigured() === false) {
         $workflow->result()
             ->uid('')
             ->arg('stop')
-            ->title('Stop "' . $time->getTimerDescription() . '"')
+            ->title('Stop "' . $config->getTimerDescription() . '"')
             ->subtitle($subtitle)
             ->type('default')
             ->valid(true);

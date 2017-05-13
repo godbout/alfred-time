@@ -149,6 +149,10 @@ class Time
     {
         $tags = [];
 
+/*
+ * Temporary, only get the tags of Toggl
+ * Later, we will get Harvest ones too
+ */
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $tags = $this->$service->getTags($this->getServiceDataCache($service));
@@ -156,22 +160,6 @@ class Time
         }
 
         return $tags;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTimerDescription()
-    {
-        return $this->config->get('workflow', 'timer_description');
-    }
-
-    /**
-     * @return boolean
-     */
-    public function hasTimerRunning()
-    {
-        return $this->config->get('workflow', 'is_timer_running') === false ? false : true;
     }
 
     /**
@@ -292,7 +280,7 @@ class Time
     {
         $message = '';
 
-        if ($this->hasTimerRunning() === true) {
+        if ($this->config->hasTimerRunning() === true) {
             $this->stopRunningTimer();
         }
 
