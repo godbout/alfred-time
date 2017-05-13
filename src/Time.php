@@ -326,16 +326,14 @@ class Time
      */
     private function syncServiceOnlineDataToLocalCache($service)
     {
-        $message = '';
         $data = $this->$service->getOnlineData();
 
-        if (empty($data) === false) {
-            $this->saveServiceDataCache($service, $data);
-            $message .= '- ' . ucfirst($service) . ': data cached' . "\r\n";
-        } else {
-            $message .= '- ' . ucfirst($service) . ': cannot cache data' . "\r\n";
+        if (empty($data) === true) {
+            return '- ' . ucfirst($service) . ': cannot cache data' . "\r\n";
         }
 
-        return $message;
+        $this->saveServiceDataCache($service, $data);
+
+        return '- ' . ucfirst($service) . ': data cached' . "\r\n";
     }
 }
