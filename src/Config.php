@@ -13,6 +13,28 @@ class Config
     private $config = [];
 
     /**
+     * @var array
+     */
+    private $currentImplementation = [
+        'start'         => ['toggl'],
+        'start_default' => ['toggl', 'harvest'],
+        'stop'          => ['toggl', 'harvest'],
+        'delete'        => ['toggl'],
+        'get_projects'  => ['toggl'],
+        'get_tags'      => ['toggl'],
+        'get_timers'    => ['toggl'],
+        'sync_data'     => ['toggl'],
+    ];
+
+    /**
+     * @var array
+     */
+    private $services = [
+        'toggl',
+        'harvest',
+    ];
+
+    /**
      * @param $filename
      */
     public function __construct($filename = null)
@@ -20,6 +42,22 @@ class Config
         if ($filename !== null) {
             $this->load($filename);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function activatedServices()
+    {
+        $activatedServices = [];
+
+        foreach ($this->services as $service) {
+            if ($this->isServiceActive($service) === true) {
+                array_push($activatedServices, $service);
+            }
+        }
+
+        return $activatedServices;
     }
 
     public function generateDefaultConfigurationFile()
@@ -66,6 +104,54 @@ class Config
         }
 
         return $res;
+    }
+
+    /**
+     * @param  string  $feature
+     * @return mixed
+     */
+    public function implementedServicesForFeature($feature = null)
+    {
+        $services = [];
+
+        if (isset($this->currentImplementation[$feature]) === true) {
+            $services = $this->currentImplementation[$feature];
+        }
+
+        return $services;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isConfigured()
+    {
+        return $this->config !== null;
+    }
+
+    /**
+     * @param  $service
+     * @return mixed
+     */
+    public function isServiceActive($service)
+    {
+        return $this->get($service, 'is_active');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function servicesToUndo()
+    {
+        $services = [];
+
+        foreach ($this->activatedServices() as $service) {
+            if ($this->get('workflow', 'timer_' . $service . '_id') !== null) {
+                array_push($services, $service);
+            }
+        }
+
+        return $services;
     }
 
     /**

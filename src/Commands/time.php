@@ -3,14 +3,16 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use AlfredTime\Time;
+use AlfredTime\Config;
 
-$time = new Time();
+$config = new Config(getenv('alfred_workflow_data') . '/config.json');
+$time = new Time($config);
 
 $query = getenv('description');
 $message = '';
 
 if (substr($query, 0, 6) === 'config') {
-    $time->generateDefaultConfigurationFile();
+    $config->generateDefaultConfigurationFile();
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'sync') {
     $message = $time->syncOnlineDataToLocalCache();

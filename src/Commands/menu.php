@@ -4,9 +4,11 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use AlfredTime\Time;
 use Alfred\Workflows\Workflow;
+use AlfredTime\Config;
 
 $workflow = new Workflow();
-$time = new Time();
+$config = new Config(getenv('alfred_workflow_data') . '/config.json');
+$time = new Time($config);
 
 $query = trim($argv[1]);
 
@@ -14,7 +16,7 @@ $query = trim($argv[1]);
  * Check for config file
  * If cannot find, Workflow is not usable
  */
-if ($time->isConfigured() === false) {
+if ($config->isConfigured() === false) {
     $workflow->result()
         ->uid('')
         ->arg('config')
@@ -40,7 +42,7 @@ if ($time->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($query === 'undo') {
-        $servicesToUndo = $time->servicesToUndo();
+        $servicesToUndo = $config->servicesToUndo();
 
         if (empty($servicesToUndo) === true) {
             $workflow->result()
@@ -79,7 +81,7 @@ if ($time->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($time->hasTimerRunning() === false) {
-        $services = $time->implementedServicesForFeature('start');
+        $services = $config->implementedServicesForFeature('start');
 
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
@@ -97,7 +99,7 @@ if ($time->isConfigured() === false) {
             ->mod('alt', 'Continue timer for Toggl and Harvest ("' . $time->getTimerDescription() . '") with default project and tags', 'start_default ' . $time->getTimerDescription())
             ->valid(true);
     } else {
-        $services = $time->activatedServices();
+        $services = $config->activatedServices();
 
         if (empty($services) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';

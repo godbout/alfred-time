@@ -14,59 +14,23 @@ class Time
     private $config;
 
     /**
-     * @var array
-     */
-    private $currentImplementation = [
-        'start'         => ['toggl'],
-        'start_default' => ['toggl', 'harvest'],
-        'stop'          => ['toggl', 'harvest'],
-        'delete'        => ['toggl'],
-        'get_projects'  => ['toggl'],
-        'get_tags'      => ['toggl'],
-        'get_timers'    => ['toggl'],
-        'sync_data'     => ['toggl'],
-    ];
-
-    /**
      * @var mixed
      */
     private $harvest;
-
-    /**
-     * @var array
-     */
-    private $services = [
-        'toggl',
-        'harvest',
-    ];
 
     /**
      * @var mixed
      */
     private $toggl;
 
-    public function __construct()
+    /**
+     * @param Config $config
+     */
+    public function __construct(Config $config = null)
     {
-        $this->config = new Config(getenv('alfred_workflow_data') . '/config.json');
-
+        $this->config = $config;
         $this->harvest = new Harvest($this->config->get('harvest', 'domain'), $this->config->get('harvest', 'api_token'));
         $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function activatedServices()
-    {
-        $activatedServices = [];
-
-        foreach ($this->services as $service) {
-            if ($this->isServiceActive($service) === true) {
-                array_push($activatedServices, $service);
-            }
-        }
-
-        return $activatedServices;
     }
 
     /**
@@ -97,7 +61,7 @@ class Time
         $message = '';
         $atLeastOneTimerDeleted = false;
 
-        foreach ($this->implementedServicesForFeature('delete') as $service) {
+        foreach ($this->config->implementedServicesForFeature('delete') as $service) {
             if ($this->deleteServiceTimer($service, $timerId) === true) {
                 $atLeastOneTimerDeleted = true;
                 $message .= '- ' . ucfirst($service) . ': deleted' . "\r\n";
@@ -111,11 +75,6 @@ class Time
         }
 
         return $message;
-    }
-
-    public function generateDefaultConfigurationFile()
-    {
-        $this->config->generateDefaultConfigurationFile();
     }
 
     /**
@@ -149,8 +108,8 @@ class Time
  * Temporary, only get the projects of Toggl
  * Later, we will get Harvest ones too
  */
-        foreach ($this->implementedServicesForFeature('get_projects') as $service) {
-            if ($this->isServiceActive($service) === true) {
+        foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
+            if ($this->config->isServiceActive($service) === true) {
                 $projects = $this->getServiceProjects($service);
             }
         }
@@ -165,8 +124,8 @@ class Time
     {
         $timers = [];
 
-        foreach ($this->implementedServicesForFeature('get_timers') as $service) {
-            if ($this->isServiceActive($service) === true) {
+        foreach ($this->config->implementedServicesForFeature('get_timers') as $service) {
+            if ($this->config->isServiceActive($service) === true) {
                 $timers = array_merge($timers, $this->getRecentServiceTimers($service));
             }
         }
@@ -198,7 +157,7 @@ class Time
         $projects = $this->getServiceDataCache($service);
 
         if (isset($projects['data']['projects']) === true) {
-            /*
+/*
  * To only show projects that are currently active
  * The Toggl API is slightly weird on that
  */
@@ -221,8 +180,8 @@ class Time
     {
         $tags = [];
 
-        foreach ($this->implementedServicesForFeature('get_tags') as $service) {
-            if ($this->isServiceActive($service) === true) {
+        foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
+            if ($this->config->isServiceActive($service) === true) {
                 $tags = array_merge($tags, $this->getServiceTags($service));
             }
         }
@@ -247,54 +206,6 @@ class Time
     }
 
     /**
-     * @param  string  $feature
-     * @return mixed
-     */
-    public function implementedServicesForFeature($feature = null)
-    {
-        $services = [];
-
-        if (isset($this->currentImplementation[$feature]) === true) {
-            $services = $this->currentImplementation[$feature];
-        }
-
-        return $services;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isConfigured()
-    {
-        return $this->config === null ? false : true;
-    }
-
-    /**
-     * @param  $service
-     * @return mixed
-     */
-    public function isServiceActive($service)
-    {
-        return $this->config->get($service, 'is_active');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function servicesToUndo()
-    {
-        $services = [];
-
-        foreach ($this->activatedServices() as $service) {
-            if ($this->config->get('workflow', 'timer_' . $service . '_id') !== null) {
-                array_push($services, $service);
-            }
-        }
-
-        return $services;
-    }
-
-    /**
      * @param  $description
      * @param  $projectsDefault
      * @param  null               $tagsDefault
@@ -306,7 +217,7 @@ class Time
         $message = '';
         $startType = $startDefault === true ? 'start_default' : 'start';
         $atLeastOneServiceStarted = false;
-        $implementedServices = $this->implementedServicesForFeature($startType);
+        $implementedServices = $this->config->implementedServicesForFeature($startType);
 
 /*
  * When starting a new timer, all the services timer IDs have to be put to null
@@ -316,7 +227,7 @@ class Time
  * through each individual sefrvice
  */
         if (empty($implementedServices) === false) {
-            foreach ($this->activatedServices() as $service) {
+            foreach ($this->config->activatedServices() as $service) {
                 $this->config->update('workflow', 'timer_' . $service . '_id', null);
             }
 
@@ -371,7 +282,7 @@ class Time
         $message = '';
         $atLeastOneServiceStopped = false;
 
-        foreach ($this->activatedServices() as $service) {
+        foreach ($this->config->activatedServices() as $service) {
             $timerId = $this->config->get('workflow', 'timer_' . $service . '_id');
 
             if ($this->$service->stopTimer($timerId) === true) {
@@ -418,7 +329,7 @@ class Time
 
         $atLeastOneTimerDeleted = false;
 
-        foreach ($this->servicesToUndo() as $service) {
+        foreach ($this->config->servicesToUndo() as $service) {
             if ($this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
                 $atLeastOneTimerDeleted = true;
                 $message .= '- ' . ucfirst($service) . ': undid' . "\r\n";
