@@ -60,14 +60,25 @@ class Time
         $message = '';
 
         foreach ($this->config->implementedServicesForFeature('delete') as $service) {
-            if ($this->deleteServiceTimer($service, $timerId) === true) {
-                $message .= '- ' . ucfirst($service) . ': deleted' . "\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) . ': cannot delete [' . $this->$service->getLastMessage() . ']' . "\r\n";
-            }
+            $res = $this->deleteServiceTimer($service, $timerId);
+            $message .= $this->setNotificationForService($service, 'delete', $res);
         }
 
         return $message;
+    }
+
+    /**
+     * @param $service
+     * @param null $action
+     * @param null $success
+     */
+    public function setNotificationForService($service = null, $action = null, $success = false)
+    {
+        if ($success === false) {
+            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
+        }
+
+        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
     }
 
     /**
@@ -243,11 +254,11 @@ class Time
         foreach ($this->config->activatedServices() as $service) {
             $timerId = $this->config->get('workflow', 'timer_' . $service . '_id');
 
-            if ($this->$service->stopTimer($timerId) === true) {
+            $res = $this->$service->stopTimer($timerId);
+            $message .= $this->setNotificationForService($service, 'stop', $res);
+            
+            if ($res === true) {
                 $oneServiceStopped = true;
-                $message .= '- ' . ucfirst($service) . ': stopped' . "\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) . ': cannot stop [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -288,11 +299,11 @@ class Time
         $oneTimerDeleted = false;
 
         foreach ($this->config->servicesToUndo() as $service) {
-            if ($this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id')) === true) {
+            $res = $this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id'));
+            $message .= $this->setNotificationForService($service, 'undo', $res);
+
+            if ($res === true) {
                 $oneTimerDeleted = true;
-                $message .= '- ' . ucfirst($service) . ': undid' . "\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) . ': cannot undo [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -330,11 +341,11 @@ class Time
         $data = $this->$service->getOnlineData();
 
         if (empty($data) === true) {
-            return '- ' . ucfirst($service) . ': cannot cache data [' . $this->$service->getLastMessage() . ']' . "\r\n";
+            return $this->setNotificationForService($service, 'data', false);
         }
 
         $this->saveServiceDataCache($service, $data);
 
-        return '- ' . ucfirst($service) . ': data cached' . "\r\n";
+        return $this->setNotificationForService($service, 'data', true);
     }
 }
