@@ -96,14 +96,12 @@ class Config
     public function get($section = null, $param = null)
     {
         if ($section === null) {
-            $res = $this->config;
+            return $this->config;
         } elseif ($param === null) {
-            $res = $this->config[$section];
-        } else {
-            $res = $this->config[$section][$param];
+           return $this->config[$section];
         }
-
-        return $res;
+        
+        return $this->config[$section][$param];
     }
 
     /**
