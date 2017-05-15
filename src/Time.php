@@ -68,20 +68,6 @@ class Time
     }
 
     /**
-     * @param $service
-     * @param null $action
-     * @param null $success
-     */
-    public function setNotificationForService($service = null, $action = null, $success = null)
-    {
-        if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
-        }
-
-        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
-    }
-
-    /**
      * @param  $projectId
      * @return mixed
      */
@@ -108,10 +94,10 @@ class Time
     {
         $projects = [];
 
-/*
- * Temporary, only get the projects of Toggl
- * Later, we will get Harvest ones too
- */
+        /**
+         * Temporary, only get the projects of Toggl
+         * Later, we will get Harvest ones too
+         */
         foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $projects = $this->$service->getProjects($this->getServiceDataCache($service));
@@ -160,10 +146,10 @@ class Time
     {
         $tags = [];
 
-/*
- * Temporary, only get the tags of Toggl
- * Later, we will get Harvest ones too
- */
+        /**
+         * Temporary, only get the tags of Toggl
+         * Later, we will get Harvest ones too
+         */
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $tags = $this->$service->getTags($this->getServiceDataCache($service));
@@ -171,6 +157,20 @@ class Time
         }
 
         return $tags;
+    }
+
+    /**
+     * @param $service
+     * @param null       $action
+     * @param null       $success
+     */
+    public function setNotificationForService($service = null, $action = null, $success = null)
+    {
+        if (empty($success) === true) {
+            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
+        }
+
+        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
     }
 
     /**
@@ -186,13 +186,13 @@ class Time
         $oneServiceStarted = false;
         $implementedServices = $this->config->implementedServicesForFeature($startType);
 
-/*
- * When starting a new timer, all the services timer IDs have to be put to null
- * so that when the user uses the UNDO feature, it doesn't delete old previous
- * other services timers. The timer IDs are used for the UNDO feature and
- * should then contain the IDs of the last starts through the workflow, not
- * through each individual sefrvice
- */
+        /**
+         * When starting a new timer, all the services timer IDs have to be put to null
+         * so that when the user uses the UNDO feature, it doesn't delete old previous
+         * other services timers. The timer IDs are used for the UNDO feature and
+         * should then contain the IDs of the last starts through the workflow, not
+         * through each individual sefrvice
+         */
         if (empty($implementedServices) === true) {
             return '';
         }
@@ -207,11 +207,8 @@ class Time
 
             $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
             $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
-            $this->setNotificationForService($service, 'start', $timerId);
-
-            if ($timerId !== null) {
-                $oneServiceStarted = true;
-            }
+            $message .= $this->setNotificationForService($service, 'start', $timerId);
+            $oneServiceStarted = $oneServiceStarted || ($timerId !== null);
         }
 
         if ($oneServiceStarted === true) {
@@ -254,10 +251,7 @@ class Time
 
             $res = $this->$service->stopTimer($timerId);
             $message .= $this->setNotificationForService($service, 'stop', $res);
-            
-            if ($res === true) {
-                $oneServiceStopped = true;
-            }
+            $oneServiceStopped = $oneServiceStopped || $res;
         }
 
         if ($oneServiceStopped === true) {
@@ -299,10 +293,7 @@ class Time
         foreach ($this->config->servicesToUndo() as $service) {
             $res = $this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id'));
             $message .= $this->setNotificationForService($service, 'undo', $res);
-
-            if ($res === true) {
-                $oneTimerDeleted = true;
-            }
+            $oneTimerDeleted = $oneTimerDeleted || $res;
         }
 
         if ($oneTimerDeleted === true) {
