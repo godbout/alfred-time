@@ -143,7 +143,6 @@ class Toggl
      */
     public function timerAction($action, $apiUri, array $options = [])
     {
-        $res = false;
         $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
         $methods = [
             'start'             => 'post',
@@ -154,16 +153,15 @@ class Toggl
         ];
         $method = isset($methods[$action]) ? $methods[$action] : '';
 
-        if ($this->serviceApiCall->send($method, $apiUri, $options) === true) {
-            $res = $this->serviceApiCall->last('success');
-
-            if (in_array($action, $returnDataFor) === true) {
-                $res = $this->serviceApiCall->getData();
-            }
-        } else {
+        if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {
             $this->message = $this->serviceApiCall->getMessage();
+            return false;
         }
 
-        return $res;
+        if (in_array($action, $returnDataFor) === true) {
+            return $this->serviceApiCall->getData();
+        }
+
+        return $this->serviceApiCall->last('success');
     }
 }
