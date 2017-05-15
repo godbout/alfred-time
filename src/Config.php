@@ -98,10 +98,26 @@ class Config
         if ($section === null) {
             return $this->config;
         } elseif ($param === null) {
-           return $this->config[$section];
+            return $this->config[$section];
         }
-        
+
         return $this->config[$section][$param];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimerDescription()
+    {
+        return $this->get('workflow', 'timer_description');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasTimerRunning()
+    {
+        return $this->get('workflow', 'is_timer_running') === true;
     }
 
     /**
@@ -183,21 +199,5 @@ class Config
         }
 
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTimerDescription()
-    {
-        return $this->get('workflow', 'timer_description');
-    }
-
-        /**
-     * @return boolean
-     */
-    public function hasTimerRunning()
-    {
-        return $this->get('workflow', 'is_timer_running') === true;
     }
 }

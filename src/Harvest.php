@@ -86,9 +86,7 @@ class Harvest
             return false;
         }
 
-        $res = $this->timerAction('stop', 'timer/' . $timerId);
-
-        return $res;
+        return $this->timerAction('stop', 'timer/' . $timerId);
     }
 
     /**
@@ -98,9 +96,8 @@ class Harvest
     private function isTimerRunning($timerId)
     {
         $data = $this->timerAction('timer_running', 'show/' . $timerId);
-        $res = isset($data['timer_started_at']);
 
-        return $res;
+        return isset($data['timer_started_at']);
     }
 
     /**
@@ -120,16 +117,16 @@ class Harvest
         ];
         $method = isset($methods[$action]) ? $methods[$action] : '';
 
-        if ($this->serviceApiCall->send($method, $apiUri, $options) === true) {
-            $res = $this->serviceApiCall->last('success');
-
-            if (in_array($action, $returnDataFor) === true) {
-                $res = $this->serviceApiCall->getData();
-            }
-        } else {
+        if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {
             $this->message = $this->serviceApiCall->getMessage();
+
+            return false;
         }
 
-        return $res;
+        if (in_array($action, $returnDataFor) === true) {
+            return $this->serviceApiCall->getData();
+        }
+
+        return $this->serviceApiCall->last('success');
     }
 }
