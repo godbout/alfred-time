@@ -69,18 +69,16 @@ class ServiceApiCall
      */
     public function last($status = '')
     {
-        $res = false;
-
         switch ($status) {
             case 'success':
                 if ($this->code >= 200 && $this->code <= 299) {
-                    $res = true;
+                    return true;
                 }
 
                 break;
         }
 
-        return $res;
+        return false;
     }
 
     /**
