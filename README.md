@@ -87,7 +87,7 @@ The config file contains 3 sections:
 * Allow choice of project and task for Harvest
 * See reports directly in Alfred
 * See info about current running timer (project, tags/tasks, running time, etc...)
-* Add better tests suite
+* Add better tests suite (tests + php5.5 on travis)
 
 # Contribute
 
