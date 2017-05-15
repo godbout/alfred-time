@@ -25,7 +25,7 @@ class Harvest
      */
     public function __construct($domain = null, $apiToken = null)
     {
-        $this->serviceApiCall = new serviceApiCall([
+        $this->serviceApiCall = new ServiceApiCall([
             'base_uri' => 'https://' . $domain . '.harvestapp.com/daily/',
             'headers'  => [
                 'Content-type'  => 'application/json',
@@ -107,7 +107,6 @@ class Harvest
      */
     private function timerAction($action, $apiUri, array $options = [])
     {
-        $res = false;
         $returnDataFor = ['start', 'timer_running'];
         $methods = [
             'start'         => 'post',
