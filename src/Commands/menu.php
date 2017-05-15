@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use AlfredTime\Time;
-use Alfred\Workflows\Workflow;
 use AlfredTime\Config;
+use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');

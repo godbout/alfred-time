@@ -63,7 +63,7 @@ class Time
             if ($this->deleteServiceTimer($service, $timerId) === true) {
                 $message .= '- ' . ucfirst($service) . ': deleted' . "\r\n";
             } else {
-                $message .= '- ' . ucfirst($service) . ': cannot delete' . "\r\n";
+                $message .= '- ' . ucfirst($service) . ': cannot delete [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -97,10 +97,10 @@ class Time
     {
         $projects = [];
 
-        /*
-         * Temporary, only get the projects of Toggl
-         * Later, we will get Harvest ones too
-         */
+/*
+ * Temporary, only get the projects of Toggl
+ * Later, we will get Harvest ones too
+ */
         foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $projects = $this->$service->getProjects($this->getServiceDataCache($service));
@@ -149,10 +149,10 @@ class Time
     {
         $tags = [];
 
-        /*
-         * Temporary, only get the tags of Toggl
-         * Later, we will get Harvest ones too
-         */
+/*
+ * Temporary, only get the tags of Toggl
+ * Later, we will get Harvest ones too
+ */
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $tags = $this->$service->getTags($this->getServiceDataCache($service));
@@ -175,13 +175,13 @@ class Time
         $oneServiceStarted = false;
         $implementedServices = $this->config->implementedServicesForFeature($startType);
 
-        /*
-         * When starting a new timer, all the services timer IDs have to be put to null
-         * so that when the user uses the UNDO feature, it doesn't delete old previous
-         * other services timers. The timer IDs are used for the UNDO feature and
-         * should then contain the IDs of the last starts through the workflow, not
-         * through each individual sefrvice
-         */
+/*
+ * When starting a new timer, all the services timer IDs have to be put to null
+ * so that when the user uses the UNDO feature, it doesn't delete old previous
+ * other services timers. The timer IDs are used for the UNDO feature and
+ * should then contain the IDs of the last starts through the workflow, not
+ * through each individual sefrvice
+ */
         if (empty($implementedServices) === true) {
             return '';
         }
@@ -201,7 +201,7 @@ class Time
                 $oneServiceStarted = true;
                 $message .= '- ' . ucfirst($service) . ': started' . "\r\n";
             } else {
-                $message .= '- ' . ucfirst($service) . ': cannot start' . "\r\n";
+                $message .= '- ' . ucfirst($service) . ': cannot start [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -247,7 +247,7 @@ class Time
                 $oneServiceStopped = true;
                 $message .= '- ' . ucfirst($service) . ': stopped' . "\r\n";
             } else {
-                $message .= '- ' . ucfirst($service) . ': cannot stop' . "\r\n";
+                $message .= '- ' . ucfirst($service) . ': cannot stop [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -292,7 +292,7 @@ class Time
                 $oneTimerDeleted = true;
                 $message .= '- ' . ucfirst($service) . ': undid' . "\r\n";
             } else {
-                $message .= '- ' . ucfirst($service) . ': cannot undo' . "\r\n";
+                $message .= '- ' . ucfirst($service) . ': cannot undo [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
@@ -330,7 +330,7 @@ class Time
         $data = $this->$service->getOnlineData();
 
         if (empty($data) === true) {
-            return '- ' . ucfirst($service) . ': cannot cache data' . "\r\n";
+            return '- ' . ucfirst($service) . ': cannot cache data [' . $this->$service->getLastMessage() . ']' . "\r\n";
         }
 
         $this->saveServiceDataCache($service, $data);
