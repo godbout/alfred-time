@@ -166,10 +166,10 @@ class Time
      * @param  $description
      * @param  $projectsDefault
      * @param  null               $tagsDefault
-     * @param  boolean            $startDefault
+     * @param  string             $startType
      * @return string
      */
-    public function startTimer($description = '', $projectsDefault = null, $tagsDefault = null, $startType = 'start')
+    public function startTimer($description = '', array $projectsDefault = [], array $tagsDefault = [], $startType = 'start')
     {
         $message = '';
         $oneServiceStarted = false;
@@ -228,8 +228,6 @@ class Time
             'toggl'   => $this->config->get('toggl', 'default_tags'),
             'harvest' => $this->config->get('harvest', 'default_task_id'),
         ];
-
-
 
         return $this->startTimer($description, $projectsDefault, $tagsDefault, 'start_default');
     }
