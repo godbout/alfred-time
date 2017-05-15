@@ -45,7 +45,7 @@ class Harvest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastMessage()
     {
@@ -91,7 +91,7 @@ class Harvest
 
     /**
      * @param  $timerId
-     * @return mixed
+     * @return boolean
      */
     private function isTimerRunning($timerId)
     {
