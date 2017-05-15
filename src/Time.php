@@ -72,9 +72,9 @@ class Time
      * @param null $action
      * @param null $success
      */
-    public function setNotificationForService($service = null, $action = null, $success = false)
+    public function setNotificationForService($service = null, $action = null, $success = null)
     {
-        if ($success === false) {
+        if (empty($success) === true) {
             return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
         }
 
@@ -207,12 +207,10 @@ class Time
 
             $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
             $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
+            $this->setNotificationForService($service, 'start', $timerId);
 
             if ($timerId !== null) {
                 $oneServiceStarted = true;
-                $message .= '- ' . ucfirst($service) . ': started' . "\r\n";
-            } else {
-                $message .= '- ' . ucfirst($service) . ': cannot start [' . $this->$service->getLastMessage() . ']' . "\r\n";
             }
         }
 
