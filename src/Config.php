@@ -98,7 +98,7 @@ class Config
         if ($section === null) {
             return $this->config;
         } elseif ($param === null) {
-           return $this->config[$section];
+            return $this->config[$section];
         }
         
         return $this->config[$section][$param];
