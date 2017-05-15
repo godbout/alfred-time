@@ -97,10 +97,10 @@ class Time
     {
         $projects = [];
 
-/*
- * Temporary, only get the projects of Toggl
- * Later, we will get Harvest ones too
- */
+        /*
+         * Temporary, only get the projects of Toggl
+         * Later, we will get Harvest ones too
+         */
         foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $projects = $this->$service->getProjects($this->getServiceDataCache($service));
@@ -149,10 +149,10 @@ class Time
     {
         $tags = [];
 
-/*
- * Temporary, only get the tags of Toggl
- * Later, we will get Harvest ones too
- */
+        /*
+         * Temporary, only get the tags of Toggl
+         * Later, we will get Harvest ones too
+         */
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
                 $tags = $this->$service->getTags($this->getServiceDataCache($service));
@@ -175,13 +175,13 @@ class Time
         $oneServiceStarted = false;
         $implementedServices = $this->config->implementedServicesForFeature($startType);
 
-/*
- * When starting a new timer, all the services timer IDs have to be put to null
- * so that when the user uses the UNDO feature, it doesn't delete old previous
- * other services timers. The timer IDs are used for the UNDO feature and
- * should then contain the IDs of the last starts through the workflow, not
- * through each individual sefrvice
- */
+        /*
+         * When starting a new timer, all the services timer IDs have to be put to null
+         * so that when the user uses the UNDO feature, it doesn't delete old previous
+         * other services timers. The timer IDs are used for the UNDO feature and
+         * should then contain the IDs of the last starts through the workflow, not
+         * through each individual sefrvice
+         */
         if (empty($implementedServices) === true) {
             return '';
         }

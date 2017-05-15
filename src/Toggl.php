@@ -69,10 +69,10 @@ class Toggl
             return [];
         }
 
-/*
- * To only show projects that are currently active
- * The Toggl API is slightly weird on that
- */
+        /*
+         * To only show projects that are currently active
+         * The Toggl API is slightly weird on that
+         */
         foreach ($data['data']['projects'] as $key => $project) {
             if (isset($project['server_deleted_at']) === true) {
                 unset($data['data']['projects'][$key]);
