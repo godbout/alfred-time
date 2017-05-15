@@ -191,8 +191,8 @@ class Time
         }
 
         foreach ($implementedServices as $service) {
-            $defaultProjectId = $projectsDefault[$service];
-            $defaultTags = $tagsDefault[$service];
+            $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
+            $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
 
             $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
             $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
