@@ -58,10 +58,23 @@ class Time
     public function deleteTimer($timerId)
     {
         $message = '';
+        $oneTimerDeleted = false;
+
+        /**
+         * Currently only for Toggl
+         *
+         * Would have to be changed if adding Harvest
+         */
+        $togglId = $this->config->get('workflow', 'timer_toggl_id');
 
         foreach ($this->config->implementedServicesForFeature('delete') as $service) {
             $res = $this->deleteServiceTimer($service, $timerId);
             $message .= $this->setNotificationForService($service, 'delete', $res);
+            $oneTimerDeleted = $oneTimerDeleted || $res;
+        }
+
+        if ($oneTimerDeleted === true && ($timerId === $togglId)) {
+            $this->config->update('workflow', 'is_timer_running', false);
         }
 
         return $message;
@@ -283,11 +296,6 @@ class Time
     public function undoTimer()
     {
         $message = '';
-
-        if ($this->config->hasTimerRunning() === true) {
-            $this->stopRunningTimer();
-        }
-
         $oneTimerDeleted = false;
 
         foreach ($this->config->servicesToUndo() as $service) {
