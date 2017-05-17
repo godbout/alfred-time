@@ -16,14 +16,13 @@ class Config
      * @var array
      */
     private $currentImplementation = [
-        'start'         => ['toggl'],
-        'start_default' => ['toggl', 'harvest'],
+        'start'         => ['toggl', 'harvest'],
         'stop'          => ['toggl', 'harvest'],
         'delete'        => ['toggl'],
-        'get_projects'  => ['toggl'],
-        'get_tags'      => ['toggl'],
+        'get_projects'  => ['toggl', 'harvest'],
+        'get_tags'      => ['toggl', 'harvest'],
         'get_timers'    => ['toggl'],
-        'sync_data'     => ['toggl'],
+        'sync_data'     => ['toggl', 'harvest'],
     ];
 
     /**
@@ -64,6 +63,7 @@ class Config
     {
         $this->config = [
             'workflow' => [
+                'primary_service' => 'toggl',
                 'is_timer_running'  => false,
                 'timer_toggl_id'    => null,
                 'timer_harvest_id'  => null,
@@ -199,5 +199,10 @@ class Config
         }
 
         file_put_contents($configFile, json_encode($this->config, JSON_PRETTY_PRINT));
+    }
+
+    public function getPrimaryService()
+    {
+        return $this->get('workflow', 'primary_service');
     }
 }

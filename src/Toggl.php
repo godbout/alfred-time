@@ -65,6 +65,8 @@ class Toggl
      */
     public function getProjects($data)
     {
+        $projects = [];
+
         if (isset($data['data']['projects']) === false) {
             return [];
         }
@@ -77,9 +79,13 @@ class Toggl
             if (isset($project['server_deleted_at']) === true) {
                 unset($data['data']['projects'][$key]);
             }
+
+            $item['name'] = $project['name'];
+            $item['id'] = $project['id'];
+            $projects[] = $item;
         }
 
-        return $data['data']['projects'];
+        return $projects;
     }
 
     public function getRecentTimers()
@@ -93,11 +99,30 @@ class Toggl
      */
     public function getTags($data)
     {
+        $tags = [];
+
         if (isset($data['data']['tags']) === false) {
             return [];
         }
 
-        return $data['data']['tags'];
+        /*
+         * To only show projects that are currently active
+         * The Toggl API is slightly weird on that
+         */
+        foreach ($data['data']['tags'] as $key => $tag) {
+            if (isset($tag['server_deleted_at']) === true) {
+                unset($data['data']['tags'][$key]);
+            }
+
+            $item['name'] = $tag['name'];
+            /**
+             * Toggl API works with tag names, not IDs
+             */
+            $item['id'] = $tag['name'];
+            $tags[] = $item;
+        }
+
+        return $tags;
     }
 
     /**
@@ -106,14 +131,14 @@ class Toggl
      * @param  $tagNames
      * @return mixed
      */
-    public function startTimer($description, $projectId, $tagNames)
+    public function startTimer($description, $projectId, $tagData)
     {
         $togglId = null;
         $item = [
             'time_entry' => [
                 'description'  => $description,
                 'pid'          => $projectId,
-                'tags'         => explode(', ', $tagNames),
+                'tags'         => explode(', ', $tagData),
                 'created_with' => 'Alfred Time Workflow',
             ],
         ];

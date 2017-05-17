@@ -26,7 +26,7 @@ class Harvest
     public function __construct($domain = null, $apiToken = null)
     {
         $this->serviceApiCall = new ServiceApiCall([
-            'base_uri' => 'https://' . $domain . '.harvestapp.com/daily/',
+            'base_uri' => 'https://' . $domain . '.harvestapp.com/',
             'headers'  => [
                 'Content-type'  => 'application/json',
                 'Accept'        => 'application/json',
@@ -41,7 +41,7 @@ class Harvest
      */
     public function deleteTimer($timerId = null)
     {
-        return $this->timerAction('delete', 'delete/' . $timerId);
+        return $this->timerAction('delete', 'daily/delete/' . $timerId);
     }
 
     /**
@@ -53,6 +53,55 @@ class Harvest
     }
 
     /**
+     * @return mixed
+     */
+    public function getOnlineData()
+    {
+        $data['projects'] = $this->timerAction('get_projects', 'projects');
+        $data['tasks'] = $this->timerAction('get_tags', 'tasks');
+
+        return $data;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function getProjects($data)
+    {
+        $projects = [];
+
+        if (isset($data['projects']) === false) {
+            return [];
+        }
+
+        foreach ($data['projects'] as $project) {
+            $item['name'] = $project['project']['name'];
+            $item['id'] = $project['project']['id'];
+            $projects[] = $item;
+        }
+
+        return $projects;
+    }
+
+    public function getTags($data)
+    {
+        $tags = [];
+
+        if (isset($data['tasks']) === false) {
+            return [];
+        }
+
+        foreach ($data['tasks'] as $tag) {
+            $item['name'] = $tag['task']['name'];
+            $item['id'] = $tag['task']['id'];
+            $tags[] = $item;
+        }
+
+        return $tags;
+    }
+
+    /**
      * @param  $description
      * @param  $projectId
      * @param  $taskId
@@ -61,13 +110,14 @@ class Harvest
     public function startTimer($description, $projectId, $taskId)
     {
         $harvestId = null;
+
         $item = [
             'notes'      => $description,
             'project_id' => $projectId,
-            'task_id'    => $taskId,
+            'task_id' => $taskId,
         ];
 
-        $data = $this->timerAction('start', 'add', ['json' => $item]);
+        $data = $this->timerAction('start', 'daily/add/', ['json' => $item]);
 
         if (isset($data['id']) === true) {
             $harvestId = $data['id'];
@@ -86,7 +136,7 @@ class Harvest
             return false;
         }
 
-        return $this->timerAction('stop', 'timer/' . $timerId);
+        return $this->timerAction('stop', 'daily/timer/' . $timerId);
     }
 
     /**
@@ -95,7 +145,7 @@ class Harvest
      */
     private function isTimerRunning($timerId)
     {
-        $data = $this->timerAction('timer_running', 'show/' . $timerId);
+        $data = $this->timerAction('timer_running', 'daily/show/' . $timerId);
 
         return isset($data['timer_started_at']);
     }
@@ -107,13 +157,22 @@ class Harvest
      */
     private function timerAction($action, $apiUri, array $options = [])
     {
-        $returnDataFor = ['start', 'timer_running'];
+        $returnDataFor = [
+            'start',
+            'timer_running',
+            'get_projects',
+            'get_tags',
+        ];
         $methods = [
             'start'         => 'post',
             'stop'          => 'get',
             'delete'        => 'delete',
             'timer_running' => 'get',
+            'get_projects'  => 'get',
+            'get_tags'      => 'get',
+            '',
         ];
+
         $method = isset($methods[$action]) ? $methods[$action] : '';
 
         if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {

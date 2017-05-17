@@ -6,7 +6,7 @@ use AlfredTime\Toggl;
 use AlfredTime\Config;
 use AlfredTime\Harvest;
 
-class Time
+class Timer
 {
     /**
      * @var mixed
@@ -106,14 +106,17 @@ class Time
     public function getProjects()
     {
         $projects = [];
+        $services = [];
 
-        /**
-         * Temporary, only get the projects of Toggl
-         * Later, we will get Harvest ones too
-         */
         foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $projects = $this->$service->getProjects($this->getServiceDataCache($service));
+                $services[$service] = $this->$service->getProjects($this->getServiceDataCache($service));
+            }
+        }
+
+        foreach ($services as $serviceName => $serviceProjects) {
+            foreach ($serviceProjects as $serviceProject) {
+                $projects[$serviceProject['name']][$serviceName . '_id'] = $serviceProject['id'];
             }
         }
 
@@ -145,11 +148,11 @@ class Time
         $data = [];
         $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
 
-        if (file_exists($cacheFile)) {
-            $data = json_decode(file_get_contents($cacheFile), true);
+        if (file_exists($cacheFile) === false) {
+            $this->syncServiceOnlineDataToLocalCache($service);
         }
 
-        return $data;
+        return json_decode(file_get_contents($cacheFile), true);
     }
 
     /**
@@ -158,16 +161,20 @@ class Time
     public function getTags()
     {
         $tags = [];
+        $services = [];
 
-        /**
-         * Temporary, only get the tags of Toggl
-         * Later, we will get Harvest ones too
-         */
         foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $tags = $this->$service->getTags($this->getServiceDataCache($service));
+                $services[$service] = $this->$service->getTags($this->getServiceDataCache($service));
             }
         }
+
+        foreach ($services as $serviceName => $serviceTags) {
+            foreach ($serviceTags as $serviceTag) {
+                $tags[$serviceTag['name']][$serviceName . '_id'] = $serviceTag['id'];
+            }
+        }
+
 
         return $tags;
     }
@@ -188,16 +195,16 @@ class Time
 
     /**
      * @param  $description
-     * @param  $projectsDefault
-     * @param  null               $tagsDefault
-     * @param  string             $startType
+     * @param  $projectsData
+     * @param  $tagData
      * @return string
      */
-    public function startTimer($description = '', array $projectsDefault = [], array $tagsDefault = [], $startType = 'start')
+    public function startTimer($description = '', array $projectData = [], array $tagData = [], $specificService = null)
     {
         $message = '';
         $oneServiceStarted = false;
-        $implementedServices = $this->config->implementedServicesForFeature($startType);
+
+        $servicesToRun = ($specificService === null) ? $this->config->implementedServicesForFeature('start') : [$specificService];
 
         /**
          * When starting a new timer, all the services timer IDs have to be put to null
@@ -206,7 +213,7 @@ class Time
          * should then contain the IDs of the last starts through the workflow, not
          * through each individual sefrvice
          */
-        if (empty($implementedServices) === true) {
+        if (empty($servicesToRun) === true) {
             return '';
         }
 
@@ -214,11 +221,8 @@ class Time
             $this->config->update('workflow', 'timer_' . $service . '_id', null);
         }
 
-        foreach ($implementedServices as $service) {
-            $defaultProjectId = isset($projectsDefault[$service]) ? $projectsDefault[$service] : null;
-            $defaultTags = isset($tagsDefault[$service]) ? $tagsDefault[$service] : null;
-
-            $timerId = $this->$service->startTimer($description, $defaultProjectId, $defaultTags);
+        foreach ($servicesToRun as $service) {
+            $timerId = $this->$service->startTimer($description, $projectData[$service . '_id'], $tagData[$service . '_id']);
             $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
             $message .= $this->setNotificationForService($service, 'start', $timerId);
             $oneServiceStarted = $oneServiceStarted || ($timerId !== null);
@@ -230,25 +234,6 @@ class Time
         }
 
         return $message;
-    }
-
-    /**
-     * @param  $description
-     * @return string
-     */
-    public function startTimerWithDefaultOptions($description)
-    {
-        $projectsDefault = [
-            'toggl'   => $this->config->get('toggl', 'default_project_id'),
-            'harvest' => $this->config->get('harvest', 'default_project_id'),
-        ];
-
-        $tagsDefault = [
-            'toggl'   => $this->config->get('toggl', 'default_tags'),
-            'harvest' => $this->config->get('harvest', 'default_task_id'),
-        ];
-
-        return $this->startTimer($description, $projectsDefault, $tagsDefault, 'start_default');
     }
 
     /**

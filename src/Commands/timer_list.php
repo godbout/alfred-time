@@ -2,13 +2,13 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use AlfredTime\Time;
+use AlfredTime\Timer;
 use Alfred\Workflows\Workflow;
 use AlfredTime\Config;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$time = new Time($config);
+$time = new Timer($config);
 
 $query = trim($argv[1]);
 
@@ -21,7 +21,6 @@ if (getenv('description') === 'delete') {
 }
 
 $timers = $time->getRecentTimers();
-$projects = $time->getProjects();
 
 foreach ($timers as $timer) {
     $projectName = $time->getProjectName($timer['pid']);

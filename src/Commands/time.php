@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use AlfredTime\Time;
+use AlfredTime\Timer;
 use AlfredTime\Config;
 
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$time = new Time($config);
+$time = new Timer($config);
 
 $query = getenv('description');
 $message = '';
@@ -30,25 +30,21 @@ if (substr($query, 0, 6) === 'config') {
     $timerData = json_decode(getenv('timer_data'), true);
     $project = ['toggl' => $timerData['pid']];
     $tags = ['toggl' => implode(', ', (empty($timerData['tags']) === true ? [] : $timerData['tags']))];
+
     $message = $time->startTimer($timerData['description'], $project, $tags);
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 
-    /*
-     * For now, only handle Toggl projects and tags
-     */
-    $project = [
-        'toggl' => getenv('project_id'),
-    ];
+    $projectData = json_decode(getenv('project_data'), true);
+    $tagData = json_decode(getenv('tag_data'), true);
+    $message = $time->startTimer($description, $projectData, $tagData, $config->get('workflow', 'primary_service'));
+} elseif (substr($query, 0, 10) === 'start_all ') {
+    $description = substr($query, 10);
 
-    $tag = [
-        'toggl' => getenv('tag_name'),
-    ];
-
-    $message = $time->startTimer($description, $project, $tag);
-} elseif (substr($query, 0, 14) === 'start_default ') {
-    $description = substr($query, 14);
-    $message = $time->startTimerWithDefaultOptions($description);
+    $projectData = json_decode(getenv('project_data'), true);
+    $tagData = json_decode(getenv('tag_data'), true);
+    $message = $time->startTimer($description, $projectData, $tagData);
+    
 } elseif (substr($query, 0, 4) === 'stop') {
     $message = $time->stopRunningTimer();
 }
