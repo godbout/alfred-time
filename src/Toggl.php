@@ -71,7 +71,7 @@ class Toggl
             return [];
         }
 
-        /*
+        /**
          * To only show projects that are currently active
          * The Toggl API is slightly weird on that
          */
@@ -80,6 +80,7 @@ class Toggl
                 unset($data['data']['projects'][$key]);
             }
 
+            $item = [];
             $item['name'] = $project['name'];
             $item['id'] = $project['id'];
             $projects[] = $item;
@@ -105,7 +106,7 @@ class Toggl
             return [];
         }
 
-        /*
+        /**
          * To only show projects that are currently active
          * The Toggl API is slightly weird on that
          */
@@ -114,6 +115,7 @@ class Toggl
                 unset($data['data']['tags'][$key]);
             }
 
+            $item = [];
             $item['name'] = $tag['name'];
             /**
              * Toggl API works with tag names, not IDs
@@ -180,6 +182,7 @@ class Toggl
 
         if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {
             $this->message = $this->serviceApiCall->getMessage();
+
             return false;
         }
 

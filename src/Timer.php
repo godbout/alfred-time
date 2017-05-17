@@ -145,7 +145,6 @@ class Timer
      */
     public function getServiceDataCache($service)
     {
-        $data = [];
         $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
 
         if (file_exists($cacheFile) === false) {
@@ -174,7 +173,6 @@ class Timer
                 $tags[$serviceTag['name']][$serviceName . '_id'] = $serviceTag['id'];
             }
         }
-
 
         return $tags;
     }

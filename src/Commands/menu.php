@@ -81,7 +81,7 @@ if ($config->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($config->hasTimerRunning() === false) {
-        $service = $config->getPrimaryService();
+        $service = $config->primaryService;
 
         if (empty($service) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';

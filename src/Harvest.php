@@ -57,6 +57,7 @@ class Harvest
      */
     public function getOnlineData()
     {
+        $data = [];
         $data['projects'] = $this->timerAction('get_projects', 'projects');
         $data['tasks'] = $this->timerAction('get_tags', 'tasks');
 
@@ -64,7 +65,7 @@ class Harvest
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return mixed
      */
     public function getProjects($data)
@@ -76,6 +77,7 @@ class Harvest
         }
 
         foreach ($data['projects'] as $project) {
+            $item = [];
             $item['name'] = $project['project']['name'];
             $item['id'] = $project['project']['id'];
             $projects[] = $item;
@@ -84,6 +86,10 @@ class Harvest
         return $projects;
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function getTags($data)
     {
         $tags = [];
@@ -93,6 +99,7 @@ class Harvest
         }
 
         foreach ($data['tasks'] as $tag) {
+            $item = [];
             $item['name'] = $tag['task']['name'];
             $item['id'] = $tag['task']['id'];
             $tags[] = $item;
@@ -114,7 +121,7 @@ class Harvest
         $item = [
             'notes'      => $description,
             'project_id' => $projectId,
-            'task_id' => $taskId,
+            'task_id'    => $taskId,
         ];
 
         $data = $this->timerAction('start', 'daily/add/', ['json' => $item]);
