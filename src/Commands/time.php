@@ -44,7 +44,6 @@ if (substr($query, 0, 6) === 'config') {
     $projectData = json_decode(getenv('project_data'), true);
     $tagData = json_decode(getenv('tag_data'), true);
     $message = $time->startTimer($description, $projectData, $tagData);
-    
 } elseif (substr($query, 0, 4) === 'stop') {
     $message = $time->stopRunningTimer();
 }
