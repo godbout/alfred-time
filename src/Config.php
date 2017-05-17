@@ -18,7 +18,7 @@ class Config
     private $currentImplementation = [
         'start'        => ['toggl', 'harvest'],
         'stop'         => ['toggl', 'harvest'],
-        'delete'       => ['toggl'],
+        'delete'       => ['toggl', 'harvest'],
         'get_projects' => ['toggl', 'harvest'],
         'get_tags'     => ['toggl', 'harvest'],
         'get_timers'   => ['toggl'],
@@ -62,26 +62,22 @@ class Config
     public function generateDefaultConfigurationFile()
     {
         $this->config = [
-            'timer' => [
-                'primary_service'   => 'toggl',
-                'is_running'  => false,
-                'toggl_id'    => null,
-                'harvest_id'  => null,
-                'description' => '',
+            'timer'   => [
+                'primary_service' => 'toggl',
+                'is_running'      => false,
+                'toggl_id'        => null,
+                'harvest_id'      => null,
+                'description'     => '',
             ],
-            'toggl'    => [
+            'toggl'   => [
                 'is_active'          => true,
                 'api_token'          => '',
-                'default_project_id' => '',
-                'default_tags'       => '',
             ],
-            'harvest'  => [
+            'harvest' => [
 
                 'is_active'          => true,
                 'domain'             => '',
                 'api_token'          => '',
-                'default_project_id' => '',
-                'default_task_id'    => '',
             ],
         ];
 
@@ -102,30 +98,6 @@ class Config
         }
 
         return $this->config[$section][$param];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrimaryService()
-    {
-        return $this->get('timer', 'primary_service');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTimerDescription()
-    {
-        return $this->get('timer', 'description');
-    }
-
-    /**
-     * @return boolean
-     */
-    public function hasTimerRunning()
-    {
-        return $this->get('timer', 'is_running') === true;
     }
 
     /**
@@ -163,7 +135,7 @@ class Config
     /**
      * @return mixed
      */
-    public function servicesToUndo()
+    public function runningServices()
     {
         $services = [];
 

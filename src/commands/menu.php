@@ -12,7 +12,7 @@ $timer = new Timer($config);
 
 $query = trim($argv[1]);
 
-/*
+/**
  * Check for config file
  * If cannot find, Workflow is not usable
  */
@@ -42,9 +42,9 @@ if ($config->isConfigured() === false) {
             ->type('default')
             ->valid(true);
     } elseif ($query === 'undo') {
-        $servicesToUndo = $config->servicesToUndo();
+        $runningServices = $config->runningServices();
 
-        if (empty($servicesToUndo) === true) {
+        if (empty($runningServices) === true) {
             $workflow->result()
                 ->uid('')
                 ->arg('')
@@ -54,7 +54,7 @@ if ($config->isConfigured() === false) {
                 ->valid(false);
         } else {
             $subtitle = $timer->isRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
-            $subtitle .= implode(' and ', array_map('ucfirst', $servicesToUndo));
+            $subtitle .= implode(' and ', array_map('ucfirst', $runningServices));
 
             $workflow->result()
                 ->uid('')

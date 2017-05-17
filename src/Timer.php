@@ -44,8 +44,8 @@ class Timer
             return false;
         }
 
-        if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
-            $this->updateProperty('timer_' . $service . '_id', null);
+        if ($timerId === $this->getProperty($service . '_id')) {
+            $this->updateProperty($service . '_id', null);
         }
 
         return true;
@@ -55,25 +55,18 @@ class Timer
      * @param  $timerId
      * @return string
      */
-    public function deleteTimer($timerId)
+    public function delete(array $timerData = [])
     {
         $message = '';
         $oneTimerDeleted = false;
 
-        /**
-         * Currently only for Toggl
-         *
-         * Would have to be changed if adding Harvest
-         */
-        $togglId = $this->getProperty('toggl_id');
-
-        foreach ($this->config->implementedServicesForFeature('delete') as $service) {
-            $res = $this->deleteServiceTimer($service, $timerId);
+        foreach ($timerData as $service => $id) {
+            $res = $this->deleteServiceTimer($service, $id);
             $message .= $this->setNotificationForService($service, 'delete', $res);
             $oneTimerDeleted = $oneTimerDeleted || $res;
         }
 
-        if ($oneTimerDeleted === true && ($timerId === $togglId)) {
+        if ($oneTimerDeleted === true) {
             $this->updateProperty('is_running', false);
         }
 
@@ -85,6 +78,9 @@ class Timer
         return $this->getProperty('description');
     }
 
+    /**
+     * @return mixed
+     */
     public function getPrimaryService()
     {
         return $this->getProperty('primary_service');
@@ -215,7 +211,7 @@ class Timer
      * @param  $tagData
      * @return string
      */
-    public function startTimer($description = '', array $projectData = [], array $tagData = [], $specificService = null)
+    public function start($description = '', array $projectData = [], array $tagData = [], $specificService = null)
     {
         $message = '';
         $oneServiceStarted = false;
@@ -255,12 +251,12 @@ class Timer
     /**
      * @return string
      */
-    public function stopRunningTimer()
+    public function stop()
     {
         $message = '';
         $oneServiceStopped = false;
 
-        foreach ($this->config->activatedServices() as $service) {
+        foreach ($this->config->runningServices() as $service) {
             $timerId = $this->getProperty($service . '_id');
 
             $res = $this->$service->stopTimer($timerId);
@@ -294,22 +290,15 @@ class Timer
     /**
      * @return string
      */
-    public function undoTimer()
+    public function undo()
     {
-        $message = '';
-        $oneTimerDeleted = false;
+        $timerData = [];
 
-        foreach ($this->config->servicesToUndo() as $service) {
-            $res = $this->deleteServiceTimer($service, $this->getProperty($service . '_id'));
-            $message .= $this->setNotificationForService($service, 'undo', $res);
-            $oneTimerDeleted = $oneTimerDeleted || $res;
+        foreach ($this->config->runningServices() as $service) {
+            $timerData[$service] = $this->getProperty($service .'_id');
         }
 
-        if ($oneTimerDeleted === true) {
-            $this->updateProperty('is_running', false);
-        }
-
-        return $message;
+        return $this->delete($timerData);
     }
 
     /**
@@ -322,7 +311,7 @@ class Timer
     }
 
     /**
-     * @param $name
+     * @param  $name
      * @return mixed
      */
     private function getProperty($name)

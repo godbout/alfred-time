@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use AlfredTime\Timer;
-use Alfred\Workflows\Workflow;
 use AlfredTime\Config;
+use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
@@ -16,14 +16,14 @@ $tags = $timer->getTags();
 
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
-        ->arg('')
+        ->arg(json_encode([]))
         ->title('No tag')
         ->subtitle('Timer will be created without any tag')
         ->type('default')
         ->valid(true);
 
     $tags = array_filter($tags, function ($value) use ($timer) {
-        return isset($value[$timer->getPrimaryService() .'_id']);
+        return isset($value[$timer->getPrimaryService() . '_id']);
     });
 } elseif (substr($query, 0, 10) === 'start_all ') {
     $activatedServices = $config->activatedServices();

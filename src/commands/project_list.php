@@ -16,7 +16,7 @@ $projects = $timer->getProjects();
 
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
-        ->arg('')
+        ->arg(json_encode([]))
         ->title('No project')
         ->subtitle('Timer will be created without a project')
         ->type('default')

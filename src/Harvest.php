@@ -87,7 +87,7 @@ class Harvest
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return mixed
      */
     public function getTags($data)
