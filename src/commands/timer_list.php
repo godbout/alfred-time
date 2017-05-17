@@ -8,7 +8,7 @@ use AlfredTime\Config;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$time = new Timer($config);
+$timer = new Timer($config);
 
 $query = trim($argv[1]);
 
@@ -20,18 +20,18 @@ if (getenv('description') === 'delete') {
         ->valid(false);
 }
 
-$timers = $time->getRecentTimers();
+$timers = $timer->getRecentTimers();
 
-foreach ($timers as $timer) {
-    $projectName = $time->getProjectName($timer['pid']);
-    $tags = $timer['tags'];
-    $duration = $timer['duration'];
+foreach ($timers as $recentTimer) {
+    $projectName = $timer->getProjectName($recentTimer['pid']);
+    $tags = $recentTimer['tags'];
+    $duration = $recentTimer['duration'];
 
     $timerData = [
-        'id'          => $timer['id'],
-        'pid'         => $timer['pid'],
-        'tags'        => $timer['tags'],
-        'description' => $timer['description'],
+        'id'          => $recentTimer['id'],
+        'pid'         => $recentTimer['pid'],
+        'tags'        => $recentTimer['tags'],
+        'description' => $recentTimer['description'],
     ];
 
     $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '
@@ -40,7 +40,7 @@ foreach ($timers as $timer) {
 
     $workflow->result()
         ->arg(json_encode($timerData))
-        ->title($timer['description'])
+        ->title($recentTimer['description'])
         ->subtitle($subtitle)
         ->type('default')
         ->icon('icons/toggl.png')

@@ -45,7 +45,7 @@ class Timer
         }
 
         if ($timerId === $this->config->get('workflow', 'timer_' . $service . '_id')) {
-            $this->config->update('workflow', 'timer_' . $service . '_id', null);
+            $this->updateProperty('timer_' . $service . '_id', null);
         }
 
         return true;
@@ -65,7 +65,7 @@ class Timer
          *
          * Would have to be changed if adding Harvest
          */
-        $togglId = $this->config->get('workflow', 'timer_toggl_id');
+        $togglId = $this->getProperty('toggl_id');
 
         foreach ($this->config->implementedServicesForFeature('delete') as $service) {
             $res = $this->deleteServiceTimer($service, $timerId);
@@ -74,10 +74,20 @@ class Timer
         }
 
         if ($oneTimerDeleted === true && ($timerId === $togglId)) {
-            $this->config->update('workflow', 'is_timer_running', false);
+            $this->updateProperty('is_running', false);
         }
 
         return $message;
+    }
+
+    public function getDescription()
+    {
+        return $this->getProperty('description');
+    }
+
+    public function getPrimaryService()
+    {
+        return $this->getProperty('primary_service');
     }
 
     /**
@@ -178,6 +188,14 @@ class Timer
     }
 
     /**
+     * @return mixed
+     */
+    public function isRunning()
+    {
+        return $this->getProperty('is_running');
+    }
+
+    /**
      * @param $service
      * @param null       $action
      * @param null       $success
@@ -216,19 +234,19 @@ class Timer
         }
 
         foreach ($this->config->activatedServices() as $service) {
-            $this->config->update('workflow', 'timer_' . $service . '_id', null);
+            $this->updateProperty($service . '_id', null);
         }
 
         foreach ($servicesToRun as $service) {
             $timerId = $this->$service->startTimer($description, $projectData[$service . '_id'], $tagData[$service . '_id']);
-            $this->config->update('workflow', 'timer_' . $service . '_id', $timerId);
+            $this->updateProperty($service . '_id', $timerId);
             $message .= $this->setNotificationForService($service, 'start', $timerId);
             $oneServiceStarted = $oneServiceStarted || ($timerId !== null);
         }
 
         if ($oneServiceStarted === true) {
-            $this->config->update('workflow', 'timer_description', $description);
-            $this->config->update('workflow', 'is_timer_running', true);
+            $this->updateProperty('description', $description);
+            $this->updateProperty('is_running', true);
         }
 
         return $message;
@@ -243,7 +261,7 @@ class Timer
         $oneServiceStopped = false;
 
         foreach ($this->config->activatedServices() as $service) {
-            $timerId = $this->config->get('workflow', 'timer_' . $service . '_id');
+            $timerId = $this->getProperty($service . '_id');
 
             $res = $this->$service->stopTimer($timerId);
             $message .= $this->setNotificationForService($service, 'stop', $res);
@@ -251,7 +269,7 @@ class Timer
         }
 
         if ($oneServiceStopped === true) {
-            $this->config->update('workflow', 'is_timer_running', false);
+            $this->updateProperty('is_running', false);
         }
 
         return $message;
@@ -282,16 +300,34 @@ class Timer
         $oneTimerDeleted = false;
 
         foreach ($this->config->servicesToUndo() as $service) {
-            $res = $this->deleteServiceTimer($service, $this->config->get('workflow', 'timer_' . $service . '_id'));
+            $res = $this->deleteServiceTimer($service, $this->getProperty($service . '_id'));
             $message .= $this->setNotificationForService($service, 'undo', $res);
             $oneTimerDeleted = $oneTimerDeleted || $res;
         }
 
         if ($oneTimerDeleted === true) {
-            $this->config->update('workflow', 'is_timer_running', false);
+            $this->updateProperty('is_running', false);
         }
 
         return $message;
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     */
+    public function updateProperty($name, $value)
+    {
+        $this->config->update('timer', $name, $value);
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    private function getProperty($name)
+    {
+        return $this->config->get('timer', $name);
     }
 
     /**

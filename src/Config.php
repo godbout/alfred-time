@@ -62,12 +62,12 @@ class Config
     public function generateDefaultConfigurationFile()
     {
         $this->config = [
-            'workflow' => [
+            'timer' => [
                 'primary_service'   => 'toggl',
-                'is_timer_running'  => false,
-                'timer_toggl_id'    => null,
-                'timer_harvest_id'  => null,
-                'timer_description' => '',
+                'is_running'  => false,
+                'toggl_id'    => null,
+                'harvest_id'  => null,
+                'description' => '',
             ],
             'toggl'    => [
                 'is_active'          => true,
@@ -109,7 +109,7 @@ class Config
      */
     public function getPrimaryService()
     {
-        return $this->get('workflow', 'primary_service');
+        return $this->get('timer', 'primary_service');
     }
 
     /**
@@ -117,7 +117,7 @@ class Config
      */
     public function getTimerDescription()
     {
-        return $this->get('workflow', 'timer_description');
+        return $this->get('timer', 'description');
     }
 
     /**
@@ -125,7 +125,7 @@ class Config
      */
     public function hasTimerRunning()
     {
-        return $this->get('workflow', 'is_timer_running') === true;
+        return $this->get('timer', 'is_running') === true;
     }
 
     /**
@@ -168,7 +168,7 @@ class Config
         $services = [];
 
         foreach ($this->activatedServices() as $service) {
-            if ($this->get('workflow', 'timer_' . $service . '_id') !== null) {
+            if ($this->get('timer', $service . '_id') !== null) {
                 array_push($services, $service);
             }
         }

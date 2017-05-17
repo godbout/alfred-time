@@ -8,11 +8,11 @@ use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$time = new Timer($config);
+$timer = new Timer($config);
 
 $query = getenv('description');
 
-$projects = $time->getProjects();
+$projects = $timer->getProjects();
 
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
@@ -22,8 +22,8 @@ if (substr($query, 0, 6) === 'start ') {
         ->type('default')
         ->valid(true);
 
-    $projects = array_filter($projects, function ($value) use ($config) {
-        return isset($value[$config->get('workflow', 'primary_service') . '_id']);
+    $projects = array_filter($projects, function ($value) use ($timer) {
+        return isset($value[$timer->getPrimaryService() . '_id']);
     });
 } elseif (substr($query, 0, 10) === 'start_all ') {
     $activatedServices = $config->activatedServices();

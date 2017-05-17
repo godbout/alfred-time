@@ -8,7 +8,7 @@ use Alfred\Workflows\Workflow;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$time = new Timer($config);
+$timer = new Timer($config);
 
 $query = trim($argv[1]);
 
@@ -53,13 +53,13 @@ if ($config->isConfigured() === false) {
                 ->type('default')
                 ->valid(false);
         } else {
-            $subtitle = $config->hasTimerRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
+            $subtitle = $timer->isRunning() === true ? 'Stop and delete current timer for ' : 'Delete timer for ';
             $subtitle .= implode(' and ', array_map('ucfirst', $servicesToUndo));
 
             $workflow->result()
                 ->uid('')
                 ->arg('undo')
-                ->title('Undo "' . $config->getTimerDescription() . '"')
+                ->title('Undo "' . $timer->getDescription() . '"')
                 ->subtitle($subtitle)
                 ->type('default')
                 ->valid(true);
@@ -80,8 +80,8 @@ if ($config->isConfigured() === false) {
             ->subtitle('Press enter to load the list of recent timers')
             ->type('default')
             ->valid(true);
-    } elseif ($config->hasTimerRunning() === false) {
-        $service = $config->primaryService;
+    } elseif ($timer->isRunning() === false) {
+        $service = $timer->getPrimaryService();
 
         if (empty($service) === true) {
             $subtitle = 'No timer services activated. Edit config file to active services';
@@ -109,7 +109,7 @@ if ($config->isConfigured() === false) {
         $workflow->result()
             ->uid('')
             ->arg('stop')
-            ->title('Stop "' . $config->getTimerDescription() . '"')
+            ->title('Stop "' . $timer->getDescription() . '"')
             ->subtitle($subtitle)
             ->type('default')
             ->valid(true);
