@@ -22,11 +22,6 @@ class ServiceApiCall
     private $code = 0;
 
     /**
-     * @var mixed
-     */
-    private $data = null;
-
-    /**
      * @var string
      */
     private $message = '';
@@ -51,14 +46,6 @@ class ServiceApiCall
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 
     /**
@@ -93,23 +80,26 @@ class ServiceApiCall
      * @param  array     $options
      * @return mixed
      */
-    public function send($method, $uri = '', array $options = [])
+    public function send($method, $uri = '', array $options = [], $returnData = false)
     {
-        $res = true;
-
         try {
             $response = $this->client->request(strtoupper($method), $uri, $options);
             $this->code = $response->getStatusCode();
-            $this->data = json_decode($response->getBody(), true);
+
+            if ($returnData === false) {
+                return true;
+            }
+
+            return json_decode($response->getBody(), true);
         } catch (ConnectException $e) {
             $this->message = 'cannot connect to api!';
-            $res = false;
+
+            return false;
         } catch (ClientException $e) {
-            $res = false;
             $this->code = $e->getResponse()->getStatusCode();
             $this->message = $e->getResponse()->getBody();
-        }
 
-        return $res;
+            return false;
+        }
     }
 }

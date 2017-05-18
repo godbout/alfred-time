@@ -35,8 +35,8 @@ class WorkflowHandler
     }
 
     /**
-     * @param array $results
-     * @param $action
+     * @param  array     $results
+     * @param  $action
      * @return mixed
      */
     public function getNotification(array $results = [], $action = null)
@@ -44,7 +44,7 @@ class WorkflowHandler
         $notification = '';
 
         if (empty($results) || empty($action)) {
-            return;
+            return '';
         }
 
         foreach ($results as $service => $status) {
@@ -62,9 +62,7 @@ class WorkflowHandler
     public function getNotificationForService($service = null, $action = null, $success = null)
     {
         if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action
-            . ' [' . $this->$service->getLastMessage() . ']'
-                . "\r\n";
+            return '- ' . ucfirst($service) . ': cannot ' . $action . ' []' . "\r\n";
         }
 
         return '- ' . ucfirst($service) . ': ' . $action . "\r\n";

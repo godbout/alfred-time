@@ -10,11 +10,6 @@ use AlfredTime\ServiceApiCall;
 class Toggl
 {
     /**
-     * @var string
-     */
-    private $message = '';
-
-    /**
      * @var mixed
      */
     private $serviceApiCall = null;
@@ -39,14 +34,6 @@ class Toggl
     public function deleteTimer($timerId = null)
     {
         return $this->timerAction('delete', 'time_entries/' . $timerId);
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastMessage()
-    {
-        return $this->message;
     }
 
     /**
@@ -133,17 +120,12 @@ class Toggl
         ];
         $method = isset($methods[$action]) ? $methods[$action] : '';
 
-        if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {
-            $this->message = $this->serviceApiCall->getMessage();
-
-            return false;
-        }
-
-        if (in_array($action, $returnDataFor) === true) {
-            return $this->serviceApiCall->getData();
-        }
-
-        return $this->serviceApiCall->last('success');
+        return $this->serviceApiCall->send(
+            $method,
+            $apiUri,
+            $options,
+            in_array($action, $returnDataFor)
+        );
     }
 
     /**

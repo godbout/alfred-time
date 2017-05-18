@@ -48,7 +48,10 @@ if (substr($query, 0, 6) === 'config') {
 
     $projectData = json_decode(getenv('project_data'), true);
     $tagData = json_decode(getenv('tag_data'), true);
-    $message = $timer->start($description, $projectData, $tagData);
+    $message = $workflowHandler->getNotification(
+        $timer->start($description, $projectData, $tagData),
+        'start'
+    );
 } elseif (substr($query, 0, 4) === 'stop') {
     $message = $workflowHandler->getNotification(
         $timer->stop(),

@@ -136,8 +136,8 @@ class Timer
                 $projectData[$service . '_id'],
                 $tagData[$service . '_id']
             );
-            $this->updateProperty($service . '_id', $timerId);
             $res[$service] = $timerId;
+            $this->updateProperty($service . '_id', $timerId);
             $oneServiceStarted = $oneServiceStarted || ($timerId !== null);
         }
 

@@ -10,11 +10,6 @@ use AlfredTime\ServiceApiCall;
 class Harvest
 {
     /**
-     * @var string
-     */
-    private $message = '';
-
-    /**
      * @var mixed
      */
     private $serviceApiCall = null;
@@ -40,14 +35,6 @@ class Harvest
     public function deleteTimer($timerId = null)
     {
         return $this->timerAction('delete', 'daily/delete/' . $timerId);
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastMessage()
-    {
-        return $this->message;
     }
 
     /**
@@ -177,16 +164,11 @@ class Harvest
 
         $method = isset($methods[$action]) ? $methods[$action] : '';
 
-        if ($this->serviceApiCall->send($method, $apiUri, $options) === false) {
-            $this->message = $this->serviceApiCall->getMessage();
-
-            return false;
-        }
-
-        if (in_array($action, $returnDataFor) === true) {
-            return $this->serviceApiCall->getData();
-        }
-
-        return $this->serviceApiCall->last('success');
+        return $this->serviceApiCall->send(
+            $method,
+            $apiUri,
+            $options,
+            in_array($action, $returnDataFor)
+        );
     }
 }
