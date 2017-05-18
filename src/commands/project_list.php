@@ -14,6 +14,7 @@ $query = getenv('description');
 
 $projects = $timer->getProjects();
 
+
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
         ->arg(json_encode([]))

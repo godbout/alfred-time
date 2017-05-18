@@ -4,8 +4,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use AlfredTime\Timer;
 use AlfredTime\Config;
+use AlfredTime\WorkflowHandler;
 
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
+$workflowHandler = new WorkflowHandler($config);
 $timer = new Timer($config);
 
 $query = getenv('description');
@@ -15,7 +17,7 @@ if (substr($query, 0, 6) === 'config') {
     $config->generateDefaultConfigurationFile();
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'sync') {
-    $message = $timer->syncOnlineDataToLocalCache();
+    $message = $workflowHandler->syncOnlineDataToLocalCache();
 } elseif (substr($query, 0, 5) === 'edit') {
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'undo') {

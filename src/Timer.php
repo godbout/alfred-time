@@ -90,47 +90,11 @@ class Timer
     }
 
     /**
-     * @param  $projectId
-     * @return mixed
-     */
-    public function getProjectName($projectId)
-    {
-        $projectName = '';
-
-        $projects = $this->getProjects();
-
-        foreach ($projects as $project) {
-            if ($project['id'] === $projectId) {
-                $projectName = $project['name'];
-                break;
-            }
-        }
-
-        return $projectName;
-    }
-
-    /**
      * @return mixed
      */
     public function getProjects()
     {
         return $this->getItems('projects');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecentTimers()
-    {
-        $timers = [];
-
-        foreach ($this->config->implementedServicesForFeature('get_timers') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $timers = array_merge($timers, $this->getRecentServiceTimers($service));
-            }
-        }
-
-        return $timers;
     }
 
     /**
@@ -247,22 +211,6 @@ class Timer
     /**
      * @return string
      */
-    public function syncOnlineDataToLocalCache()
-    {
-        $message = '';
-
-        foreach ($this->config->implementedServicesForFeature('sync_data') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $message .= $this->syncServiceOnlineDataToLocalCache($service);
-            }
-        }
-
-        return $message;
-    }
-
-    /**
-     * @return string
-     */
     public function undo()
     {
         $timerData = [];
@@ -294,7 +242,7 @@ class Timer
 
         foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = $this->$service->getTags($this->getServiceDataCache($service));
+                $services[$service] = call_user_func_array([$this->$service, 'get' . ucfirst($needle)], [$this->getServiceDataCache($service)]);
             }
         }
 
@@ -314,40 +262,5 @@ class Timer
     private function getProperty($name)
     {
         return $this->config->get('timer', $name);
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getRecentServiceTimers($service)
-    {
-        return $this->$service->getRecentTimers();
-    }
-
-    /**
-     * @param $data
-     * @param string  $service
-     */
-    private function saveServiceDataCache($service, $data)
-    {
-        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
-        file_put_contents($cacheFile, json_encode($data));
-    }
-
-    /**
-     * @param  string   $service
-     * @return string
-     */
-    private function syncServiceOnlineDataToLocalCache($service)
-    {
-        $data = $this->$service->getOnlineData();
-
-        if (empty($data) === true) {
-            return $this->setNotificationForService($service, 'data', false);
-        }
-
-        $this->saveServiceDataCache($service, $data);
-
-        return $this->setNotificationForService($service, 'data', true);
     }
 }
