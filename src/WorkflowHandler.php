@@ -27,7 +27,10 @@ class WorkflowHandler
     public function __construct(Config $config = null)
     {
         $this->config = $config;
-        $this->harvest = new Harvest($this->config->get('harvest', 'domain'), $this->config->get('harvest', 'api_token'));
+        $this->harvest = new Harvest(
+            $this->config->get('harvest', 'domain'),
+            $this->config->get('harvest', 'api_token')
+        );
         $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
     }
 
@@ -106,7 +109,9 @@ class WorkflowHandler
     public function setNotificationForService($service = null, $action = null, $success = null)
     {
         if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
+            return '- ' . ucfirst($service) . ': cannot ' . $action
+            . ' [' . $this->$service->getLastMessage() . ']'
+                . "\r\n";
         }
 
         return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
@@ -139,7 +144,10 @@ class WorkflowHandler
 
         foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
             if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = call_user_func_array([$this->$service, 'get' . ucfirst($needle)], [$this->getServiceDataCache($service)]);
+                $services[$service] = call_user_func_array(
+                    [$this->$service, 'get' . ucfirst($needle)],
+                    [$this->getServiceDataCache($service)]
+                );
             }
         }
 

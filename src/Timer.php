@@ -29,7 +29,10 @@ class Timer
     public function __construct(Config $config = null)
     {
         $this->config = $config;
-        $this->harvest = new Harvest($this->config->get('harvest', 'domain'), $this->config->get('harvest', 'api_token'));
+        $this->harvest = new Harvest(
+            $this->config->get('harvest', 'domain'),
+            $this->config->get('harvest', 'api_token')
+        );
         $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
     }
 
@@ -105,7 +108,8 @@ class Timer
     public function setNotificationForService($service = null, $action = null, $success = null)
     {
         if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']' . "\r\n";
+            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']'
+                . "\r\n";
         }
 
         return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
@@ -122,7 +126,9 @@ class Timer
         $message = '';
         $oneServiceStarted = false;
 
-        $servicesToRun = ($specificService === null) ? $this->config->implementedServicesForFeature('start') : [$specificService];
+        $servicesToRun = ($specificService === null)
+            ? $this->config->implementedServicesForFeature('start')
+            : [$specificService];
 
         /**
          * When starting a new timer, all the services timer IDs have to be put to null
@@ -140,7 +146,11 @@ class Timer
         }
 
         foreach ($servicesToRun as $service) {
-            $timerId = $this->$service->startTimer($description, $projectData[$service . '_id'], $tagData[$service . '_id']);
+            $timerId = $this->$service->startTimer(
+                $description,
+                $projectData[$service . '_id'],
+                $tagData[$service . '_id']
+            );
             $this->updateProperty($service . '_id', $timerId);
             $message .= $this->setNotificationForService($service, 'start', $timerId);
             $oneServiceStarted = $oneServiceStarted || ($timerId !== null);

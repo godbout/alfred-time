@@ -170,7 +170,7 @@ class Toggl
 
             $items[] = [
                 'name' => $item['name'],
-                'id'   => $item['id'],
+                'id'   => ($needle === 'tags') ? $item['name'] : $item['id'],
             ];
         }
 

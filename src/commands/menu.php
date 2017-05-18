@@ -95,7 +95,13 @@ if ($config->isConfigured() === false) {
             ->title('Start "' . $query . '"')
             ->subtitle($subtitle)
             ->type('default')
-            ->mod('cmd', 'Start new timer for ' . implode(' and ', array_map('ucfirst', $config->implementedServicesForFeature('start'))), 'start_all ' . $query)
+            ->mod(
+                'cmd',
+                'Start new timer for ' . implode(
+                    ' and ',
+                    array_map('ucfirst', $config->implementedServicesForFeature('start'))
+                ),
+                'start_all ' . $query)
             ->valid(true);
     } else {
         $services = $config->activatedServices();
