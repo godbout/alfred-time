@@ -92,37 +92,6 @@ class Timer
     /**
      * @return mixed
      */
-    public function getProjects()
-    {
-        return $this->getItems('projects');
-    }
-
-    /**
-     * @param  $service
-     * @return mixed
-     */
-    public function getServiceDataCache($service)
-    {
-        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
-
-        if (file_exists($cacheFile) === false) {
-            $this->syncServiceOnlineDataToLocalCache($service);
-        }
-
-        return json_decode(file_get_contents($cacheFile), true);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTags()
-    {
-        return $this->getItems('tags');
-    }
-
-    /**
-     * @return mixed
-     */
     public function isRunning()
     {
         return $this->getProperty('is_running');
@@ -229,30 +198,6 @@ class Timer
     public function updateProperty($name, $value)
     {
         $this->config->update('timer', $name, $value);
-    }
-
-    /**
-     * @param $needle
-     * @return mixed
-     */
-    private function getItems($needle)
-    {
-        $items = [];
-        $services = [];
-
-        foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = call_user_func_array([$this->$service, 'get' . ucfirst($needle)], [$this->getServiceDataCache($service)]);
-            }
-        }
-
-        foreach ($services as $serviceName => $serviceItems) {
-            foreach ($serviceItems as $serviceItem) {
-                $items[$serviceItem['name']][$serviceName . '_id'] = $serviceItem['id'];
-            }
-        }
-
-        return $items;
     }
 
     /**

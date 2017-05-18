@@ -23,8 +23,6 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 4) === 'undo') {
     $message = $timer->undo();
 } elseif (substr($query, 0, 6) === 'delete') {
-
-    // $timerData = json_decode(getenv('timer_data'), true);
     $message = $timer->delete([]);
 } elseif (substr($query, 0, 8) === 'continue') {
     $timerData = json_decode(getenv('timer_data'), true);

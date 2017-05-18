@@ -54,6 +54,14 @@ class WorkflowHandler
     /**
      * @return mixed
      */
+    public function getProjects()
+    {
+        return $this->getItems('projects');
+    }
+
+    /**
+     * @return mixed
+     */
     public function getRecentTimers()
     {
         $timers = [];
@@ -65,6 +73,29 @@ class WorkflowHandler
         }
 
         return $timers;
+    }
+
+    /**
+     * @param  $service
+     * @return mixed
+     */
+    public function getServiceDataCache($service)
+    {
+        $cacheFile = getenv('alfred_workflow_data') . '/' . $service . '_cache.json';
+
+        if (file_exists($cacheFile) === false) {
+            $this->syncServiceOnlineDataToLocalCache($service);
+        }
+
+        return json_decode(file_get_contents($cacheFile), true);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->getItems('tags');
     }
 
     /**
@@ -95,6 +126,30 @@ class WorkflowHandler
         }
 
         return $message;
+    }
+
+    /**
+     * @param  $needle
+     * @return mixed
+     */
+    private function getItems($needle)
+    {
+        $items = [];
+        $services = [];
+
+        foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
+            if ($this->config->isServiceActive($service) === true) {
+                $services[$service] = call_user_func_array([$this->$service, 'get' . ucfirst($needle)], [$this->getServiceDataCache($service)]);
+            }
+        }
+
+        foreach ($services as $serviceName => $serviceItems) {
+            foreach ($serviceItems as $serviceItem) {
+                $items[$serviceItem['name']][$serviceName . '_id'] = $serviceItem['id'];
+            }
+        }
+
+        return $items;
     }
 
     /**
