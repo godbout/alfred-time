@@ -21,7 +21,10 @@ if (substr($query, 0, 6) === 'config') {
 } elseif (substr($query, 0, 5) === 'edit') {
     exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
 } elseif (substr($query, 0, 4) === 'undo') {
-    $message = $timer->undo();
+    $message = $workflowHandler->getNotification(
+        $timer->undo(),
+        'undo'
+    );
 } elseif (substr($query, 0, 6) === 'delete') {
     $message = $timer->delete([]);
 } elseif (substr($query, 0, 8) === 'continue') {
@@ -35,7 +38,11 @@ if (substr($query, 0, 6) === 'config') {
 
     $projectData = json_decode(getenv('project_data'), true);
     $tagData = json_decode(getenv('tag_data'), true);
-    $message = $timer->start($description, $projectData, $tagData, $timer->getPrimaryService());
+
+    $message = $workflowHandler->getNotification(
+        $timer->start($description, $projectData, $tagData, $timer->getPrimaryService()),
+        'start'
+    );
 } elseif (substr($query, 0, 10) === 'start_all ') {
     $description = substr($query, 10);
 
@@ -43,7 +50,10 @@ if (substr($query, 0, 6) === 'config') {
     $tagData = json_decode(getenv('tag_data'), true);
     $message = $timer->start($description, $projectData, $tagData);
 } elseif (substr($query, 0, 4) === 'stop') {
-    $message = $timer->stop();
+    $message = $workflowHandler->getNotification(
+        $timer->stop(),
+        'stop'
+    );
 }
 
 echo $message;

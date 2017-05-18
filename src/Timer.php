@@ -42,12 +42,11 @@ class Timer
      */
     public function delete(array $timerData = [])
     {
-        $message = '';
+        $res = [];
         $oneTimerDeleted = false;
 
         foreach ($timerData as $service => $id) {
-            $res = $this->deleteServiceTimer($service, $id);
-            $message .= $this->setNotificationForService($service, 'delete', $res);
+            $res[$service] = $this->deleteServiceTimer($service, $id);
             $oneTimerDeleted = $oneTimerDeleted || $res;
         }
 
@@ -55,7 +54,7 @@ class Timer
             $this->updateProperty('is_running', false);
         }
 
-        return $message;
+        return $res;
     }
 
     /**
@@ -101,21 +100,6 @@ class Timer
     }
 
     /**
-     * @param $service
-     * @param null       $action
-     * @param null       $success
-     */
-    public function setNotificationForService($service = null, $action = null, $success = null)
-    {
-        if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action . ' [' . $this->$service->getLastMessage() . ']'
-                . "\r\n";
-        }
-
-        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
-    }
-
-    /**
      * @param  $description
      * @param  $projectsData
      * @param  $tagData
@@ -123,7 +107,7 @@ class Timer
      */
     public function start($description = '', array $projectData = [], array $tagData = [], $specificService = null)
     {
-        $message = '';
+        $res = [];
         $oneServiceStarted = false;
 
         $servicesToRun = ($specificService === null)
@@ -152,7 +136,7 @@ class Timer
                 $tagData[$service . '_id']
             );
             $this->updateProperty($service . '_id', $timerId);
-            $message .= $this->setNotificationForService($service, 'start', $timerId);
+            $res[$service] = $timerId;
             $oneServiceStarted = $oneServiceStarted || ($timerId !== null);
         }
 
@@ -161,7 +145,7 @@ class Timer
             $this->updateProperty('is_running', true);
         }
 
-        return $message;
+        return $res;
     }
 
     /**
@@ -169,14 +153,12 @@ class Timer
      */
     public function stop()
     {
-        $message = '';
+        $res = [];
         $oneServiceStopped = false;
 
         foreach ($this->config->runningServices() as $service) {
             $timerId = $this->getProperty($service . '_id');
-
-            $res = $this->$service->stopTimer($timerId);
-            $message .= $this->setNotificationForService($service, 'stop', $res);
+            $res[$service] = $this->$service->stopTimer($timerId);
             $oneServiceStopped = $oneServiceStopped || $res;
         }
 
@@ -184,7 +166,7 @@ class Timer
             $this->updateProperty('is_running', false);
         }
 
-        return $message;
+        return $res;
     }
 
     /**

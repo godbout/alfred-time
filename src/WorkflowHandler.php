@@ -106,7 +106,27 @@ class WorkflowHandler
      * @param null       $action
      * @param null       $success
      */
-    public function setNotificationForService($service = null, $action = null, $success = null)
+    public function getNotification(array $results = [], $action = null)
+    {
+        $notification = '';
+
+        if (empty($results) || empty($action)) {
+            return;
+        }
+
+        foreach ($results as $service => $status) {
+            $notification .= $this->getNotificationForService($service, $action, $status);
+        }
+
+        return $notification;
+    }
+
+    /**
+     * @param $service
+     * @param null       $action
+     * @param null       $success
+     */
+    public function getNotificationForService($service = null, $action = null, $success = null)
     {
         if (empty($success) === true) {
             return '- ' . ucfirst($service) . ': cannot ' . $action
@@ -187,11 +207,11 @@ class WorkflowHandler
         $data = $this->$service->getOnlineData();
 
         if (empty($data) === true) {
-            return $this->setNotificationForService($service, 'data', false);
+            return $this->getNotificationForService($service, 'data', false);
         }
 
         $this->saveServiceDataCache($service, $data);
 
-        return $this->setNotificationForService($service, 'data', true);
+        return $this->getNotificationForService($service, 'data', true);
     }
 }
