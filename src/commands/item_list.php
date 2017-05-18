@@ -14,11 +14,13 @@ $workflowHandler = new WorkflowHandler($config);
 
 $query = getenv('description');
 
+$items = call_user_func([$workflowHandler, 'get' . ucfirst($argv[1])]);
+
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
         ->arg(json_encode([]))
-        ->title('No project')
-        ->subtitle('Timer will be created without a project')
+        ->title('No ' . getItemName($argv[1]))
+        ->subtitle('Timer will be created without a ' . getItemName($argv[1]))
         ->type('default')
         ->valid(true);
 
@@ -36,7 +38,7 @@ if (substr($query, 0, 6) === 'start ') {
 }
 
 foreach ($items as $name => $ids) {
-    $subtitle = 'Project available for ' . implode(' and ', array_map(function ($value) {
+    $subtitle = ucfirst(getItemName($argv[1])) . ' available for ' . implode(' and ', array_map(function ($value) {
         return substr(ucfirst($value), 0, -3);
     }, array_keys($ids)));
 
@@ -53,3 +55,11 @@ foreach ($items as $name => $ids) {
 }
 
 echo $workflow->output();
+
+/**
+ * @param $name
+ */
+function getItemName($name)
+{
+    return substr($name, 0, -1);
+}
