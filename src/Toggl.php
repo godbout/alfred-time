@@ -27,8 +27,6 @@ class Toggl
         $this->serviceApiCall = new ServiceApiCall([
             'base_uri' => 'https://www.toggl.com/api/v8/',
             'headers'  => [
-                'Content-type'  => 'application/json',
-                'Accept'        => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode($apiToken . ':api_token'),
             ],
         ]);

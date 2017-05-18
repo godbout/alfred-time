@@ -28,8 +28,6 @@ class Harvest
         $this->serviceApiCall = new ServiceApiCall([
             'base_uri' => 'https://' . $domain . '.harvestapp.com/',
             'headers'  => [
-                'Content-type'  => 'application/json',
-                'Accept'        => 'application/json',
                 'Authorization' => 'Basic ' . $apiToken,
             ],
         ]);
