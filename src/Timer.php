@@ -47,7 +47,7 @@ class Timer
 
         foreach ($timerData as $service => $id) {
             $res[$service] = $this->deleteServiceTimer($service, $id);
-            $oneTimerDeleted = $oneTimerDeleted || $res;
+            $oneTimerDeleted = $oneTimerDeleted || $res[$service];
         }
 
         if ($oneTimerDeleted === true) {
@@ -157,7 +157,7 @@ class Timer
         foreach ($this->config->runningServices() as $service) {
             $timerId = $this->getProperty($service . '_id');
             $res[$service] = $this->$service->stopTimer($timerId);
-            $oneServiceStopped = $oneServiceStopped || $res;
+            $oneServiceStopped = $oneServiceStopped || $res[$service];
         }
 
         if ($oneServiceStopped === true) {
