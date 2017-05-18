@@ -35,6 +35,42 @@ class WorkflowHandler
     }
 
     /**
+     * @param array $results
+     * @param $action
+     * @return mixed
+     */
+    public function getNotification(array $results = [], $action = null)
+    {
+        $notification = '';
+
+        if (empty($results) || empty($action)) {
+            return;
+        }
+
+        foreach ($results as $service => $status) {
+            $notification .= $this->getNotificationForService($service, $action, $status);
+        }
+
+        return $notification;
+    }
+
+    /**
+     * @param $service
+     * @param null       $action
+     * @param null       $success
+     */
+    public function getNotificationForService($service = null, $action = null, $success = null)
+    {
+        if (empty($success) === true) {
+            return '- ' . ucfirst($service) . ': cannot ' . $action
+            . ' [' . $this->$service->getLastMessage() . ']'
+                . "\r\n";
+        }
+
+        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
+    }
+
+    /**
      * @param  $projectId
      * @return mixed
      */
@@ -99,42 +135,6 @@ class WorkflowHandler
     public function getTags()
     {
         return $this->getItems('tags');
-    }
-
-    /**
-     * @param $service
-     * @param null       $action
-     * @param null       $success
-     */
-    public function getNotification(array $results = [], $action = null)
-    {
-        $notification = '';
-
-        if (empty($results) || empty($action)) {
-            return;
-        }
-
-        foreach ($results as $service => $status) {
-            $notification .= $this->getNotificationForService($service, $action, $status);
-        }
-
-        return $notification;
-    }
-
-    /**
-     * @param $service
-     * @param null       $action
-     * @param null       $success
-     */
-    public function getNotificationForService($service = null, $action = null, $success = null)
-    {
-        if (empty($success) === true) {
-            return '- ' . ucfirst($service) . ': cannot ' . $action
-            . ' [' . $this->$service->getLastMessage() . ']'
-                . "\r\n";
-        }
-
-        return '- ' . ucfirst($service) . ': ' . $action . "\r\n";
     }
 
     /**

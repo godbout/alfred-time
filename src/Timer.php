@@ -37,8 +37,8 @@ class Timer
     }
 
     /**
-     * @param  $timerId
-     * @return string
+     * @param  array   $timerData
+     * @return mixed
      */
     public function delete(array $timerData = [])
     {
@@ -101,9 +101,10 @@ class Timer
 
     /**
      * @param  $description
-     * @param  $projectsData
-     * @param  $tagData
-     * @return string
+     * @param  array              $projectData
+     * @param  array              $tagData
+     * @param  $specificService
+     * @return mixed
      */
     public function start($description = '', array $projectData = [], array $tagData = [], $specificService = null)
     {
@@ -148,9 +149,6 @@ class Timer
         return $res;
     }
 
-    /**
-     * @return string
-     */
     public function stop()
     {
         $res = [];
