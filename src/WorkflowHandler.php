@@ -69,6 +69,19 @@ class WorkflowHandler
     }
 
     /**
+     * This method shouldn't be in that class but rather
+     * in the services classes, but those classes don't have
+     * access to the cache, so, I'd rather sleep than creating
+     * a new Cache class and refactoring everything again
+     * @param $service
+     * @param $projectId
+     */
+    public function getProjectName($service, $projectId)
+    {
+        return $this->$service->getProjectName($projectId, $this->getServiceDataCache($service));
+    }
+
+    /**
      * @return mixed
      */
     public function getProjects()
@@ -145,7 +158,7 @@ class WorkflowHandler
 
         foreach ($services as $serviceName => $serviceItems) {
             foreach ($serviceItems as $serviceItem) {
-                $items[$serviceItem['name']][$serviceName . '_id'] = $serviceItem['id'];
+                $items[$serviceItem['name']][$serviceName] = $serviceItem['id'];
             }
         }
 

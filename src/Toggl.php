@@ -45,6 +45,25 @@ class Toggl
     }
 
     /**
+     * @param  $projectId
+     * @return mixed
+     */
+    public function getProjectName($projectId, array $data = [])
+    {
+        $projectName = '';
+        $projects = $this->getProjects($data);
+
+        foreach ($projects as $project) {
+            if ($project['id'] === $projectId) {
+                $projectName = $project['name'];
+                break;
+            }
+        }
+
+        return $projectName;
+    }
+
+    /**
      * @param  $data
      * @return mixed
      */
@@ -60,16 +79,12 @@ class Toggl
     {
         $timers = [];
 
-        $i = 0;
         foreach ($this->timerAction('get_recent_timers', 'time_entries') as $timeEntry) {
-            $i++;
-            if ($i === 10) {
-                break;
-            }
             $timers[] = [
                 'id'           => $timeEntry['id'],
                 'description'  => $timeEntry['description'],
-                'project_name' => $timeEntry['pid'],//$this->getProjectName($timeEntry['pid']),
+                'project_id'   => $timeEntry['pid'],
+                'project_name' => $timeEntry['pid'],
                 'tags'         => empty($timeEntry['tags']) ? '' : implode(', ', $timeEntry['tags']),
                 'duration'     => $timeEntry['duration'],
             ];

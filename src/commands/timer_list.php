@@ -24,12 +24,18 @@ $timers = $workflowHandler->getRecentTimers();
 
 foreach ($timers as $service => $recentTimers) {
     foreach ($recentTimers as $recentTimer) {
-        $projectName = $recentTimer['project_name'];
+        $projectName = is_int($recentTimer['project_name'])
+            ? $workflowHandler->getProjectName($service, $recentTimer['project_name'])
+            : $recentTimer['project_name'];
         $tags = $recentTimer['tags'];
         $duration = $recentTimer['duration'];
 
         $timerData = [
-            $service => $recentTimer['id'],
+            'service'     => $service,
+            'description' => $recentTimer['description'],
+            'id'          => $recentTimer['id'],
+            'project_id'  => $recentTimer['project_id'],
+            'tags'        => $recentTimer['tags'],
         ];
 
         $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '

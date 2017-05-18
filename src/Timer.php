@@ -132,8 +132,8 @@ class Timer
         foreach ($servicesToRun as $service) {
             $timerId = $this->$service->startTimer(
                 $description,
-                $projectData[$service . '_id'],
-                $tagData[$service . '_id']
+                $projectData[$service],
+                $tagData[$service]
             );
             $res[$service] = $timerId;
             $this->updateProperty($service . '_id', $timerId);

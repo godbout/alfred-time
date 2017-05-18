@@ -14,18 +14,20 @@ $workflowHandler = new WorkflowHandler($config);
 
 $query = getenv('description');
 
+$type = substr($argv[1], 0, -1);
+
 $items = call_user_func([$workflowHandler, 'get' . ucfirst($argv[1])]);
 
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
         ->arg(json_encode([]))
-        ->title('No ' . getItemName($argv[1]))
-        ->subtitle('Timer will be created without a ' . getItemName($argv[1]))
+        ->title('No ' . $type)
+        ->subtitle('Timer will be created without a ' . $type)
         ->type('default')
         ->valid(true);
 
     $items = array_filter($items, function ($value) use ($timer) {
-        return isset($value[$timer->getPrimaryService() . '_id']);
+        return isset($value[$timer->getPrimaryService()]);
     });
 } elseif (substr($query, 0, 10) === 'start_all ') {
     $activatedServices = $config->activatedServices();
@@ -38,8 +40,8 @@ if (substr($query, 0, 6) === 'start ') {
 }
 
 foreach ($items as $name => $ids) {
-    $subtitle = ucfirst(getItemName($argv[1])) . ' available for ' . implode(' and ', array_map(function ($value) {
-        return substr(ucfirst($value), 0, -3);
+    $subtitle = ucfirst($type) . ' available for ' . implode(' and ', array_map(function ($value) {
+        return ucfirst($value);
     }, array_keys($ids)));
 
     $item = $workflow->result()
@@ -50,16 +52,8 @@ foreach ($items as $name => $ids) {
         ->valid(true);
 
     if (count($ids) === 1) {
-        $item->icon('icons/' . substr(key($ids), 0, -3) . '.png');
+        $item->icon('icons/' . key($ids) . '.png');
     }
 }
 
 echo $workflow->output();
-
-/**
- * @param $name
- */
-function getItemName($name)
-{
-    return substr($name, 0, -1);
-}

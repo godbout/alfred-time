@@ -66,6 +66,7 @@ class Harvest
             $timers[] = [
                 'id' => $dayEntry['id'],
                 'description' => $dayEntry['notes'],
+                'project_id' => $dayEntry['project_id'],
                 'project_name' => $dayEntry['project'],
                 'tags' => $dayEntry['task'],
                 'duration' => $dayEntry['hours'] * 60 * 60,
