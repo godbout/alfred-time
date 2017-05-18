@@ -26,13 +26,16 @@ if (substr($query, 0, 6) === 'config') {
         'undo'
     );
 } elseif (substr($query, 0, 6) === 'delete') {
-    $message = $timer->delete([]);
+    $message = $workflowHandler->getNotification(
+        $timer->delete(json_decode(getenv('timer_data'), true)),
+        'delete'
+    );
 } elseif (substr($query, 0, 8) === 'continue') {
-    $timerData = json_decode(getenv('timer_data'), true);
-    $project = ['toggl' => $timerData['pid']];
-    $tags = ['toggl' => implode(', ', (empty($timerData['tags']) === true ? [] : $timerData['tags']))];
+    // $timerData = json_decode(getenv('timer_data'), true);
+    // $project = ['toggl' => $timerData['pid']];
+    // $tags = ['toggl' => implode(', ', (empty($timerData['tags']) === true ? [] : $timerData['tags']))];
 
-    $message = $timer->start($timerData['description'], $project, $tags);
+    // $message = $timer->start($timerData['description'], $project, $tags);
 } elseif (substr($query, 0, 6) === 'start ') {
     $description = substr($query, 6);
 

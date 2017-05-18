@@ -53,9 +53,29 @@ class Toggl
         return $this->getItems('projects', $data);
     }
 
+    /**
+     * @return mixed
+     */
     public function getRecentTimers()
     {
-        return array_reverse($this->timerAction('get_recent_timers', 'time_entries'));
+        $timers = [];
+
+        $i = 0;
+        foreach ($this->timerAction('get_recent_timers', 'time_entries') as $timeEntry) {
+            $i++;
+            if ($i === 10) {
+                break;
+            }
+            $timers[] = [
+                'id'           => $timeEntry['id'],
+                'description'  => $timeEntry['description'],
+                'project_name' => $timeEntry['pid'],//$this->getProjectName($timeEntry['pid']),
+                'tags'         => empty($timeEntry['tags']) ? '' : implode(', ', $timeEntry['tags']),
+                'duration'     => $timeEntry['duration'],
+            ];
+        }
+
+        return array_reverse($timers);
     }
 
     /**

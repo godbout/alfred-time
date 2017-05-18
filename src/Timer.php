@@ -43,15 +43,13 @@ class Timer
     public function delete(array $timerData = [])
     {
         $res = [];
-        $oneTimerDeleted = false;
+
+        if (empty($timerData) === true) {
+            return [];
+        }
 
         foreach ($timerData as $service => $id) {
             $res[$service] = $this->deleteServiceTimer($service, $id);
-            $oneTimerDeleted = $oneTimerDeleted || $res[$service];
-        }
-
-        if ($oneTimerDeleted === true) {
-            $this->updateProperty('is_running', false);
         }
 
         return $res;
@@ -70,6 +68,7 @@ class Timer
 
         if ($timerId === $this->getProperty($service . '_id')) {
             $this->updateProperty($service . '_id', null);
+            $this->updateProperty('is_running', false);
         }
 
         return true;
@@ -112,7 +111,7 @@ class Timer
         $oneServiceStarted = false;
 
         $servicesToRun = ($specificService === null)
-            ? $this->config->implementedServicesForFeature('start')
+            ? $this->config->activatedServices()
             : [$specificService];
 
         /**

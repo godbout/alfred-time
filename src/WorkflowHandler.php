@@ -69,26 +69,6 @@ class WorkflowHandler
     }
 
     /**
-     * @param  $projectId
-     * @return mixed
-     */
-    public function getProjectName($projectId)
-    {
-        $projectName = '';
-
-        $projects = $this->getProjects();
-
-        foreach ($projects as $project) {
-            if ($project['id'] === $projectId) {
-                $projectName = $project['name'];
-                break;
-            }
-        }
-
-        return $projectName;
-    }
-
-    /**
      * @return mixed
      */
     public function getProjects()
@@ -103,10 +83,8 @@ class WorkflowHandler
     {
         $timers = [];
 
-        foreach ($this->config->implementedServicesForFeature('get_timers') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $timers = array_merge($timers, $this->getRecentServiceTimers($service));
-            }
+        foreach ($this->config->activatedServices() as $service) {
+            $timers[$service] = $this->getRecentServiceTimers($service);
         }
 
         return $timers;
@@ -142,10 +120,8 @@ class WorkflowHandler
     {
         $message = '';
 
-        foreach ($this->config->implementedServicesForFeature('sync_data') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $message .= $this->syncServiceOnlineDataToLocalCache($service);
-            }
+        foreach ($this->config->activatedServices() as $service) {
+            $message .= $this->syncServiceOnlineDataToLocalCache($service);
         }
 
         return $message;
@@ -160,13 +136,11 @@ class WorkflowHandler
         $items = [];
         $services = [];
 
-        foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = call_user_func_array(
-                    [$this->$service, 'get' . ucfirst($needle)],
-                    [$this->getServiceDataCache($service)]
-                );
-            }
+        foreach ($this->config->activatedServices() as $service) {
+            $services[$service] = call_user_func_array(
+                [$this->$service, 'get' . ucfirst($needle)],
+                [$this->getServiceDataCache($service)]
+            );
         }
 
         foreach ($services as $serviceName => $serviceItems) {

@@ -22,29 +22,28 @@ if (getenv('description') === 'delete') {
 
 $timers = $workflowHandler->getRecentTimers();
 
-foreach ($timers as $recentTimer) {
-    $projectName = $workflowHandler->getProjectName($recentTimer['pid']);
-    $tags = $recentTimer['tags'];
-    $duration = $recentTimer['duration'];
+foreach ($timers as $service => $recentTimers) {
+    foreach ($recentTimers as $recentTimer) {
+        $projectName = $recentTimer['project_name'];
+        $tags = $recentTimer['tags'];
+        $duration = $recentTimer['duration'];
 
-    $timerData = [
-        'id'          => $recentTimer['id'],
-        'pid'         => $recentTimer['pid'],
-        'tags'        => $recentTimer['tags'],
-        'description' => $recentTimer['description'],
-    ];
+        $timerData = [
+            $service => $recentTimer['id'],
+        ];
 
-    $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '
-        . (empty($tags) === true ? 'No tag' : '[' . implode(', ', $tags) . ']') . ', '
-        . ($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
+        $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '
+            . (empty($tags) === true ? 'No tag' : '[' . $tags . ']') . ', '
+            . ($duration > 0 ? gmdate('H:i:s', $duration) : '--:--:--');
 
-    $workflow->result()
-        ->arg(json_encode($timerData))
-        ->title($recentTimer['description'])
-        ->subtitle($subtitle)
-        ->type('default')
-        ->icon('icons/toggl.png')
-        ->valid(true);
+        $workflow->result()
+            ->arg(json_encode($timerData))
+            ->title(empty($recentTimer['description']) ? '' : $recentTimer['description'])
+            ->subtitle($subtitle)
+            ->type('default')
+            ->icon('icons/' . $service . '.png')
+            ->valid(true);
+    }
 }
 
 $workflow->filterResults($query);

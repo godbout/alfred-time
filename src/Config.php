@@ -15,19 +15,6 @@ class Config
     /**
      * @var array
      */
-    private $currentImplementation = [
-        'start'        => ['toggl', 'harvest'],
-        'stop'         => ['toggl', 'harvest'],
-        'delete'       => ['toggl', 'harvest'],
-        'get_projects' => ['toggl', 'harvest'],
-        'get_tags'     => ['toggl', 'harvest'],
-        'get_timers'   => ['toggl'],
-        'sync_data'    => ['toggl', 'harvest'],
-    ];
-
-    /**
-     * @var array
-     */
     private $services = [
         'toggl',
         'harvest',
@@ -51,7 +38,7 @@ class Config
         $activatedServices = [];
 
         foreach ($this->services as $service) {
-            if ($this->isServiceActive($service) === true) {
+            if ($this->get($service, 'is_active') === true) {
                 array_push($activatedServices, $service);
             }
         }
@@ -101,35 +88,11 @@ class Config
     }
 
     /**
-     * @param  string  $feature
-     * @return mixed
-     */
-    public function implementedServicesForFeature($feature = null)
-    {
-        $services = [];
-
-        if (isset($this->currentImplementation[$feature]) === true) {
-            $services = $this->currentImplementation[$feature];
-        }
-
-        return $services;
-    }
-
-    /**
      * @return boolean
      */
     public function isConfigured()
     {
         return $this->config !== null;
-    }
-
-    /**
-     * @param  $service
-     * @return mixed
-     */
-    public function isServiceActive($service)
-    {
-        return $this->get($service, 'is_active');
     }
 
     /**

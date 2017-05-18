@@ -58,6 +58,23 @@ class Harvest
         return $this->getItems('projects', $data);
     }
 
+    public function getRecentTimers()
+    {
+        $timers = [];
+
+        foreach ($this->timerAction('get_recent_timers', 'daily')['day_entries'] as $dayEntry) {
+            $timers[] = [
+                'id' => $dayEntry['id'],
+                'description' => $dayEntry['notes'],
+                'project_name' => $dayEntry['project'],
+                'tags' => $dayEntry['task'],
+                'duration' => $dayEntry['hours'] * 60 * 60,
+            ];
+        }
+
+        return array_reverse($timers);
+    }
+
     /**
      * @param  $data
      * @return mixed
@@ -151,15 +168,16 @@ class Harvest
             'timer_running',
             'get_projects',
             'get_tags',
+            'get_recent_timers',
         ];
         $methods = [
-            'start'         => 'post',
-            'stop'          => 'get',
-            'delete'        => 'delete',
-            'timer_running' => 'get',
-            'get_projects'  => 'get',
-            'get_tags'      => 'get',
-            '',
+            'start'             => 'post',
+            'stop'              => 'get',
+            'delete'            => 'delete',
+            'timer_running'     => 'get',
+            'get_projects'      => 'get',
+            'get_tags'          => 'get',
+            'get_recent_timers' => 'get',
         ];
 
         $method = isset($methods[$action]) ? $methods[$action] : '';
