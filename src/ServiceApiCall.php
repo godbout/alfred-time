@@ -38,7 +38,7 @@ class ServiceApiCall
     {
         $config = array_merge_recursive($config, [
             'headers'  => [
-                'Content-type'  => 'application/json', 
+                'Content-type'  => 'application/json',
                 'Accept'        => 'application/json',
             ]]);
 
