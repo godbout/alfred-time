@@ -104,7 +104,7 @@ class Timer
      * @param  array              $projectData
      * @param  array              $tagData
      * @param  $specificService
-     * @return mixed
+     * @return array
      */
     public function start($description = '', array $projectData = [], array $tagData = [], $specificService = null)
     {
@@ -123,7 +123,7 @@ class Timer
          * through each individual sefrvice
          */
         if (empty($servicesToRun) === true) {
-            return '';
+            return [];
         }
 
         foreach ($this->config->activatedServices() as $service) {
