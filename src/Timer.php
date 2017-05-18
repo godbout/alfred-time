@@ -114,22 +114,7 @@ class Timer
      */
     public function getProjects()
     {
-        $projects = [];
-        $services = [];
-
-        foreach ($this->config->implementedServicesForFeature('get_projects') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = $this->$service->getProjects($this->getServiceDataCache($service));
-            }
-        }
-
-        foreach ($services as $serviceName => $serviceProjects) {
-            foreach ($serviceProjects as $serviceProject) {
-                $projects[$serviceProject['name']][$serviceName . '_id'] = $serviceProject['id'];
-            }
-        }
-
-        return $projects;
+        return $this->getItems('projects');
     }
 
     /**
@@ -168,22 +153,7 @@ class Timer
      */
     public function getTags()
     {
-        $tags = [];
-        $services = [];
-
-        foreach ($this->config->implementedServicesForFeature('get_tags') as $service) {
-            if ($this->config->isServiceActive($service) === true) {
-                $services[$service] = $this->$service->getTags($this->getServiceDataCache($service));
-            }
-        }
-
-        foreach ($services as $serviceName => $serviceTags) {
-            foreach ($serviceTags as $serviceTag) {
-                $tags[$serviceTag['name']][$serviceName . '_id'] = $serviceTag['id'];
-            }
-        }
-
-        return $tags;
+        return $this->getItems('tags');
     }
 
     /**
@@ -311,6 +281,30 @@ class Timer
     public function updateProperty($name, $value)
     {
         $this->config->update('timer', $name, $value);
+    }
+
+    /**
+     * @param $needle
+     * @return mixed
+     */
+    private function getItems($needle)
+    {
+        $items = [];
+        $services = [];
+
+        foreach ($this->config->implementedServicesForFeature('get_' . $needle) as $service) {
+            if ($this->config->isServiceActive($service) === true) {
+                $services[$service] = $this->$service->getTags($this->getServiceDataCache($service));
+            }
+        }
+
+        foreach ($services as $serviceName => $serviceItems) {
+            foreach ($serviceItems as $serviceItem) {
+                $items[$serviceItem['name']][$serviceName . '_id'] = $serviceItem['id'];
+            }
+        }
+
+        return $items;
     }
 
     /**
