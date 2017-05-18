@@ -70,14 +70,14 @@ class Config
                 'description'     => '',
             ],
             'toggl'   => [
-                'is_active'          => true,
-                'api_token'          => '',
+                'is_active' => true,
+                'api_token' => '',
             ],
             'harvest' => [
 
-                'is_active'          => true,
-                'domain'             => '',
-                'api_token'          => '',
+                'is_active' => true,
+                'domain'    => '',
+                'api_token' => '',
             ],
         ];
 

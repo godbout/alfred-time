@@ -68,20 +68,7 @@ class Harvest
      */
     public function getProjects($data)
     {
-        $projects = [];
-
-        if (isset($data['projects']) === false) {
-            return [];
-        }
-
-        foreach ($data['projects'] as $project) {
-            $item = [];
-            $item['name'] = $project['project']['name'];
-            $item['id'] = $project['project']['id'];
-            $projects[] = $item;
-        }
-
-        return $projects;
+        return $this->getItems('projects', $data);
     }
 
     /**
@@ -90,20 +77,7 @@ class Harvest
      */
     public function getTags($data)
     {
-        $tags = [];
-
-        if (isset($data['tasks']) === false) {
-            return [];
-        }
-
-        foreach ($data['tasks'] as $tag) {
-            $item = [];
-            $item['name'] = $tag['task']['name'];
-            $item['id'] = $tag['task']['id'];
-            $tags[] = $item;
-        }
-
-        return $tags;
+        return $this->getItems('tasks', $data);
     }
 
     /**
@@ -142,6 +116,29 @@ class Harvest
         }
 
         return $this->timerAction('stop', 'daily/timer/' . $timerId);
+    }
+
+    /**
+     * @param  $needle
+     * @param  array     $haystack
+     * @return mixed
+     */
+    private function getItems($needle, array $haystack = [])
+    {
+        $items = [];
+
+        if (isset($haystack[$needle]) === false) {
+            return [];
+        }
+
+        foreach ($haystack[$needle] as $item) {
+            $items[] = [
+                'name' => $item[key($item)]['name'],
+                'id'   => $item[key($item)]['id'],
+            ];
+        }
+
+        return $items;
     }
 
     /**

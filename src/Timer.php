@@ -34,24 +34,6 @@ class Timer
     }
 
     /**
-     * @param  $service
-     * @param  $timerId
-     * @return boolean
-     */
-    public function deleteServiceTimer($service, $timerId)
-    {
-        if ($this->$service->deleteTimer($timerId) === false) {
-            return false;
-        }
-
-        if ($timerId === $this->getProperty($service . '_id')) {
-            $this->updateProperty($service . '_id', null);
-        }
-
-        return true;
-    }
-
-    /**
      * @param  $timerId
      * @return string
      */
@@ -73,6 +55,27 @@ class Timer
         return $message;
     }
 
+    /**
+     * @param  $service
+     * @param  $timerId
+     * @return boolean
+     */
+    public function deleteServiceTimer($service, $timerId)
+    {
+        if ($this->$service->deleteTimer($timerId) === false) {
+            return false;
+        }
+
+        if ($timerId === $this->getProperty($service . '_id')) {
+            $this->updateProperty($service . '_id', null);
+        }
+
+        return true;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getDescription()
     {
         return $this->getProperty('description');
@@ -295,7 +298,7 @@ class Timer
         $timerData = [];
 
         foreach ($this->config->runningServices() as $service) {
-            $timerData[$service] = $this->getProperty($service .'_id');
+            $timerData[$service] = $this->getProperty($service . '_id');
         }
 
         return $this->delete($timerData);

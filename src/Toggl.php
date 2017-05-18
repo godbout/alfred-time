@@ -63,28 +63,7 @@ class Toggl
      */
     public function getProjects($data)
     {
-        $projects = [];
-
-        if (isset($data['data']['projects']) === false) {
-            return [];
-        }
-
-        /**
-         * To only show projects that are currently active
-         * The Toggl API is slightly weird on that
-         */
-        foreach ($data['data']['projects'] as $key => $project) {
-            if (isset($project['server_deleted_at']) === true) {
-                unset($data['data']['projects'][$key]);
-            }
-
-            $item = [];
-            $item['name'] = $project['name'];
-            $item['id'] = $project['id'];
-            $projects[] = $item;
-        }
-
-        return $projects;
+        return $this->getItems('projects', $data);
     }
 
     public function getRecentTimers()
@@ -98,31 +77,7 @@ class Toggl
      */
     public function getTags($data)
     {
-        $tags = [];
-
-        if (isset($data['data']['tags']) === false) {
-            return [];
-        }
-
-        /**
-         * To only show projects that are currently active
-         * The Toggl API is slightly weird on that
-         */
-        foreach ($data['data']['tags'] as $key => $tag) {
-            if (isset($tag['server_deleted_at']) === true) {
-                unset($data['data']['tags'][$key]);
-            }
-
-            $item = [];
-            $item['name'] = $tag['name'];
-            /**
-             * Toggl API works with tag names, not IDs
-             */
-            $item['id'] = $tag['name'];
-            $tags[] = $item;
-        }
-
-        return $tags;
+        return $this->getItems('tags', $data);
     }
 
     /**
@@ -189,5 +144,36 @@ class Toggl
         }
 
         return $this->serviceApiCall->last('success');
+    }
+
+    /**
+     * @param  $needle
+     * @param  array     $haystack
+     * @return mixed
+     */
+    private function getItems($needle, array $haystack = [])
+    {
+        $items = [];
+
+        if (isset($haystack['data'][$needle]) === false) {
+            return [];
+        }
+
+        /**
+         * To only show projects that are currently active
+         * The Toggl API is slightly weird on that
+         */
+        foreach ($haystack['data'][$needle] as $key => $item) {
+            if (isset($item['server_deleted_at']) === true) {
+                unset($haystack['data'][$needle][$key]);
+            }
+
+            $items[] = [
+                'name' => $item['name'],
+                'id'   => $item['id'],
+            ];
+        }
+
+        return $items;
     }
 }

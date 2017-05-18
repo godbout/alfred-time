@@ -37,9 +37,9 @@ class ServiceApiCall
     public function __construct(array $config = [])
     {
         $config = array_merge_recursive($config, [
-            'headers'  => [
-                'Content-type'  => 'application/json', 
-                'Accept'        => 'application/json',
+            'headers' => [
+                'Content-type' => 'application/json',
+                'Accept'       => 'application/json',
             ]]);
 
         $this->client = new Client($config);
