@@ -14,8 +14,6 @@ $workflowHandler = new WorkflowHandler($config);
 
 $query = getenv('description');
 
-$projects = $items;
-
 if (substr($query, 0, 6) === 'start ') {
     $workflow->result()
         ->arg(json_encode([]))
@@ -24,20 +22,20 @@ if (substr($query, 0, 6) === 'start ') {
         ->type('default')
         ->valid(true);
 
-    $projects = array_filter($projects, function ($value) use ($timer) {
+    $items = array_filter($items, function ($value) use ($timer) {
         return isset($value[$timer->getPrimaryService() . '_id']);
     });
 } elseif (substr($query, 0, 10) === 'start_all ') {
     $activatedServices = $config->activatedServices();
 
-    foreach ($projects as $name => $services) {
+    foreach ($items as $name => $services) {
         if (count($activatedServices) !== count($services)) {
-            unset($projects[$name]);
+            unset($items[$name]);
         }
     }
 }
 
-foreach ($projects as $name => $ids) {
+foreach ($items as $name => $ids) {
     $subtitle = 'Project available for ' . implode(' and ', array_map(function ($value) {
         return substr(ucfirst($value), 0, -3);
     }, array_keys($ids)));
