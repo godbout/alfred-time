@@ -99,7 +99,7 @@ if ($config->isConfigured() === false) {
                 'cmd',
                 'Start new timer for ' . implode(
                     ' and ',
-                    array_map('ucfirst', $config->activatedServices('start'))
+                    array_map('ucfirst', $config->activatedServices())
                 ),
                 'start_all ' . $query)
             ->valid(true);
