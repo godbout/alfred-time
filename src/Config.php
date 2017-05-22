@@ -92,7 +92,7 @@ class Config
      */
     public function isConfigured()
     {
-        return $this->config !== null;
+        return empty($this->config) === false;
     }
 
     /**
