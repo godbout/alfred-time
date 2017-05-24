@@ -35,15 +35,9 @@ class Config
      */
     public function activatedServices()
     {
-        $activatedServices = [];
-
-        foreach ($this->services as $service) {
-            if ($this->get($service, 'is_active') === true) {
-                array_push($activatedServices, $service);
-            }
-        }
-
-        return $activatedServices;
+        return array_filter($this->services, function ($service) {
+            return $this->get($service, 'is_active') === true;
+        });
     }
 
     public function generateDefaultConfigurationFile()
@@ -61,7 +55,6 @@ class Config
                 'api_token' => '',
             ],
             'harvest' => [
-
                 'is_active' => true,
                 'domain'    => '',
                 'api_token' => '',
@@ -100,15 +93,9 @@ class Config
      */
     public function runningServices()
     {
-        $services = [];
-
-        foreach ($this->activatedServices() as $service) {
-            if ($this->get('timer', $service . '_id') !== null) {
-                array_push($services, $service);
-            }
-        }
-
-        return $services;
+        return array_filter($this->activatedServices(), function ($service) {
+            return $this->get('timer', $service . '_id') !== null;
+        });
     }
 
     /**
