@@ -5,7 +5,7 @@ namespace AlfredTime;
 require_once __DIR__ . '/../../src/Config.php';
 use \Codeception\Util\Stub;
 
-class ConfigTest extends \Codeception\Test\Unit
+class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \UnitTester
