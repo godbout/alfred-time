@@ -3,7 +3,7 @@
 switch ($data['action']) {
     case 'config':
         $config->generateDefaultConfigurationFile();
-    // no break
+        // no break
     case 'edit':
         exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
         break;
