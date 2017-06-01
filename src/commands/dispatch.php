@@ -13,11 +13,6 @@ switch ($data['action']) {
         break;
 
     case 'delete':
-        $data['original_action'] = $data['action'];
-        $data['show'] = 'timer_list';
-        $data['continue'] = true;
-        break;
-
     case 'continue':
         $data['original_action'] = $data['action'];
         $data['show'] = 'timer_list';
