@@ -21,7 +21,7 @@ switch ($data['action']) {
 
     case 'choose_timer':
         $data['action'] = 'final';
-        $data['continue'] = true;
+        $data['continue'] = false;
         break;
 
     case 'choose_project':

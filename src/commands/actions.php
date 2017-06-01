@@ -14,20 +14,6 @@ switch ($data['action']) {
         exit();
         break;
 
-    case 'delete':
-        $data['original_action'] = $data['action'];
-        $data['action'] = 'choose_timer';
-        break;
-
-    case 'continue':
-        $data['original_action'] = $data['action'];
-        $data['action'] = 'choose_timer';
-        break;
-
-    case 'choose_timer':
-        $data['action'] = 'final';
-        break;
-
     case 'undo':
         $message = $workflowHandler->getNotification(
             $timer->undo(),
@@ -35,11 +21,6 @@ switch ($data['action']) {
         );
         echo $message;
         exit();
-        break;
-
-    case 'start_all':
-        $data['original_action'] = $data['action'];
-        $data['action'] = 'show_projects';
         break;
 
     case 'stop':
@@ -74,13 +55,7 @@ switch ($data['action']) {
                 'start'
             );
         }
-
-        echo $message;
-        exit();
-        break;
-
-    default:
         break;
 }
 
-echo json_encode($data);
+echo $message;
