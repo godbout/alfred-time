@@ -14,13 +14,23 @@ if (in_array($data['show'], ['project_list', 'tag_list']) === true) {
     }
 
     $data[$itemIds] = null;
-    
-    $workflow->result()
-        ->arg(json_encode($data))
-        ->title('No ' .lcfirst($itemName))
-        ->subtitle('Timer will be created without a ' .lcfirst($itemName))
-        ->type('default')
-        ->valid(true);
+
+    if ($data['original_action'] === 'start_all') {
+        $activatedServices = $config->activatedServices();
+
+        foreach ($items as $name => $services) {
+            if (count($activatedServices) !== count($services)) {
+                unset($items[$name]);
+            }
+        }
+    } else {
+        $workflow->result()
+            ->arg(json_encode($data))
+            ->title('No ' . lcfirst($itemName))
+            ->subtitle('Timer will be created without a ' . lcfirst($itemName))
+            ->type('default')
+            ->valid(true);
+    }
 
     foreach ($items as $name => $ids) {
         $subtitle = $itemName . ' available for ' . implode(' and ', array_map(function ($value) {
