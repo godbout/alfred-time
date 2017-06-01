@@ -3,9 +3,7 @@
 switch ($data['action']) {
     case 'config':
         $config->generateDefaultConfigurationFile();
-        exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
-        break;
-
+        // no break
     case 'edit':
         exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
         break;
@@ -39,11 +37,6 @@ switch ($data['action']) {
         exit();
         break;
 
-    case 'start':
-        $data['original_action'] = $data['action'];
-        $data['action'] = 'show_projects';
-        break;
-
     case 'start_all':
         $data['original_action'] = $data['action'];
         $data['action'] = 'show_projects';
@@ -53,10 +46,6 @@ switch ($data['action']) {
         $message = $workflowHandler->getNotification($timer->stop(), 'stop');
         echo $message;
         exit();
-        break;
-
-    case 'show_projects':
-        $data['action'] = 'show_tags';
         break;
 
     case 'final':

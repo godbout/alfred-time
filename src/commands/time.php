@@ -15,18 +15,16 @@ $workflowHandler = new WorkflowHandler($config);
 $type = trim($argv[1]);
 $data = json_decode(getenv('data'), true);
 
-/**
- * First thing we do is check what kind of action is called
- *
- * Is it showing an Alfred menu? Or executing an action?
- * Below is the code for menus
- */
-if ($type === 'menus') {
-    require_once 'menus.php';
+switch ($type) {
+    case 'menus':
+        require_once 'menus.php';
+        break;
 
-/**
- * If an action is requested
- */
-} elseif ($type === 'actions') {
-    require_once 'actions.php';
+    case 'dispatch':
+        require_once 'dispatch.php';
+        break;
+
+    case 'actions':
+        require_once 'actions.php';
+        break;
 }

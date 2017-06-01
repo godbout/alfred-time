@@ -39,10 +39,7 @@ if ($query === 'config') {
 }
 
 if ($query === 'sync') {
-    $data = [
-        'continue' => false,
-        'action'   => 'sync',
-    ];
+    $data = ['action' => 'sync'];
 
     $workflow->result()
         ->uid('')
@@ -57,10 +54,7 @@ if ($query === 'sync') {
 }
 
 if ($query === 'delete') {
-    $data = [
-        'continue' => true,
-        'action'   => 'delete',
-    ];
+    $data = ['action' => 'delete'];
 
     $workflow->result()
         ->uid('')
@@ -75,7 +69,6 @@ if ($query === 'delete') {
 }
 
 if ($query === 'undo') {
-    $data['continue'] = false;
     $data['action'] = 'undo';
 
     $runningServices = $config->runningServices();
@@ -110,9 +103,8 @@ if (empty($data) === true) {
 
     if ($timer->isRunning() === true) {
         $data = [
-            'continue' => false,
-            'action'   => 'stop',
-            'query'    => $query,
+            'action' => 'stop',
+            'query'  => $query,
         ];
 
         if (empty($services) === true) {
@@ -130,9 +122,8 @@ if (empty($data) === true) {
             ->valid(true);
     } else {
         $data = [
-            'continue' => true,
-            'action'   => 'start',
-            'query'    => $query,
+            'action' => 'start',
+            'query'  => $query,
         ];
 
         $continueData = $data;
@@ -168,8 +159,8 @@ if (empty($data) === true) {
     exit();
 }
 
-if ($data['action'] === 'show_projects') {
-    $data['action'] = 'show_tags';
+if ($data['show'] === 'project_list') {
+    $data['action'] = 'choose_project';
     $data['project_ids'] = null;
     $workflow->result()
         ->arg(json_encode($data))
@@ -181,7 +172,7 @@ if ($data['action'] === 'show_projects') {
     $items = $workflowHandler->getProjects();
 
     foreach ($items as $name => $ids) {
-        $subtitle = ucfirst($type) . ' available for ' . implode(' and ', array_map(function ($value) {
+        $subtitle = 'Project available for ' . implode(' and ', array_map(function ($value) {
             return ucfirst($value);
         }, array_keys($ids)));
 
@@ -198,9 +189,8 @@ if ($data['action'] === 'show_projects') {
             $item->icon('icons/' . key($ids) . '.png');
         }
     }
-} elseif ($data['action'] === 'show_tags') {
-    $data['continue'] = false;
-    $data['action'] = 'final';
+} elseif ($data['show'] === 'tag_list') {
+    $data['action'] = 'choose_tag';
     $data['tag_ids'] = null;
     $workflow->result()
         ->arg(json_encode($data))
@@ -212,7 +202,7 @@ if ($data['action'] === 'show_projects') {
     $items = $workflowHandler->getTags();
 
     foreach ($items as $name => $ids) {
-        $subtitle = ucfirst($type) . ' available for ' . implode(' and ', array_map(function ($value) {
+        $subtitle = 'Tag available for ' . implode(' and ', array_map(function ($value) {
             return ucfirst($value);
         }, array_keys($ids)));
 
@@ -228,8 +218,7 @@ if ($data['action'] === 'show_projects') {
             $item->icon('icons/' . key($ids) . '.png');
         }
     }
-} elseif ($data['action'] === 'choose_timer') {
-    $data['continue'] = false;
+} elseif ($data['show'] === 'timer_list') {
     $data['action'] = 'final';
 
     if ($data['original_action'] === 'delete') {
