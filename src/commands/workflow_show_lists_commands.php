@@ -13,7 +13,7 @@ if (in_array($data['show'], ['project_list', 'tag_list']) === true) {
         $items = $workflowHandler->getTags();
     }
 
-    $data[$itemIds] = null;
+    $data[$itemIds] = [];
 
     if ($data['original_action'] === 'start_all') {
         $activatedServices = $config->activatedServices();
