@@ -4,7 +4,7 @@ namespace AlfredTime;
 
 use AlfredTime\ServiceApiCall;
 
-class Service
+abstract class Service
 {
     /**
      * @var mixed

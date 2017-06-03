@@ -10,11 +10,6 @@ use AlfredTime\ServiceApiCall;
 class Toggl extends Service
 {
     /**
-     * @var mixed
-     */
-    protected $serviceApiCall = null;
-
-    /**
      * @param $apiToken
      */
     public function __construct($apiToken = null)

@@ -10,11 +10,6 @@ use AlfredTime\ServiceApiCall;
 class Harvest extends Service
 {
     /**
-     * @var mixed
-     */
-    protected $serviceApiCall = null;
-
-    /**
      * @param $domain
      * @param null      $apiToken
      */
