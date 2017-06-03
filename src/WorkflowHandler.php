@@ -24,14 +24,11 @@ class WorkflowHandler
     /**
      * @param Config $config
      */
-    public function __construct(Config $config = null)
+    public function __construct(Config $config = null, Toggl $toggl, Harvest $harvest)
     {
         $this->config = $config;
-        $this->harvest = new Harvest(
-            $this->config->get('harvest', 'domain'),
-            $this->config->get('harvest', 'api_token')
-        );
-        $this->toggl = new Toggl($this->config->get('toggl', 'api_token'));
+        $this->toggl = $toggl;
+        $this->harvest = $harvest;
     }
 
     /**
