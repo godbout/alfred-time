@@ -26,7 +26,7 @@ class Timer
     /**
      * @param Config $config
      */
-    public function __construct(Config $config = null, Toggl $toggl, Harvest $harvest)
+    public function __construct(Config $config, Toggl $toggl, Harvest $harvest)
     {
         $this->config = $config;
         $this->harvest = $harvest;
