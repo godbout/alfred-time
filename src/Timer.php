@@ -102,14 +102,14 @@ class Timer
      * @param  $specificService
      * @return array
      */
-    public function start($description = '', array $projectData = [], array $tagData = [], $specificService = null)
+    public function start($description = '', array $projectData = [], array $tagData = [], array $services = [])
     {
         $res = [];
         $oneServiceStarted = false;
 
-        $servicesToRun = ($specificService === null)
-            ? $this->config->activatedServices()
-            : [$specificService];
+        if (empty($services) === true) {
+            return [];
+        }
 
         /**
          * When starting a new timer, all the services timer IDs have to be put to null
@@ -118,15 +118,11 @@ class Timer
          * should then contain the IDs of the last starts through the workflow, not
          * through each individual sefrvice
          */
-        if (empty($servicesToRun) === true) {
-            return [];
-        }
-
         foreach ($this->config->activatedServices() as $service) {
             $this->updateProperty($service . '_id', null);
         }
 
-        foreach ($servicesToRun as $service) {
+        foreach ($services as $service) {
             $timerId = $this->$service->startTimer(
                 $description,
                 $projectData[$service],

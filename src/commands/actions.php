@@ -26,12 +26,12 @@ switch ($data['action']) {
     case 'final':
         if ($data['original_action'] === 'start') {
             $message = $workflowHandler->getNotification(
-                $timer->start($data['query'], $data['project_ids'], $data['tag_ids'], $timer->getPrimaryService()),
+                $timer->start($data['query'], $data['project_ids'], $data['tag_ids'], [$timer->getPrimaryService()]),
                 'start'
             );
         } elseif ($data['original_action'] === 'start_all') {
             $message = $workflowHandler->getNotification(
-                $timer->start($data['query'], $data['project_ids'], $data['tag_ids']),
+                $timer->start($data['query'], $data['project_ids'], $data['tag_ids'], $config->activatedServices()),
                 'start'
             );
         } elseif ($data['original_action'] === 'delete') {
