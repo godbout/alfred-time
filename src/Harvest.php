@@ -7,12 +7,12 @@ use AlfredTime\ServiceApiCall;
 /**
  *
  */
-class Harvest
+class Harvest extends Service
 {
     /**
      * @var mixed
      */
-    private $serviceApiCall = null;
+    protected $serviceApiCall = null;
 
     /**
      * @param $domain
@@ -20,12 +20,7 @@ class Harvest
      */
     public function __construct($domain = null, $apiToken = null)
     {
-        $this->serviceApiCall = new ServiceApiCall([
-            'base_uri' => 'https://' . $domain . '.harvestapp.com/',
-            'headers'  => [
-                'Authorization' => 'Basic ' . $apiToken,
-            ],
-        ]);
+        parent::__construct('https://' . $domain . '.harvestapp.com/', $apiToken);
     }
 
     /**

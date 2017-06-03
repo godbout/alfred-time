@@ -7,24 +7,19 @@ use AlfredTime\ServiceApiCall;
 /**
  *
  */
-class Toggl
+class Toggl extends Service
 {
     /**
      * @var mixed
      */
-    private $serviceApiCall = null;
+    protected $serviceApiCall = null;
 
     /**
      * @param $apiToken
      */
     public function __construct($apiToken = null)
     {
-        $this->serviceApiCall = new ServiceApiCall([
-            'base_uri' => 'https://www.toggl.com/api/v8/',
-            'headers'  => [
-                'Authorization' => 'Basic ' . base64_encode($apiToken . ':api_token'),
-            ],
-        ]);
+        parent::__construct('https://www.toggl.com/api/v8/', base64_encode($apiToken . ':api_token'));
     }
 
     /**
