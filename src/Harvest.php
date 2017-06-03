@@ -54,12 +54,12 @@ class Harvest extends Service
 
         foreach ($this->timerAction('get_recent_timers', 'daily')['day_entries'] as $dayEntry) {
             $timers[] = [
-                'id' => $dayEntry['id'],
-                'description' => $dayEntry['notes'],
-                'project_id' => $dayEntry['project_id'],
+                'id'           => $dayEntry['id'],
+                'description'  => $dayEntry['notes'],
+                'project_id'   => $dayEntry['project_id'],
                 'project_name' => $dayEntry['project'],
-                'tags' => $dayEntry['task'],
-                'duration' => $dayEntry['hours'] * 60 * 60,
+                'tags'         => $dayEntry['task'],
+                'duration'     => $dayEntry['hours'] * 60 * 60,
             ];
         }
 

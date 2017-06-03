@@ -95,6 +95,13 @@ class Timer
         return $this->getProperty('is_running');
     }
 
+    public function reinitializeTimerIds()
+    {
+        foreach ($this->config->activatedServices() as $service) {
+            $this->updateProperty($service . '_id', null);
+        }
+    }
+
     /**
      * @param  $description
      * @param  array              $projectData
@@ -111,16 +118,7 @@ class Timer
             return [];
         }
 
-        /**
-         * When starting a new timer, all the services timer IDs have to be put to null
-         * so that when the user uses the UNDO feature, it doesn't delete old previous
-         * other services timers. The timer IDs are used for the UNDO feature and
-         * should then contain the IDs of the last starts through the workflow, not
-         * through each individual sefrvice
-         */
-        foreach ($this->config->activatedServices() as $service) {
-            $this->updateProperty($service . '_id', null);
-        }
+        $this->reinitializeTimerIds();
 
         foreach ($services as $service) {
             $timerId = $this->$service->startTimer(
@@ -141,6 +139,9 @@ class Timer
         return $res;
     }
 
+    /**
+     * @return mixed
+     */
     public function stop()
     {
         $res = [];
