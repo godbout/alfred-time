@@ -1,10 +1,10 @@
 <?php
 
 switch ($data['action']) {
-    case 'config':
+    case 'setup':
         $config->generateDefaultConfigurationFile();
         // no break
-    case 'edit':
+    case 'config':
         exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
         break;
 

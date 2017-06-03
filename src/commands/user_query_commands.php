@@ -1,34 +1,25 @@
 <?php
 
 $valid = true;
-$userQueryCommandFound = false;
+$userQueryCommandFound = true;
 
 switch ($query) {
     case 'config':
-        $userQueryCommandFound = true;
-        $data['action'] = 'edit';
         $title = 'Edit config file';
         $subtitle = 'Open the config file in your favorite editor!';
         break;
 
     case 'sync':
-        $userQueryCommandFound = true;
-        $data['action'] = 'sync';
         $title = 'Sync projects and tags from online to local cache';
         $subtitle = 'Update local projects and tags data';
         break;
 
     case 'delete':
-        $userQueryCommandFound = true;
-        $data['action'] = 'delete';
         $title = 'Delete a timer';
         $subtitle = 'Press enter to load recent timers list';
         break;
 
     case 'undo':
-        $userQueryCommandFound = true;
-        $data['action'] = 'undo';
-
         $runningServices = $config->runningServices();
 
         if (empty($runningServices) === true) {
@@ -42,9 +33,15 @@ switch ($query) {
         }
 
         break;
+
+    default:
+        $userQueryCommandFound = false;
+        break;
 }
 
 if ($userQueryCommandFound === true) {
+    $data['action'] = $query;
+
     $workflow->result()
         ->uid('')
         ->arg(json_encode($data))

@@ -1,6 +1,6 @@
 <?php
 
-$data = ['action' => 'config'];
+$data = ['action' => 'setup'];
 
 $workflow->result()
     ->uid('')

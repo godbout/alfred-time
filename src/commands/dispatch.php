@@ -3,8 +3,8 @@
 unset($data['continue']);
 
 switch ($data['action']) {
+    case 'setup':
     case 'config':
-    case 'edit':
     case 'sync':
     case 'undo':
     case 'stop':
