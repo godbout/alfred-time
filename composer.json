@@ -12,11 +12,12 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "phpstan/phpstan": "^0.6.4",
-        "phpmd/phpmd" : "@stable"
+        "phpmd/phpmd" : "@stable",
+        "phpspec/phpspec": "^3.4"
     },
     "autoload": {
         "psr-4": {
-            "AlfredTime\\": "src/"
+            "AlfredTime\\": "src/AlfredTime"
         }
     }
 }
