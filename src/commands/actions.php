@@ -46,7 +46,7 @@ switch ($data['action']) {
                     $timerInfo['description'],
                     [$timerInfo['service'] => $timerInfo['project_id']],
                     [$timerInfo['service'] => $timerInfo['tags']],
-                    $timerInfo['service']),
+                    [$timerInfo['service']]),
                 'start'
             );
         }
