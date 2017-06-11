@@ -16,3 +16,4 @@ before_script:
 
 script:
   - ./vendor/bin/codecept run
+  - ./vendor/bin/phpspec run
