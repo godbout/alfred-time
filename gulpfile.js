@@ -14,7 +14,7 @@ gulp.task('test', function() {
             title: 'Success',
             message: 'All tests have returned green beautifully!',
             icon: __dirname + '/success.png'
-        }))
+        }));
 });
 
 gulp.task('watch', function() {
