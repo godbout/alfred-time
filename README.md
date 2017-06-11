@@ -81,7 +81,7 @@ The config file contains 3 sections:
 
 * See reports directly in Alfred
 * See info about current running timer (project, tags/tasks, running time, etc...)
-* Add better tests suite and refactor classes (tests + php5.5 on travis)
+* Add better tests suite and refactor classes
 
 # Contribute
 
