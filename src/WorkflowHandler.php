@@ -24,7 +24,7 @@ class WorkflowHandler
     /**
      * @param Config $config
      */
-    public function __construct(Config $config, Toggl $toggl, Harvest $harvest)
+    public function __construct(Config $config, Service $toggl, Service $harvest)
     {
         $this->config = $config;
         $this->toggl = $toggl;

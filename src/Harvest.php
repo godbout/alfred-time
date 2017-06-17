@@ -10,6 +10,19 @@ use AlfredTime\ServiceApiCall;
 class Harvest extends Service
 {
     /**
+     * @var array
+     */
+    protected $methods = [
+        'start'             => 'post',
+        'stop'              => 'get',
+        'delete'            => 'delete',
+        'timer_running'     => 'get',
+        'get_projects'      => 'get',
+        'get_tags'          => 'get',
+        'get_recent_timers' => 'get',
+    ];
+
+    /**
      * @param $domain
      * @param null      $apiToken
      */
@@ -19,12 +32,39 @@ class Harvest extends Service
     }
 
     /**
-     * @param  $timerId
+     * @param $timerId
+     */
+    public function apiDeleteUrl($timerId)
+    {
+        return 'daily/delete/' . $timerId;
+    }
+
+    public function apiStartUrl()
+    {
+        return 'daily/add/';
+    }
+
+    /**
+     * @param $timerId
+     */
+    public function apiStopUrl($timerId)
+    {
+        return 'daily/timer/' . $timerId;
+    }
+
+    /**
+     * @param  $description
+     * @param  $projectId
+     * @param  $taskId
      * @return mixed
      */
-    public function deleteTimer($timerId = null)
+    public function generateTimer($description, $projectId, $taskId)
     {
-        return $this->timerAction('delete', 'daily/delete/' . $timerId);
+        return [
+            'notes'      => $description,
+            'project_id' => $projectId,
+            'task_id'    => $taskId,
+        ];
     }
 
     /**
@@ -76,41 +116,28 @@ class Harvest extends Service
     }
 
     /**
-     * @param  $description
-     * @param  $projectId
-     * @param  $taskId
+     * @param  string  $action
+     * @param  string  $apiUri
      * @return mixed
      */
-    public function startTimer($description, $projectId, $taskId)
+    protected function timerAction($action, $apiUri, array $options = [])
     {
-        $harvestId = null;
-
-        $item = [
-            'notes'      => $description,
-            'project_id' => $projectId,
-            'task_id'    => $taskId,
+        $returnDataFor = [
+            'start',
+            'timer_running',
+            'get_projects',
+            'get_tags',
+            'get_recent_timers',
         ];
 
-        $data = $this->timerAction('start', 'daily/add/', ['json' => $item]);
+        $method = $this->methodForAction($action);
 
-        if (isset($data['id']) === true) {
-            $harvestId = $data['id'];
-        }
-
-        return $harvestId;
-    }
-
-    /**
-     * @param  $timerId
-     * @return mixed
-     */
-    public function stopTimer($timerId = null)
-    {
-        if ($this->isTimerRunning($timerId) === false) {
-            return false;
-        }
-
-        return $this->timerAction('stop', 'daily/timer/' . $timerId);
+        return $this->serviceApiCall->send(
+            $method,
+            $apiUri,
+            $options,
+            in_array($action, $returnDataFor)
+        );
     }
 
     /**
@@ -145,39 +172,5 @@ class Harvest extends Service
         $data = $this->timerAction('timer_running', 'daily/show/' . $timerId);
 
         return isset($data['timer_started_at']);
-    }
-
-    /**
-     * @param  string  $action
-     * @param  string  $apiUri
-     * @return mixed
-     */
-    private function timerAction($action, $apiUri, array $options = [])
-    {
-        $returnDataFor = [
-            'start',
-            'timer_running',
-            'get_projects',
-            'get_tags',
-            'get_recent_timers',
-        ];
-        $methods = [
-            'start'             => 'post',
-            'stop'              => 'get',
-            'delete'            => 'delete',
-            'timer_running'     => 'get',
-            'get_projects'      => 'get',
-            'get_tags'          => 'get',
-            'get_recent_timers' => 'get',
-        ];
-
-        $method = isset($methods[$action]) ? $methods[$action] : '';
-
-        return $this->serviceApiCall->send(
-            $method,
-            $apiUri,
-            $options,
-            in_array($action, $returnDataFor)
-        );
     }
 }

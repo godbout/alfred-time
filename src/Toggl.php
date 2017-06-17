@@ -10,20 +10,65 @@ use AlfredTime\ServiceApiCall;
 class Toggl extends Service
 {
     /**
+     * @var string
+     */
+    protected $apiBaseUrl = 'https://www.toggl.com/api/v8/';
+
+    /**
+     * @var array
+     */
+    protected $methods = [
+        'start'             => 'post',
+        'stop'              => 'put',
+        'delete'            => 'delete',
+        'get_recent_timers' => 'get',
+        'get_online_data'   => 'get',
+    ];
+
+    /**
      * @param $apiToken
      */
     public function __construct($apiToken = null)
     {
-        parent::__construct('https://www.toggl.com/api/v8/', base64_encode($apiToken . ':api_token'));
+        parent::__construct($this->apiBaseUrl, base64_encode($apiToken . ':api_token'));
     }
 
     /**
-     * @param  $timerId
-     * @return mixed
+     * @param $timerId
      */
-    public function deleteTimer($timerId = null)
+    public function apiDeleteUrl($timerId)
     {
-        return $this->timerAction('delete', 'time_entries/' . $timerId);
+        return 'time_entries/' . $timerId;
+    }
+
+    public function apiStartUrl()
+    {
+        return 'time_entries/start';
+    }
+
+    /**
+     * @param $timerId
+     */
+    public function apiStopUrl($timerId)
+    {
+        return 'time_entries/' . $timerId . '/stop';
+    }
+
+    /**
+     * @param $description
+     * @param $projectId
+     * @param $tagData
+     */
+    public function generateTimer($description, $projectId, $tagData)
+    {
+        return [
+            'time_entry' => [
+                'description'  => $description,
+                'pid'          => $projectId,
+                'tags'         => explode(', ', $tagData),
+                'created_with' => 'Alfred Time Workflow',
+            ],
+        ];
     }
 
     /**
@@ -93,57 +138,15 @@ class Toggl extends Service
     }
 
     /**
-     * @param  $description
-     * @param  $projectId
-     * @param  $tagNames
-     * @return mixed
-     */
-    public function startTimer($description, $projectId, $tagData)
-    {
-        $togglId = null;
-        $item = [
-            'time_entry' => [
-                'description'  => $description,
-                'pid'          => $projectId,
-                'tags'         => explode(', ', $tagData),
-                'created_with' => 'Alfred Time Workflow',
-            ],
-        ];
-
-        $data = $this->timerAction('start', 'time_entries/start', ['json' => $item]);
-
-        if (isset($data['data']['id']) === true) {
-            $togglId = $data['data']['id'];
-        }
-
-        return $togglId;
-    }
-
-    /**
-     * @param  $timerId
-     * @return mixed
-     */
-    public function stopTimer($timerId = null)
-    {
-        return $this->timerAction('stop', 'time_entries/' . $timerId . '/stop');
-    }
-
-    /**
      * @param  string  $action
      * @param  string  $apiUri
      * @return mixed
      */
-    public function timerAction($action, $apiUri, array $options = [])
+    protected function timerAction($action, $apiUri, array $options = [])
     {
         $returnDataFor = ['start', 'get_recent_timers', 'get_online_data'];
-        $methods = [
-            'start'             => 'post',
-            'stop'              => 'put',
-            'delete'            => 'delete',
-            'get_recent_timers' => 'get',
-            'get_online_data'   => 'get',
-        ];
-        $method = isset($methods[$action]) ? $methods[$action] : '';
+
+        $method = $this->methodForAction($action);
 
         return $this->serviceApiCall->send(
             $method,
