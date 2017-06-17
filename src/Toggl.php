@@ -138,6 +138,19 @@ class Toggl extends Service
     }
 
     /**
+     * @param $action
+     * @return mixed
+     */
+    protected function methodForAction($action)
+    {
+        if (isset($this->methods[$action]) === false) {
+            return;
+        }
+
+        return $this->methods[$action];
+    }
+
+    /**
      * @param  string  $action
      * @param  string  $apiUri
      * @return mixed

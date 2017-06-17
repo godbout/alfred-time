@@ -84,6 +84,8 @@ abstract class Service
      */
     abstract protected function apiDeleteUrl($timerId);
 
+    abstract protected function methodForAction($action);
+
     /**
      * @param $timerId
      */
@@ -102,17 +104,4 @@ abstract class Service
      * @param $data
      */
     abstract protected function getTags($data);
-
-    /**
-     * @param $action
-     * @return mixed
-     */
-    protected function methodForAction($action)
-    {
-        if (isset($this->methods[$action]) === false) {
-            return;
-        }
-
-        return $this->methods[$action];
-    }
 }
