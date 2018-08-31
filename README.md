@@ -75,7 +75,7 @@ The config file contains 3 sections:
 3. "harvest": this is were you enter your Harvest info:
   * "is_active": true if you want to use Harvest, false otherwise
   * "api_token": this is a base64 encode of your Harvest credentials. You can encode online here: [base64 encode](https://www.base64encode.org/). Type "YOUR_HARVEST_USERNAME:YOUR_HARVEST_PASSWORD", encode, and paste the result in the config file.
-  * "domain": your Harvest domain (https://DOMAIN.harvestapp.com/welcome)
+  * "domain": your Harvest domain suffix (only use as "example" if URL is https://EXAMPLE.harvestapp.com)
 
 # Todo
 
