@@ -55,7 +55,7 @@ class Config
                 'api_token' => '',
             ],
             'harvest' => [
-                'is_active' => true,
+                'is_active' => false,
                 'domain'    => '',
                 'api_token' => '',
             ],
