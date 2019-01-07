@@ -191,7 +191,7 @@ class Toggl extends Service
             return isset($item['server_deleted_at']) === false;
         });
 
-        return array_map(function ($item) {
+        return array_map(function ($item) use ($needle) {
             return [
                     'name' => $item['name'],
                     'id'   => ($needle === 'tags') ? $item['name'] : $item['id'],
