@@ -76,7 +76,15 @@ class Toggl extends Service
      */
     public function getOnlineData()
     {
-        return $this->timerAction('get_online_data', 'me?with_related_data=true');
+        $data = [];
+
+        $togglData = $this->timerAction('get_online_data', 'me?with_related_data=true');
+
+        if ($togglData !== false) {
+            $data = $togglData;
+        }
+
+        return $data;
     }
 
     /**

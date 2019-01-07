@@ -73,8 +73,18 @@ class Harvest extends Service
     public function getOnlineData()
     {
         $data = [];
-        $data['projects'] = $this->timerAction('get_projects', 'projects');
-        $data['tasks'] = $this->timerAction('get_tags', 'tasks');
+
+        $projects = $this->timerAction('get_projects', 'projects');
+
+        if ($projects !== false) {
+            $data['projects'] = $projects;
+        }
+
+        $tasks = $this->timerAction('get_tags', 'tasks');
+
+        if ($tasks !== false) {
+            $data['tasks'] = $tasks;
+        }
 
         return $data;
     }

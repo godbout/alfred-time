@@ -188,12 +188,12 @@ class WorkflowHandler
     {
         $data = $this->$service->getOnlineData();
 
-        if (empty($data) === true) {
-            return $this->getNotificationForService($service, 'data', false);
-        }
-
         $this->saveServiceDataCache($service, $data);
 
-        return $this->getNotificationForService($service, 'data', true);
+        if (empty($data) === true) {
+            return $this->getNotificationForService($service, 'cache', false);
+        }
+
+        return $this->getNotificationForService($service, 'cached', true);
     }
 }
