@@ -186,17 +186,16 @@ class Toggl extends Service
          * To only show projects that are currently active
          * The Toggl API is slightly weird on that
          */
-        foreach ($haystack['data'][$needle] as $key => $item) {
-            if (isset($item['server_deleted_at']) === true) {
-                unset($haystack['data'][$needle][$key]);
-            }
 
-            $items[] = [
-                'name' => $item['name'],
-                'id'   => ($needle === 'tags') ? $item['name'] : $item['id'],
-            ];
-        }
+        $items = array_filter($haystack['data'][$needle], function ($item) {
+            return isset($item['server_deleted_at']) === false;
+        });
 
-        return $items;
+        return array_map(function ($item) {
+            return [
+                    'name' => $item['name'],
+                    'id'   => ($needle === 'tags') ? $item['name'] : $item['id'],
+                ];
+        }, $items);
     }
 }
