@@ -3,7 +3,7 @@
 [![StyleCI](https://styleci.io/repos/83111813/shield?branch=master)](https://styleci.io/repos/83111813)
 [![Build Status](https://www.travis-ci.org/godbout/alfred-time.svg?branch=master)](https://www.travis-ci.org/godbout/alfred-time)
 
-# Alfred-Time
+# Alfred Time
 
 Basic workflow to start and stop timers for [Toggl](https://toggl.com/) and/or [Harvest](https://www.getharvest.com/) services through [Alfred](http://alfredapp.com/).
 
@@ -90,3 +90,8 @@ The config file contains 3 sections:
 # Download
 
 * Workflow is downlodable on the [Release page](https://github.com/godbout/alfred-time/releases)
+
+# Alternatives to Alfred Time
+
+* [Alfred Harvest](https://github.com/tinystride/alfred-harvest) by Neil Renicker
+* [Alfred Toggl](https://github.com/jason0x43/alfred-toggl) by Jason Cheatham
