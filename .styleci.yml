@@ -1,8 +1,4 @@
-preset: psr2
+preset: laravel
 
-risky: false
-
-finder:
-  exclude:
-    - "tests"
-    - "vendor"
+disabled:
+  - single_class_element_per_statement
