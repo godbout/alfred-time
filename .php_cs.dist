@@ -7,6 +7,7 @@ return PhpCsFixer\Config::create()
         'binary_operator_spaces' => ['default' => 'single_space'],
         'blank_line_after_opening_tag' => true,
         'blank_line_before_statement' => true,
+        'cast_spaces' => ['space' => 'single'],
         'concat_space' => ['spacing' => 'one'],
         'method_chaining_indentation' => true,
         'no_blank_lines_after_phpdoc' => true,
