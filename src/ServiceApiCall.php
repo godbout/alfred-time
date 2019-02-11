@@ -34,7 +34,7 @@ class ServiceApiCall
         $config = array_merge_recursive($config, [
             'headers' => [
                 'Content-type' => 'application/json',
-                'Accept'       => 'application/json',
+                'Accept' => 'application/json',
             ]]);
 
         $this->client = new Client($config);
@@ -78,6 +78,7 @@ class ServiceApiCall
      * @param  $method
      * @param  $uri
      * @param  array     $options
+     * @param mixed $returnData
      * @return mixed
      */
     public function send($method, $uri = '', array $options = [], $returnData = false)

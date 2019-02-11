@@ -2,8 +2,6 @@
 
 namespace AlfredTime;
 
-use AlfredTime\ServiceApiCall;
-
 /**
  *
  */
@@ -18,11 +16,11 @@ class Toggl extends Service
      * @var array
      */
     protected $methods = [
-        'start'             => 'post',
-        'stop'              => 'put',
-        'delete'            => 'delete',
+        'start' => 'post',
+        'stop' => 'put',
+        'delete' => 'delete',
         'get_recent_timers' => 'get',
-        'get_online_data'   => 'get',
+        'get_online_data' => 'get',
     ];
 
     /**
@@ -63,9 +61,9 @@ class Toggl extends Service
     {
         return [
             'time_entry' => [
-                'description'  => $description,
-                'pid'          => $projectId,
-                'tags'         => explode(', ', $tagData),
+                'description' => $description,
+                'pid' => $projectId,
+                'tags' => explode(', ', $tagData),
                 'created_with' => 'Alfred Time Workflow',
             ],
         ];
@@ -99,6 +97,7 @@ class Toggl extends Service
         foreach ($projects as $project) {
             if ($project['id'] === $projectId) {
                 $projectName = $project['name'];
+
                 break;
             }
         }
@@ -124,12 +123,12 @@ class Toggl extends Service
 
         foreach ($this->timerAction('get_recent_timers', 'time_entries') as $timeEntry) {
             $timers[] = [
-                'id'           => $timeEntry['id'],
-                'description'  => $timeEntry['description'],
-                'project_id'   => $timeEntry['pid'],
+                'id' => $timeEntry['id'],
+                'description' => $timeEntry['description'],
+                'project_id' => $timeEntry['pid'],
                 'project_name' => $timeEntry['pid'],
-                'tags'         => empty($timeEntry['tags']) ? '' : implode(', ', $timeEntry['tags']),
-                'duration'     => $timeEntry['duration'],
+                'tags' => empty($timeEntry['tags']) ? '' : implode(', ', $timeEntry['tags']),
+                'duration' => $timeEntry['duration'],
             ];
         }
 
@@ -194,7 +193,6 @@ class Toggl extends Service
          * To only show projects that are currently active
          * The Toggl API is slightly weird on that
          */
-
         $items = array_filter($haystack['data'][$needle], function ($item) {
             return isset($item['server_deleted_at']) === false;
         });
@@ -202,7 +200,7 @@ class Toggl extends Service
         return array_map(function ($item) use ($needle) {
             return [
                     'name' => $item['name'],
-                    'id'   => ($needle === 'tags') ? $item['name'] : $item['id'],
+                    'id' => ($needle === 'tags') ? $item['name'] : $item['id'],
                 ];
         }, $items);
     }

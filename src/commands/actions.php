@@ -6,10 +6,12 @@ switch ($data['action']) {
         // no break
     case 'config':
         exec('open "' . getenv('alfred_workflow_data') . '/config.json"');
+
         break;
 
     case 'sync':
         $message = $workflowHandler->syncOnlineDataToLocalCache();
+
         break;
 
     case 'undo':
@@ -17,10 +19,12 @@ switch ($data['action']) {
             $timer->undo(),
             'undo'
         );
+
         break;
 
     case 'stop':
         $message = $workflowHandler->getNotification($timer->stop(), 'stop');
+
         break;
 
     case 'final':
@@ -46,7 +50,8 @@ switch ($data['action']) {
                     $timerInfo['description'],
                     [$timerInfo['service'] => $timerInfo['project_id']],
                     [$timerInfo['service'] => $timerInfo['tags']],
-                    [$timerInfo['service']]),
+                    [$timerInfo['service']]
+                ),
                 'start'
             );
         }

@@ -2,8 +2,6 @@
 
 namespace AlfredTime;
 
-use AlfredTime\Config;
-
 class WorkflowHandler
 {
     /**
@@ -163,6 +161,7 @@ class WorkflowHandler
     }
 
     /**
+     * @param mixed $service
      * @return mixed
      */
     private function getRecentServiceTimers($service)

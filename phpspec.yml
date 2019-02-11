@@ -1,6 +1,0 @@
-suites:
-   alfredtime_suite:
-       namespace: AlfredTime
-       psr4_prefix: AlfredTime
-       src_path:  src/
-       spec_path: tests/

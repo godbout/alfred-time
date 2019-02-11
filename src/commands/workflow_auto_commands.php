@@ -43,9 +43,11 @@ if ($timer->isRunning() === true) {
         ->title('Start "' . $query . '"')
         ->subtitle($subtitle)
         ->cmd('Continue a timer', json_encode($continueData))
-        ->shift('Start new timer for ' . implode(
+        ->shift(
+            'Start new timer for ' . implode(
             ' and ',
-            array_map('ucfirst', $config->activatedServices())),
+            array_map('ucfirst', $config->activatedServices())
+        ),
             json_encode($startAllData)
         )
         ->type('default')

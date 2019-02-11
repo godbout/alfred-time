@@ -1,19 +1,11 @@
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/godbout/alfred-workflow"
-        }
-    ],
     "require": {
         "joetannenbaum/alfred-workflow": "dev-master",
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
-        "codeception/codeception": "^2.2",
-        "phpmd/phpmd" : "@stable",
-        "phpspec/phpspec": "2.5.*",
-        "codedungeon/phpunit-result-printer": "^0.26.0"
+        "codedungeon/phpunit-result-printer": "^0.26.0",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "psr-4": {

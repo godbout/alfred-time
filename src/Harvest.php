@@ -2,8 +2,6 @@
 
 namespace AlfredTime;
 
-use AlfredTime\ServiceApiCall;
-
 /**
  *
  */
@@ -13,12 +11,12 @@ class Harvest extends Service
      * @var array
      */
     protected $methods = [
-        'start'             => 'post',
-        'stop'              => 'get',
-        'delete'            => 'delete',
-        'timer_running'     => 'get',
-        'get_projects'      => 'get',
-        'get_tags'          => 'get',
+        'start' => 'post',
+        'stop' => 'get',
+        'delete' => 'delete',
+        'timer_running' => 'get',
+        'get_projects' => 'get',
+        'get_tags' => 'get',
         'get_recent_timers' => 'get',
     ];
 
@@ -61,9 +59,9 @@ class Harvest extends Service
     public function generateTimer($description, $projectId, $taskId)
     {
         return [
-            'notes'      => $description,
+            'notes' => $description,
             'project_id' => $projectId,
-            'task_id'    => $taskId,
+            'task_id' => $taskId,
         ];
     }
 
@@ -104,12 +102,12 @@ class Harvest extends Service
 
         foreach ($this->timerAction('get_recent_timers', 'daily')['day_entries'] as $dayEntry) {
             $timers[] = [
-                'id'           => $dayEntry['id'],
-                'description'  => $dayEntry['notes'],
-                'project_id'   => $dayEntry['project_id'],
+                'id' => $dayEntry['id'],
+                'description' => $dayEntry['notes'],
+                'project_id' => $dayEntry['project_id'],
                 'project_name' => $dayEntry['project'],
-                'tags'         => $dayEntry['task'],
-                'duration'     => $dayEntry['hours'] * 60 * 60,
+                'tags' => $dayEntry['task'],
+                'duration' => $dayEntry['hours'] * 60 * 60,
             ];
         }
 
@@ -179,7 +177,7 @@ class Harvest extends Service
         foreach ($haystack[$needle] as $item) {
             $items[] = [
                 'name' => $item[key($item)]['name'],
-                'id'   => $item[key($item)]['id'],
+                'id' => $item[key($item)]['id'],
             ];
         }
 

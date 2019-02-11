@@ -7,16 +7,19 @@ switch ($query) {
     case 'config':
         $title = 'Edit config file';
         $subtitle = 'Open the config file in your favorite editor!';
+
         break;
 
     case 'sync':
         $title = 'Sync projects and tags from online to local cache';
         $subtitle = 'Update local projects and tags data';
+
         break;
 
     case 'delete':
         $title = 'Delete a timer';
         $subtitle = 'Press enter to load recent timers list';
+
         break;
 
     case 'undo':
@@ -36,6 +39,7 @@ switch ($query) {
 
     default:
         $userQueryCommandFound = false;
+
         break;
 }
 

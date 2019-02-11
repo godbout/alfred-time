@@ -2,8 +2,6 @@
 
 namespace AlfredTime;
 
-use AlfredTime\ServiceApiCall;
-
 abstract class Service
 {
     /**
@@ -27,6 +25,7 @@ abstract class Service
      * @param  $descrition
      * @param  $projectId
      * @param  $tagData
+     * @param mixed $description
      * @return mixed
      */
     public function startTimer($description, $projectId, $tagData)
@@ -68,12 +67,13 @@ abstract class Service
     /**
      * @param $baseUri
      * @param $apiToken
+     * @param mixed $credentials
      */
     protected function __construct($baseUri, $credentials)
     {
         $this->serviceApiCall = new ServiceApiCall([
             'base_uri' => $baseUri,
-            'headers'  => [
+            'headers' => [
                 'Authorization' => 'Basic ' . $credentials,
             ],
         ]);

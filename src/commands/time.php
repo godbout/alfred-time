@@ -11,13 +11,20 @@ use AlfredTime\WorkflowHandler;
 
 $workflow = new Workflow();
 $config = new Config(getenv('alfred_workflow_data') . '/config.json');
-$harvest = new Harvest(
-    $config->get('harvest', 'domain'),
-    $config->get('harvest', 'api_token')
-);
-$toggl = new Toggl(
-    $config->get('toggl', 'api_token')
-);
+
+if ($config->isConfigured()) {
+    $harvest = new Harvest(
+        $config->get('harvest', 'domain'),
+        $config->get('harvest', 'api_token')
+    );
+    $toggl = new Toggl(
+        $config->get('toggl', 'api_token')
+    );
+} else {
+    $harvest = new Harvest(null, null);
+    $toggl = new Toggl(null);
+}
+
 $timer = new Timer($config, $toggl, $harvest);
 $workflowHandler = new WorkflowHandler($config, $toggl, $harvest);
 
@@ -27,13 +34,16 @@ $data = json_decode(getenv('data'), true);
 switch ($type) {
     case 'menus':
         require_once 'menus.php';
+
         break;
 
     case 'dispatch':
         require_once 'dispatch.php';
+
         break;
 
     case 'actions':
         require_once 'actions.php';
+
         break;
 }

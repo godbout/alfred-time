@@ -2,10 +2,6 @@
 
 namespace AlfredTime;
 
-use AlfredTime\Toggl;
-use AlfredTime\Config;
-use AlfredTime\Harvest;
-
 class Timer
 {
     /**

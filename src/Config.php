@@ -43,20 +43,20 @@ class Config
     public function generateDefaultConfigurationFile()
     {
         $this->config = [
-            'timer'   => [
+            'timer' => [
                 'primary_service' => 'toggl',
-                'is_running'      => false,
-                'toggl_id'        => null,
-                'harvest_id'      => null,
-                'description'     => '',
+                'is_running' => false,
+                'toggl_id' => null,
+                'harvest_id' => null,
+                'description' => '',
             ],
-            'toggl'   => [
+            'toggl' => [
                 'is_active' => true,
                 'api_token' => '',
             ],
             'harvest' => [
                 'is_active' => false,
-                'domain'    => '',
+                'domain' => '',
                 'api_token' => '',
             ],
         ];
@@ -110,6 +110,7 @@ class Config
     }
 
     /**
+     * @param mixed $filename
      * @return mixed
      */
     private function load($filename)

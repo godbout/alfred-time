@@ -72,11 +72,11 @@ if (in_array($data['show'], ['project_list', 'tag_list']) === true) {
             $duration = $recentTimer['duration'];
 
             $data['timer_info'] = [
-                'service'     => $service,
+                'service' => $service,
                 'description' => $recentTimer['description'],
-                'id'          => $recentTimer['id'],
-                'project_id'  => $recentTimer['project_id'],
-                'tags'        => $recentTimer['tags'],
+                'id' => $recentTimer['id'],
+                'project_id' => $recentTimer['project_id'],
+                'tags' => $recentTimer['tags'],
             ];
 
             $subtitle = (empty($projectName) === true ? 'No project' : $projectName) . ', '
