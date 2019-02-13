@@ -1,15 +1,20 @@
 {
     "require": {
-        "joetannenbaum/alfred-workflow": "dev-master",
-        "guzzlehttp/guzzle": "^6.2"
+        "godbout/alfred-workflow-php": "^0.2.0",
+        "hassankhan/config": "^0.11.0"
     },
     "require-dev": {
-        "codedungeon/phpunit-result-printer": "^0.26.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "codedungeon/phpunit-result-printer": "^0.26.0"
     },
     "autoload": {
         "psr-4": {
-            "AlfredTime\\": "src/"
+            "Godbout\\Time\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }

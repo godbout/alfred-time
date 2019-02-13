@@ -1,9 +1,5 @@
-.DS_Store
-
-node_modules/
-
-tests/_output/*
-vendor/
-
-.php_cs.cache
+/vendor
 .phpunit.result.cache
+.php_cs.cache
+
+.DS_Store
