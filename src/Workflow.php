@@ -1,6 +1,5 @@
 <?php
 
-use Godbout\Time\Setup;
 use Godbout\Alfred\ScriptFilter;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -22,6 +21,11 @@ switch ($action) {
 
     case 'setup_toggl_apikey':
         require 'setup_toggl_apikey.php';
+
+        break;
+
+    case 'setup_toggl_apikey_save':
+        require 'setup_toggl_apikey_save.php';
 
         break;
 

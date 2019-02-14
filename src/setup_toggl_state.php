@@ -5,9 +5,9 @@ use Godbout\Alfred\ScriptFilter;
 
 ScriptFilter::add(
     Item::create()
-        ->title('Enter your API KEY above')
-        ->subtitle('Your API KEY will be saved.')
-        ->arg('setup_toggl_apikey_save'),
+        ->title('Toggle ENABLED!')
+        ->subtitle('Press enter to quit the workflow.')
+        ->arg('notification'),
     Item::create()
         ->title('Back')
         ->subtitle('Go back to Toggl options')
