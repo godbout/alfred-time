@@ -11,6 +11,7 @@ class TogglMenusTest extends TestCase
 
         unlink($this->configFile);
     }
+
     /** @test */
     public function it_can_save_the_api_key_of_the_user_in_the_config_file()
     {
@@ -22,8 +23,33 @@ class TogglMenusTest extends TestCase
         $output = $this->mockAlfredCallToScriptFilter();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
-        $this->assertArrayHasKey('toggl', $fileContentAsArray);
         $this->assertArrayHasKey('api_token', $fileContentAsArray['toggl']);
         $this->assertSame($apiKey, $fileContentAsArray['toggl']['api_token']);
+    }
+
+    /** @test */
+    public function it_can_enable_toggl()
+    {
+        unlink($this->configFile);
+        putenv('action=setup_toggl_state');
+        putenv('toggl_enabled=true');
+
+        $output = $this->mockAlfredCallToScriptFilter();
+        $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
+        $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
+        $this->assertSame(true, $fileContentAsArray['toggl']['is_active']);
+    }
+
+    /** @test */
+    public function it_can_disable_toggl()
+    {
+        // unlink($this->configFile);
+        // putenv('action=setup_toggl_state');
+        // putenv('toggl_enabled=false');
+
+        // $output = $this->mockAlfredCallToScriptFilter();
+        // $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
+        // $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
+        // $this->assertSame(false, $fileContentAsArray['toggl']['is_active']);
     }
 }
