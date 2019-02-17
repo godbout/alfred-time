@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
-    private $alfredWorkflowData = 'tests/AlfredWorkflowDataFolderMock';
+    private $alfredWorkflowData = __DIR__ . '/AlfredWorkflowDataFolderMock';
 
     private $command = 'php src/Workflow.php';
 
