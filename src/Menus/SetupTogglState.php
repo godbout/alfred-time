@@ -10,39 +10,52 @@ class SetupTogglState
 {
     public static function content()
     {
-        $enabled = getenv('toggl_enabled') === 'true';
+        self::saveState();
 
+        ScriptFilter::add(
+            self::stateSaved(),
+            self::back()
+        );
+    }
+
+    private static function saveState()
+    {
         $config = [
             'toggl' => [
-                'is_active' => $enabled,
+                'is_active' => getenv('toggl_enabled') === 'true'
             ]
         ];
 
         file_put_contents(
-            __DIR__ . '/../../tests/AlfredWorkflowDataFolderMock/config.json',
+            getenv('alfred_workflow_data') . '/config.json',
             json_encode($config, JSON_PRETTY_PRINT)
         );
+    }
 
-        if ($enabled === true) {
+    private static function stateSaved()
+    {
+        if (getenv('toggl_enabled') === 'true') {
             $title = 'Toggl ENABLED!';
         } else {
             $title = 'Toggl DISABLED!';
         }
 
-        ScriptFilter::add(
-            Item::create()
-                ->title($title)
-                ->subtitle('Press enter to quit the workflow.')
-                ->arg('notification')
-                ->icon(
-                    Icon::create(__DIR__ . '/../resources/icons/toggl.png')
-                ),
-            Item::create()
-                ->title('Back')
-                ->subtitle('Go back to Toggl options')
-                ->arg('setup_toggl')->icon(
-                    Icon::create(__DIR__ . '/../resources/icons/toggl.png')
-                )
-        );
+        return Item::create()
+            ->title($title)
+            ->subtitle('Press enter to quit the workflow.')
+            ->arg('notification')
+            ->icon(
+                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
+            );
+    }
+
+    private static function back()
+    {
+        return Item::create()
+            ->title('Back')
+            ->subtitle('Go back to Toggl options')
+            ->arg('setup_toggl')->icon(
+                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
+            );
     }
 }

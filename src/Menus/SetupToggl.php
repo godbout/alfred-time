@@ -23,7 +23,7 @@ class SetupToggl
             ->title('Set API KEY')
             ->arg('setup_toggl_apikey')
             ->icon(
-                Icon::create(__DIR__ . '/../resources/icons/toggl.png')
+                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
             );
     }
 
@@ -35,7 +35,7 @@ class SetupToggl
             ->arg('setup_toggl_state')
             ->variable('toggl_enabled', true)
             ->icon(
-                Icon::create(__DIR__ . '/../resources/icons/toggl.png')
+                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
             );
     }
 
@@ -45,7 +45,7 @@ class SetupToggl
             ->title('Back')
             ->arg('setup')
             ->icon(
-                Icon::create(__DIR__ . '/../resources/icons/icon.png')
+                Icon::create(__DIR__ . '/../../resources/icons/icon.png')
             );
     }
 }

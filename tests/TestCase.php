@@ -21,6 +21,18 @@ class TestCase extends BaseTestCase
         $this->writeConfigFile();
     }
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->deleteConfigFile();
+    }
+
+    protected function deleteConfigFile()
+    {
+        unlink($this->configFile);
+    }
+
     private function writeConfigFile()
     {
         file_put_contents($this->configFile, json_encode([]));

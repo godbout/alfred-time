@@ -4,15 +4,11 @@ namespace Tests;
 
 class MenusTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function it_proposes_a_setup_if_the_workflow_is_not_yet_configured()
     {
-        unlink($this->configFile);
+        $this->deleteConfigFile();
+        putenv('action=none');
 
         $output = $this->mockAlfredCallToScriptFilter();
 

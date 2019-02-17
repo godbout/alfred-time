@@ -10,6 +10,8 @@ class SetupTogglApikey
 {
     public static function content()
     {
+        global $argv;
+
         ScriptFilter::add(
             Item::create()
                 ->title('Enter your API KEY above')
@@ -17,14 +19,14 @@ class SetupTogglApikey
                 ->arg('setup_toggl_apikey_save')
                 ->variable('toggl_apikey', trim($argv[1] ?? ''))
                 ->icon(
-                    Icon::create(__DIR__ . '/../resources/icons/toggl.png')
+                    Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
                 ),
             Item::create()
                 ->title('Back')
                 ->subtitle('Go back to Toggl options')
                 ->arg('setup_toggl')
                 ->icon(
-                    Icon::create(__DIR__ . '/../resources/icons/toggl.png')
+                    Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
                 )
         );
     }

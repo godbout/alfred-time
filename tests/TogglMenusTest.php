@@ -5,17 +5,16 @@ namespace Tests;
 
 class TogglMenusTest extends TestCase
 {
-    public function tearDown(): void
+    public function setUp(): void
     {
-        parent::tearDown();
+        parent::setUp();
 
-        unlink($this->configFile);
+        $this->deleteConfigFile();
     }
 
     /** @test */
     public function it_can_save_the_api_key_of_the_user_in_the_config_file()
     {
-        unlink($this->configFile);
         $apiKey = 'e695b4364ad1ea7200035fec1bbc87cf';
         putenv('action=setup_toggl_apikey_save');
         putenv("toggl_apikey=$apiKey");
@@ -30,7 +29,6 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_can_enable_toggl()
     {
-        unlink($this->configFile);
         putenv('action=setup_toggl_state');
         putenv('toggl_enabled=true');
 
@@ -43,7 +41,6 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_can_disable_toggl()
     {
-        unlink($this->configFile);
         putenv('action=setup_toggl_state');
         putenv('toggl_enabled=false');
 
