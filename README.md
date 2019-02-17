@@ -1,16 +1,29 @@
 <h1 align="center">Alfred Time</h1>
 
 <p align="center">
-![GitHub Release](https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919)](https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger)
-[![StyleCI](https://styleci.io/repos/83111813/shield?branch=master)](https://styleci.io/repos/83111813)
-[![Build Status](https://www.travis-ci.org/godbout/alfred-time.svg?branch=master)](https://www.travis-ci.org/godbout/alfred-time)
-![GitHub Downloads](https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat)
+    <a href="https://github.com/godbout/alfred-time/releases/tag/v0.1.4">
+        <img src="https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat" alt="GitHub Release">
+    </a>
+    <a href="https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master">
+        <img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality">
+    </a>
+    <a href="https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger">
+        <img src="https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919" alt="Codacy Badge">
+    </a>
+    <a href="https://styleci.io/repos/83111813">
+        <img src="https://styleci.io/repos/83111813/shield?branch=master" alt="StyleCI">
+    </a>
+    <a href="https://www.travis-ci.org/godbout/alfred-time">
+        <img src="https://www.travis-ci.org/godbout/alfred-time.svg?branch=master" alt="Build Status">
+    </a>
+    <a href="https://github.com/godbout/alfred-time/releases">
+        <img src="https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat" alt="GitHub Downloads">
+    </a>
 </p>
 
-Basic workflow to start and stop timers for [Toggl](https://toggl.com/) and/or [Harvest](https://www.getharvest.com/) services through [Alfred](http://alfredapp.com/).
-
+<p align="center">
+    Basic workflow to start and stop timers for <a href="https://toggl.com/">Toggl</a> and/or <a href="https://www.getharvest.com/">Harvest</a> services through <a href="http://alfredapp.com/">Alfred</a>.
+</p>
 
 ---
 
