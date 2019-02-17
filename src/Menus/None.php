@@ -44,7 +44,6 @@ class None
         ];
 
         if (! file_exists(getenv('alfred_workflow_data'))) {
-            var_dump('mkdir of ' . getenv('alfred_workflow_data'));
             mkdir(getenv('alfred_workflow_data'));
         }
 

@@ -5,6 +5,8 @@ php:
   - 7.3
 
 env:
+  global:
+    - alfred_workflow_data=/tests/AlfredWorkflowDataFolderMock
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
