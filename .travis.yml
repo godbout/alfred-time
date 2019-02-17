@@ -6,7 +6,7 @@ php:
 
 env:
   global:
-    - alfred_workflow_data=/tests/AlfredWorkflowDataFolderMock
+    - alfred_workflow_data=./tests/AlfredWorkflowDataFolderMock
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
