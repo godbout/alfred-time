@@ -1,12 +1,18 @@
-# Alfred Time
+<h1 align="center">Alfred Time</h1>
 
+<p align="center">
 ![GitHub Release](https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919)](https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919)](https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger)
 [![StyleCI](https://styleci.io/repos/83111813/shield?branch=master)](https://styleci.io/repos/83111813)
 [![Build Status](https://www.travis-ci.org/godbout/alfred-time.svg?branch=master)](https://www.travis-ci.org/godbout/alfred-time)
+![GitHub Downloads](https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat)
+</p>
 
 Basic workflow to start and stop timers for [Toggl](https://toggl.com/) and/or [Harvest](https://www.getharvest.com/) services through [Alfred](http://alfredapp.com/).
+
+
+---
 
 # Why
 
