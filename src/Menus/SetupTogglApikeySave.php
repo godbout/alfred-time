@@ -1,6 +1,6 @@
 <?php
 
-namespace Godbout\Time;
+namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
@@ -17,7 +17,7 @@ class SetupTogglApikeySave
         ];
 
         file_put_contents(
-            __DIR__ . '/../tests/AlfredWorkflowDataFolderMock/config.json',
+            __DIR__ . '/../../tests/AlfredWorkflowDataFolderMock/config.json',
             json_encode($config, JSON_PRETTY_PRINT)
         );
 

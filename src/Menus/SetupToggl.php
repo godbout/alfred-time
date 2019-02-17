@@ -1,6 +1,6 @@
 <?php
 
-namespace Godbout\Time;
+namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;

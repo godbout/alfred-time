@@ -10,7 +10,7 @@ $action = getenv('action');
 
 ScriptFilter::create();
 
-$class = __NAMESPACE__ . '\\' . str_replace('_', '', ucwords($action === false ? 'none' : $action, '_'));
+$class = __NAMESPACE__ . '\\Menus\\' . str_replace('_', '', ucwords($action === false ? 'none' : $action, '_'));
 $class::content();
 
 echo ScriptFilter::output();

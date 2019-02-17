@@ -40,22 +40,16 @@ class TogglMenusTest extends TestCase
         $this->assertSame(true, $fileContentAsArray['toggl']['is_active']);
     }
 
-    /**
-     * iTodo
-     *
-     * - Test below is the new test
-     */
-
     /** @test */
-    // public function it_can_disable_toggl()
-    // {
-    //     unlink($this->configFile);
-    //     putenv('action=setup_toggl_state');
-    //     putenv('toggl_enabled=false');
+    public function it_can_disable_toggl()
+    {
+        unlink($this->configFile);
+        putenv('action=setup_toggl_state');
+        putenv('toggl_enabled=false');
 
-    //     $output = $this->mockAlfredCallToScriptFilter();
-    //     $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
-    //     $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
-    //     $this->assertSame(false, $fileContentAsArray['toggl']['is_active']);
-    // }
+        $output = $this->mockAlfredCallToScriptFilter();
+        $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
+        $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
+        $this->assertSame(false, $fileContentAsArray['toggl']['is_active']);
+    }
 }

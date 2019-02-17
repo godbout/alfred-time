@@ -1,38 +1,29 @@
 <?php
 
-namespace Godbout\Time;
+namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
 use Godbout\Alfred\ScriptFilter;
 
-class SetupTogglState
+class SetupTogglApikey
 {
     public static function content()
     {
-        $config = [
-            'toggl' => [
-                'is_active' => (bool) getenv('toggl_enabled'),
-            ]
-        ];
-
-        file_put_contents(
-            __DIR__ . '/../tests/AlfredWorkflowDataFolderMock/config.json',
-            json_encode($config, JSON_PRETTY_PRINT)
-        );
-
         ScriptFilter::add(
             Item::create()
-                ->title('Toggle ENABLED!')
-                ->subtitle('Press enter to quit the workflow.')
-                ->arg('notification')
+                ->title('Enter your API KEY above')
+                ->subtitle('Your API KEY will be saved.')
+                ->arg('setup_toggl_apikey_save')
+                ->variable('toggl_apikey', trim($argv[1] ?? ''))
                 ->icon(
                     Icon::create(__DIR__ . '/../resources/icons/toggl.png')
                 ),
             Item::create()
                 ->title('Back')
                 ->subtitle('Go back to Toggl options')
-                ->arg('setup_toggl')->icon(
+                ->arg('setup_toggl')
+                ->icon(
                     Icon::create(__DIR__ . '/../resources/icons/toggl.png')
                 )
         );
