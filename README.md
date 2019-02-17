@@ -1,24 +1,12 @@
 <h1 align="center">Alfred Time</h1>
 
 <p align="center">
-    <a href="https://github.com/godbout/alfred-time/releases/tag/v0.1.4">
-        <img src="https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat" alt="GitHub Release">
-    </a>
-    <a href="https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master">
-        <img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality">
-    </a>
-    <a href="https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger">
-        <img src="https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919" alt="Codacy Badge">
-    </a>
-    <a href="https://styleci.io/repos/83111813">
-        <img src="https://styleci.io/repos/83111813/shield?branch=master" alt="StyleCI">
-    </a>
-    <a href="https://www.travis-ci.org/godbout/alfred-time">
-        <img src="https://www.travis-ci.org/godbout/alfred-time.svg?branch=master" alt="Build Status">
-    </a>
-    <a href="https://github.com/godbout/alfred-time/releases">
-        <img src="https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat" alt="GitHub Downloads">
-    </a>
+<a href="https://github.com/godbout/alfred-time/releases/tag/v0.1.4"><img src="https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat" alt="GitHub Release"></a>
+<a href="https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master"><img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
+<a href="https://www.codacy.com/app/godbout/alfred-time?utm_source=github.com&utm_medium=referral&utm_content=godbout/alfred-time&utm_campaign=badger"><img src="https://api.codacy.com/project/badge/Grade/b36ee46f72194137a165d6311d450919" alt="Codacy Badge"></a>
+<a href="https://styleci.io/repos/83111813"><img src="https://styleci.io/repos/83111813/shield?branch=master" alt="StyleCI"></a>
+<a href="https://www.travis-ci.org/godbout/alfred-time"><img src="https://www.travis-ci.org/godbout/alfred-time.svg?branch=master" alt="Build Status"></a>
+<a href="https://github.com/godbout/alfred-time/releases"><img src="https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat" alt="GitHub Downloads"></a>
 </p>
 
 <p align="center">
@@ -114,4 +102,4 @@ The config file contains 3 sections:
 # Alternatives to Alfred Time
 
 * [Alfred Harvest](https://github.com/tinystride/alfred-harvest) by Neil Renicker
-* [Alfred Toggl](https://github.com/jason0x43/alfred-toggl) by Jason Cheatham
+* [Alfred Toggl](https://github.com/jason0x43/alfred-toggl) by Jason Cheatha
