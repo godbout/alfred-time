@@ -25,26 +25,25 @@ class None
     private static function generateDefaultConfigFileIfNonExistent()
     {
         $defaultConfig = [
-            'timer'   => [
+            'timer' => [
                 'primary_service' => 'toggl',
-                'is_running'      => false,
-                'toggl_id'        => null,
-                'harvest_id'      => null,
-                'description'     => '',
+                'is_running' => false,
+                'toggl_id' => null,
+                'harvest_id' => null,
+                'description' => '',
             ],
-            'toggl'   => [
+            'toggl' => [
                 'is_active' => true,
                 'api_token' => '',
             ],
             'harvest' => [
                 'is_active' => false,
-                'domain'    => '',
+                'domain' => '',
                 'api_token' => '',
             ],
         ];
 
         if (! file_exists(getenv('alfred_workflow_data'))) {
-            var_dump('mkdir of ' . getenv('alfred_workflow_data'));
             mkdir(getenv('alfred_workflow_data'));
         }
 

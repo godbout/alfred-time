@@ -4,13 +4,27 @@ namespace Godbout\Time;
 
 use Godbout\Alfred\ScriptFilter;
 
-require __DIR__ . '/../vendor/autoload.php';
+class Workflow
+{
+    public static function output()
+    {
+        ScriptFilter::create();
 
-$action = getenv('action');
+        $class = self::getCurrentMenuClass();
+        $class::content();
 
-ScriptFilter::create();
+        return ScriptFilter::output();
+    }
 
-$class = __NAMESPACE__ . '\\Menus\\' . str_replace('_', '', ucwords($action === false ? 'none' : $action, '_'));
-$class::content();
+    private static function getCurrentMenuClass()
+    {
+        $action = getenv('action');
 
-echo ScriptFilter::output();
+        return __NAMESPACE__ . '\\Menus\\' . self::getMenuClassName($action);
+    }
+
+    private static function getMenuClassName($action)
+    {
+        return str_replace('_', '', ucwords($action === false ? 'none' : $action, '_'));
+    }
+}

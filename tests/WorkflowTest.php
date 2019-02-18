@@ -5,6 +5,17 @@ namespace Tests;
 class WorkflowTest extends TestCase
 {
     /** @test */
+    public function it_creates_a_workflow_data_folder_at_startup_if_none_is_found()
+    {
+        $this->deleteAlfredWorkflowDataFolderAndContent();
+        putenv('action=none');
+
+        $output = $this->mockAlfredCallToScriptFilter();
+
+        $this->assertDirectoryExists($this->alfredWorkflowData);
+    }
+
+    /** @test */
     public function it_creates_a_config_file_with_the_default_settings_at_startup_if_none_is_found()
     {
         $this->deleteConfigFile();
