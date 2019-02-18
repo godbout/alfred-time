@@ -27,6 +27,8 @@ class TestCase extends BaseTestCase
     {
         parent::tearDown();
 
+        Workflow::destroy();
+
         $this->deleteAlfredWorkflowDataFolderAndContent();
     }
 

@@ -4,6 +4,8 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
+use Godbout\Time\Config;
+use Godbout\Time\Workflow;
 use Godbout\Alfred\ScriptFilter;
 
 class SetupTogglState
@@ -20,16 +22,9 @@ class SetupTogglState
 
     private static function saveState()
     {
-        $config = [
-            'toggl' => [
-                'is_active' => getenv('toggl_enabled') === 'true'
-            ]
-        ];
+        Workflow::getConfig()->set('toggl.is_active', getenv('toggl_enabled') === 'true');
 
-        file_put_contents(
-            getenv('alfred_workflow_data') . '/config.json',
-            json_encode($config, JSON_PRETTY_PRINT)
-        );
+        Config::writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
     }
 
     private static function stateSaved()

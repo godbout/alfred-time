@@ -4,6 +4,8 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
+use Godbout\Time\Config;
+use Godbout\Time\Workflow;
 use Godbout\Alfred\ScriptFilter;
 
 class SetupTogglApikeySave
@@ -20,16 +22,9 @@ class SetupTogglApikeySave
 
     private static function saveApikey()
     {
-        $config = [
-            'toggl' => [
-                'api_token' => getenv('toggl_apikey'),
-            ]
-        ];
+        Workflow::getConfig()->set('toggl.api_token', getenv('toggl_apikey'));
 
-        file_put_contents(
-            getenv('alfred_workflow_data') . '/config.json',
-            json_encode($config, JSON_PRETTY_PRINT)
-        );
+        Config::writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
     }
 
     private static function apikeySaved()
