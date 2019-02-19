@@ -55,13 +55,27 @@ class TogglMenusTest extends TestCase
     }
 
     /** @test */
+    // public function it_shows_creating_an_api_key_if_none_is_saved_in_the_config_yet()
+    // {
+    //     $this->
+    // }
+
+    /** @test */
+    public function it_shows_updating_an_api_key_is_one_is_found_in_the_config()
+    {
+        $this->togglApikey('e695b4364ad1ea7200035fec1bbc87cf');
+
+        $output = $this->reachSetupTogglMenu();
+
+        $this->assertStringContainsString('"subtitle":"Current API KEY: e695b4364ad..."', $output);
+    }
+
+    /** @test */
     public function it_shows_the_state_as_disabled_if_toggl_is_disabled()
     {
-        Workflow::getConfig()->set('toggl.is_active', false);
-        Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
-        putenv('action=setup_toggl');
+        $this->disableToggl();
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachSetupTogglMenu();
 
         $this->assertStringContainsString('"subtitle":"Currently disabled"', $output);
     }
@@ -69,11 +83,9 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_shows_the_state_as_enabled_if_toggl_is_enabled()
     {
-        Workflow::getConfig()->set('toggl.is_active', true);
-        Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
-        putenv('action=setup_toggl');
+        $this->enableToggl();
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachSetupTogglMenu();
 
         $this->assertStringContainsString('"subtitle":"Currently enabled"', $output);
     }

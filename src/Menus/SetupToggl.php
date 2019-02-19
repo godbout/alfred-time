@@ -19,8 +19,17 @@ class SetupToggl extends Menu
 
     private static function apikey()
     {
+        $title = 'Set API KEY';
+        $subtitle = 'No API KEY found';
+
+        if (! empty(Workflow::getConfig()->get('toggl.api_token'))) {
+            $title = 'Update API KEY';
+            $subtitle = 'Current API KEY: ' . substr(Workflow::getConfig()->get('toggl.api_token'), 0, 11) . '...';
+        }
+
         return Item::create()
-            ->title('Set API KEY')
+            ->title($title)
+            ->subtitle($subtitle)
             ->arg('setup_toggl_apikey')
             ->icon(
                 Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
@@ -32,7 +41,7 @@ class SetupToggl extends Menu
         $title = 'Enable';
         $subtitle = 'Currently disabled';
 
-        if (Workflow::getConfig()->get('toggl.is_active') === true) {
+        if ((Workflow::getConfig()->get('toggl.is_active') === true)) {
             $title = 'Disable';
             $subtitle = 'Currently enabled';
         }
@@ -41,7 +50,7 @@ class SetupToggl extends Menu
             ->title($title)
             ->subtitle($subtitle)
             ->arg('setup_toggl_state')
-            ->variable('toggl_enabled', (Workflow::getConfig()->get('toggl.is_active') === true))
+            ->variable('toggl_enabled', Workflow::getConfig()->get('toggl.is_active') ? 'false' : 'true')
             ->icon(
                 Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
             );

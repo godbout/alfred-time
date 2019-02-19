@@ -67,4 +67,29 @@ class TestCase extends BaseTestCase
         $this->deleteConfigFile();
         rmdir($this->alfredWorkflowData);
     }
+
+    protected function enableToggl()
+    {
+        Workflow::getConfig()->set('toggl.is_active', true);
+        Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
+    }
+
+    protected function disableToggl()
+    {
+        Workflow::getConfig()->set('toggl.is_active', false);
+        Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
+    }
+
+    protected function reachSetupTogglMenu()
+    {
+        putenv('action=setup_toggl');
+
+        return $this->mockAlfredCallToScriptFilter();
+    }
+
+    protected function togglApikey($apikey = 'e695b4364ad1ea7200035fec1bbc87cf')
+    {
+        Workflow::getConfig()->set('toggl.api_token', $apikey);
+        Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
+    }
 }
