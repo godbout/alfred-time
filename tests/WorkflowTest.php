@@ -2,6 +2,9 @@
 
 namespace Tests;
 
+use Godbout\Alfred\ScriptFilter;
+use Godbout\Time\Menus\None;
+use Godbout\Time\Menus\SetupTogglState;
 use Godbout\Time\Workflow;
 
 class WorkflowTest extends TestCase
@@ -12,7 +15,7 @@ class WorkflowTest extends TestCase
         $this->deleteAlfredWorkflowDataFolderAndContent();
         putenv('action=none');
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $this->mockAlfredCallToScriptFilter();
 
         $this->assertDirectoryExists($this->alfredWorkflowData);
     }
@@ -41,7 +44,7 @@ class WorkflowTest extends TestCase
             ],
         ];
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $this->mockAlfredCallToScriptFilter();
 
         $this->assertFileExists($this->configFile);
         $this->assertEquals($defaultConfig, json_decode(file_get_contents($this->configFile), true));
@@ -71,6 +74,16 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_returns_a_correct_output()
     {
-        // it returns a correct output
+        putenv('action=none');
+
+        $output = $this->mockAlfredCallToScriptFilter();
+
+        $this->assertSame(ScriptFilter::add(None::content())::output(), $output);
+
+        putenv('action=setup_toggl_state');
+
+        $output = $this->mockAlfredCallToScriptFilter();
+
+        $this->assertSame(ScriptFilter::add(SetupTogglState::content())::output(), $output);
     }
 }

@@ -6,18 +6,17 @@ use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
 use Godbout\Time\Config;
 use Godbout\Time\Workflow;
-use Godbout\Alfred\ScriptFilter;
 
-class SetupTogglApikeySave
+class SetupTogglApikeySave extends Menu
 {
-    public static function content()
+    public static function content(): array
     {
         self::saveApikey();
 
-        ScriptFilter::add(
+        return [
             self::apikeySaved(),
             self::back()
-        );
+        ];
     }
 
     private static function saveApikey()

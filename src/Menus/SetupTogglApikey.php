@@ -4,15 +4,14 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
-use Godbout\Alfred\ScriptFilter;
 
-class SetupTogglApikey
+class SetupTogglApikey extends Menu
 {
-    public static function content()
+    public static function content(): array
     {
         global $argv;
 
-        ScriptFilter::add(
+        return [
             Item::create()
                 ->title('Enter your API KEY above')
                 ->subtitle('Your API KEY will be saved.')
@@ -28,6 +27,6 @@ class SetupTogglApikey
                 ->icon(
                     Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
                 )
-        );
+        ];
     }
 }

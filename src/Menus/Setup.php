@@ -4,16 +4,15 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
-use Godbout\Alfred\ScriptFilter;
 
-class Setup
+class Setup extends Menu
 {
-    public static function content()
+    public static function content(): array
     {
-        ScriptFilter::add(
+        return [
             self::toggl(),
             self::harvest()
-        );
+        ];
     }
 
     private static function toggl()

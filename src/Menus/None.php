@@ -4,19 +4,18 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
-use Godbout\Alfred\ScriptFilter;
 
-class None
+class None extends Menu
 {
-    public static function content()
+    public static function content(): array
     {
-        ScriptFilter::add(
+        return [
             Item::create()
                 ->title('Setup the workflow')
                 ->arg('setup')
                 ->icon(
-                    Icon::create(__DIR__ . '/../../resources/icons/icon.png')
-                )
-        );
+                Icon::create(__DIR__ . '/../../resources/icons/icon.png')
+            )
+        ];
     }
 }

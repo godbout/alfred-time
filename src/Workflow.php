@@ -91,7 +91,10 @@ class Workflow
         ScriptFilter::create();
 
         $class = self::getCurrentMenuClass();
-        $class::content();
+
+        foreach ($class::content() as $item) {
+            ScriptFilter::add($item);
+        }
 
         return ScriptFilter::output();
     }

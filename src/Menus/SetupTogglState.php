@@ -6,18 +6,17 @@ use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
 use Godbout\Time\Config;
 use Godbout\Time\Workflow;
-use Godbout\Alfred\ScriptFilter;
 
-class SetupTogglState
+class SetupTogglState extends Menu
 {
-    public static function content()
+    public static function content(): array
     {
         self::saveState();
 
-        ScriptFilter::add(
+        return [
             self::stateSaved(),
             self::back()
-        );
+        ];
     }
 
     private static function saveState()
