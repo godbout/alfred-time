@@ -4,6 +4,7 @@ namespace Godbout\Time\Menus;
 
 use Godbout\Alfred\Icon;
 use Godbout\Alfred\Item;
+use Godbout\Time\Workflow;
 
 class SetupToggl extends Menu
 {
@@ -28,11 +29,19 @@ class SetupToggl extends Menu
 
     private static function state()
     {
+        $title = 'Enable';
+        $subtitle = 'Currently disabled';
+
+        if (Workflow::getConfig()->get('toggl.is_active') === true) {
+            $title = 'Disable';
+            $subtitle = 'Currently enabled';
+        }
+
         return Item::create()
-            ->title('Enable')
-            ->subtitle('Currently disabled')
+            ->title($title)
+            ->subtitle($subtitle)
             ->arg('setup_toggl_state')
-            ->variable('toggl_enabled', true)
+            ->variable('toggl_enabled', (Workflow::getConfig()->get('toggl.is_active') === true))
             ->icon(
                 Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
             );

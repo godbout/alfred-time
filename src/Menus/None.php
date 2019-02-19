@@ -13,9 +13,7 @@ class None extends Menu
             Item::create()
                 ->title('Setup the workflow')
                 ->arg('setup')
-                ->icon(
-                Icon::create(__DIR__ . '/../../resources/icons/icon.png')
-            )
+                ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'))
         ];
     }
 }

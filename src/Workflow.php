@@ -24,6 +24,21 @@ class Workflow
         $this->config = Config::load($this->configFile);
     }
 
+    public static function output()
+    {
+        self::getInstance();
+
+        ScriptFilter::create();
+
+        $class = self::getCurrentMenuClass();
+
+        foreach ($class::content() as $item) {
+            ScriptFilter::add($item);
+        }
+
+        return ScriptFilter::output();
+    }
+
     private function createWorkflowDataFolderAndConfigFileIfNeeded()
     {
         if (! file_exists($this->workflowDataFolder)) {
@@ -82,21 +97,6 @@ class Workflow
     public static function destroy()
     {
         self::$instance = null;
-    }
-
-    public static function output()
-    {
-        self::getInstance();
-
-        ScriptFilter::create();
-
-        $class = self::getCurrentMenuClass();
-
-        foreach ($class::content() as $item) {
-            ScriptFilter::add($item);
-        }
-
-        return ScriptFilter::output();
     }
 
     private static function getCurrentMenuClass()
