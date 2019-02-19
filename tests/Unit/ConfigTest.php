@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests;
+namespace Tests\Unit;
 
+use Tests\TestCase;
 use Godbout\Time\Config;
 
 class ConfigTest extends TestCase

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
-use Godbout\Alfred\ScriptFilter;
+use Tests\TestCase;
 use Godbout\Time\Menus\None;
+use Godbout\Alfred\ScriptFilter;
 use Godbout\Time\Menus\SetupTogglState;
-use Godbout\Time\Workflow;
 
 class WorkflowTest extends TestCase
 {
@@ -13,9 +13,8 @@ class WorkflowTest extends TestCase
     public function it_creates_a_workflow_data_folder_at_startup_if_none_is_found()
     {
         $this->deleteAlfredWorkflowDataFolderAndContent();
-        putenv('action=none');
 
-        $this->mockAlfredCallToScriptFilter();
+        $this->reachWorkflowInitialMenu();
 
         $this->assertDirectoryExists($this->alfredWorkflowData);
     }
@@ -24,7 +23,6 @@ class WorkflowTest extends TestCase
     public function it_creates_a_config_file_with_the_default_settings_at_startup_if_none_is_found()
     {
         $this->deleteAlfredWorkflowDataFolderAndContent();
-        putenv('action=none');
         $defaultConfig = [
             'timer' => [
                 'primary_service' => 'toggl',
@@ -44,7 +42,7 @@ class WorkflowTest extends TestCase
             ],
         ];
 
-        $this->mockAlfredCallToScriptFilter();
+        $this->reachWorkflowInitialMenu();
 
         $this->assertFileExists($this->configFile);
         $this->assertEquals($defaultConfig, json_decode(file_get_contents($this->configFile), true));
@@ -54,15 +52,14 @@ class WorkflowTest extends TestCase
     public function it_can_update_multiple_settings_correctly_in_the_config_file()
     {
         $apiKey = 'e695b4364ad1ea7200035fec1bbc87cf';
-        putenv('action=setup_toggl_apikey_save');
         putenv("toggl_apikey=$apiKey");
 
-        $this->mockAlfredCallToScriptFilter();
+        $this->reachTogglApikeySavedMenu();
 
-        putenv('action=setup_toggl_state');
+
         putenv('toggl_enabled=true');
 
-        $this->mockAlfredCallToScriptFilter();
+        $this->reachTogglStateSetupMenu();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('api_token', $fileContentAsArray['toggl']);
@@ -74,15 +71,11 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_returns_a_correct_output()
     {
-        putenv('action=none');
-
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachWorkflowInitialMenu();
 
         $this->assertSame(ScriptFilter::add(None::content())::output(), $output);
 
-        putenv('action=setup_toggl_state');
-
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachTogglStateSetupMenu();
 
         $this->assertSame(ScriptFilter::add(SetupTogglState::content())::output(), $output);
     }

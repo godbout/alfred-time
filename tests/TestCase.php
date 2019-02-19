@@ -80,16 +80,46 @@ class TestCase extends BaseTestCase
         Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
     }
 
-    protected function reachSetupTogglMenu()
-    {
-        putenv('action=setup_toggl');
-
-        return $this->mockAlfredCallToScriptFilter();
-    }
-
     protected function togglApikey($apikey = 'e695b4364ad1ea7200035fec1bbc87cf')
     {
         Workflow::getConfig()->set('toggl.api_token', $apikey);
         Workflow::getConfig()->writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
+    }
+
+    protected function reachWorkflowInitialMenu()
+    {
+        return $this->reachWorkflowMenu('action=none');
+    }
+
+    protected function reachWorkflowSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup');
+    }
+
+    protected function reachTogglSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_toggl');
+    }
+
+    protected function reachTogglApikeySetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_toggl_apikey');
+    }
+
+    protected function reachTogglStateSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_toggl_state');
+    }
+
+    protected function reachTogglApikeySavedMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_toggl_apikey_save');
+    }
+
+    private function reachWorkflowMenu($environmentVariable)
+    {
+        putenv($environmentVariable);
+
+        return $this->mockAlfredCallToScriptFilter();
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace Tests\Feature;
 
-namespace Tests;
-
-use Godbout\Time\Workflow;
+use Tests\TestCase;
 
 class TogglMenusTest extends TestCase
 {
@@ -19,10 +17,9 @@ class TogglMenusTest extends TestCase
     public function it_can_save_the_api_key_of_the_user_in_the_config_file()
     {
         $apiKey = 'e695b4364ad1ea7200035fec1bbc87cf';
-        putenv('action=setup_toggl_apikey_save');
         putenv("toggl_apikey=$apiKey");
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachTogglApikeySavedMenu();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('api_token', $fileContentAsArray['toggl']);
@@ -32,10 +29,10 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_can_enable_toggl()
     {
-        putenv('action=setup_toggl_state');
         putenv('toggl_enabled=true');
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachTogglStateSetupMenu();
+
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
         $this->assertSame(true, $fileContentAsArray['toggl']['is_active']);
@@ -44,10 +41,9 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_can_disable_toggl()
     {
-        putenv('action=setup_toggl_state');
         putenv('toggl_enabled=false');
 
-        $output = $this->mockAlfredCallToScriptFilter();
+        $output = $this->reachTogglStateSetupMenu();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
@@ -55,17 +51,21 @@ class TogglMenusTest extends TestCase
     }
 
     /** @test */
-    // public function it_shows_creating_an_api_key_if_none_is_saved_in_the_config_yet()
-    // {
-    //     $this->
-    // }
+    public function it_shows_creating_an_api_key_if_none_is_saved_in_the_config_yet()
+    {
+        $this->togglApikey('');
+
+        $output = $this->reachTogglSetupMenu();
+
+        $this->assertStringContainsString('"subtitle":"No API KEY found"', $output);
+    }
 
     /** @test */
     public function it_shows_updating_an_api_key_is_one_is_found_in_the_config()
     {
         $this->togglApikey('e695b4364ad1ea7200035fec1bbc87cf');
 
-        $output = $this->reachSetupTogglMenu();
+        $output = $this->reachTogglSetupMenu();
 
         $this->assertStringContainsString('"subtitle":"Current API KEY: e695b4364ad..."', $output);
     }
@@ -75,7 +75,7 @@ class TogglMenusTest extends TestCase
     {
         $this->disableToggl();
 
-        $output = $this->reachSetupTogglMenu();
+        $output = $this->reachTogglSetupMenu();
 
         $this->assertStringContainsString('"subtitle":"Currently disabled"', $output);
     }
@@ -85,7 +85,7 @@ class TogglMenusTest extends TestCase
     {
         $this->enableToggl();
 
-        $output = $this->reachSetupTogglMenu();
+        $output = $this->reachTogglSetupMenu();
 
         $this->assertStringContainsString('"subtitle":"Currently enabled"', $output);
     }

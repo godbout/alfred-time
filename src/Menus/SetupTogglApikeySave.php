@@ -32,9 +32,7 @@ class SetupTogglApikeySave extends Menu
             ->title('API KEY SAVED!')
             ->subtitle('You can just press Enter.')
             ->arg('notification')
-            ->icon(
-                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
-            );
+            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
     }
 
     private static function back()
@@ -43,8 +41,6 @@ class SetupTogglApikeySave extends Menu
             ->title('Back')
             ->subtitle('Go back to Toggl Setup')
             ->arg('setup_toggl')
-            ->icon(
-                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
-            );
+            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
     }
 }

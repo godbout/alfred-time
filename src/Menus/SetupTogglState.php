@@ -28,19 +28,16 @@ class SetupTogglState extends Menu
 
     private static function stateSaved()
     {
-        if (getenv('toggl_enabled') === 'true') {
-            $title = 'Toggl ENABLED!';
-        } else {
-            $title = 'Toggl DISABLED!';
-        }
-
         return Item::create()
-            ->title($title)
+            ->title(self::stateTitle())
             ->subtitle('Press enter to quit the workflow.')
             ->arg('notification')
-            ->icon(
-                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
-            );
+            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
+    }
+
+    private static function stateTitle()
+    {
+        return 'Toggl ' . ((getenv('toggl_enabled') === 'true') ? 'ENABLED!' : 'DISABLED!');
     }
 
     private static function back()
@@ -48,8 +45,7 @@ class SetupTogglState extends Menu
         return Item::create()
             ->title('Back')
             ->subtitle('Go back to Toggl options')
-            ->arg('setup_toggl')->icon(
-                Icon::create(__DIR__ . '/../../resources/icons/toggl.png')
-            );
+            ->arg('setup_toggl')
+            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
     }
 }
