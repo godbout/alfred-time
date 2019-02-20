@@ -1,7 +1,13 @@
 {
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../alfred-workflow-config"
+        }
+    ],
     "require": {
         "godbout/alfred-workflow-php": "^0.2.0",
-        "hassankhan/config": "^0.11.0"
+        "godbout/alfred-workflow-config": "dev-develop"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",

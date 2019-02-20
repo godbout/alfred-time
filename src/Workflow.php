@@ -2,6 +2,7 @@
 
 namespace Godbout\Time;
 
+use Godbout\Alfred\Config;
 use Godbout\Alfred\ScriptFilter;
 
 class Workflow
@@ -21,7 +22,7 @@ class Workflow
         $this->workflowDataFolder = getenv('alfred_workflow_data');
         $this->configFile = $this->workflowDataFolder . '/config.json';
         self::createWorkflowDataFolderAndConfigFileIfNeeded();
-        $this->config = Config::load($this->configFile);
+        $this->config = Config::ifEmptyStartWith(self::getDefaultConfig());
     }
 
     public static function output()

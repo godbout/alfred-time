@@ -21,9 +21,7 @@ class SetupTogglApikeySave extends Menu
 
     private static function saveApikey()
     {
-        Workflow::getConfig()->set('toggl.api_token', getenv('toggl_apikey'));
-
-        Config::writeToFile(Workflow::getConfigFile(), Workflow::getConfig()->all());
+        Workflow::getConfig()->write('toggl.api_token', getenv('toggl_apikey'));
     }
 
     private static function apikeySaved()

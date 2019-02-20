@@ -28,12 +28,12 @@ class SetupToggl extends Menu
 
     private static function apikeyTitle()
     {
-        return empty(Workflow::getConfig()->get('toggl.api_token')) ? 'Set API KEY' : 'Update API KEY';
+        return empty(Workflow::getConfig()->read('toggl.api_token')) ? 'Set API KEY' : 'Update API KEY';
     }
 
     private static function apikeySubtitle()
     {
-        $apikey = Workflow::getConfig()->get('toggl.api_token');
+        $apikey = Workflow::getConfig()->read('toggl.api_token');
 
         return empty($apikey) ? 'No API KEY found' : 'Current API KEY: ' . substr($apikey, 0, 11) . '...';
     }
@@ -44,18 +44,18 @@ class SetupToggl extends Menu
             ->title(self::stateTitle())
             ->subtitle(self::stateSubtitle())
             ->arg('setup_toggl_state')
-            ->variable('toggl_enabled', Workflow::getConfig()->get('toggl.is_active') ? 'false' : 'true')
+            ->variable('toggl_enabled', Workflow::getConfig()->read('toggl.is_active') ? 'false' : 'true')
             ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
     }
 
     private static function stateTitle()
     {
-        return (Workflow::getConfig()->get('toggl.is_active') === true) ? 'Enable' : 'Disable';
+        return (Workflow::getConfig()->read('toggl.is_active') === true) ? 'Enable' : 'Disable';
     }
 
     private static function stateSubtitle()
     {
-        return (Workflow::getConfig()->get('toggl.is_active') === true) ? 'Currently enabled' : 'Currently disabled';
+        return (Workflow::getConfig()->read('toggl.is_active') === true) ? 'Currently enabled' : 'Currently disabled';
     }
 
     private static function back()
