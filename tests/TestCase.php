@@ -44,6 +44,11 @@ class TestCase extends BaseTestCase
         rmdir($this->workflowDataFolder);
     }
 
+    protected function disableAllTimerServices()
+    {
+        $this->disableToggl();
+    }
+
     protected function enableToggl()
     {
         Workflow::getConfig()->write('toggl.is_active', true);

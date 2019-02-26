@@ -9,11 +9,34 @@ class MenusTest extends TestCase
     /** @test */
     public function it_proposes_a_setup_if_the_workflow_is_not_yet_configured()
     {
+        $this->markTestIncomplete();
+
         $this->deleteWorkflowDataFolderAndConfigFile();
 
         $output = $this->reachWorkflowInitialMenu();
 
         $this->assertStringContainsString('"arg":"setup"', $output);
+    }
+
+    /** @test */
+    public function it_proposes_to_start_a_timer_if_there_is_at_least_one_timer_service_enabled()
+    {
+        $this->disableAllTimerServices();
+        $this->enableToggl();
+
+        $output = $this->reachWorkflowInitialMenu();
+
+        $this->assertStringContainsString('"arg":"setup_timer"', $output);
+    }
+
+    /** @test */
+    public function it_does_not_propose_to_start_a_timer_if_there_is_no_timer_services_enabled()
+    {
+        $this->disableAllTimerServices();
+
+        $output = $this->reachWorkflowInitialMenu();
+
+        $this->assertStringNotContainsString('"arg":"setup_timer"', $output);
     }
 
     /** @test */
