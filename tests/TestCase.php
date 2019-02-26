@@ -31,13 +31,6 @@ class TestCase extends BaseTestCase
         Workflow::destroy();
 
         Config::destroy();
-
-        $this->deleteWorkflowDataFolderAndContent();
-    }
-
-    protected function deleteConfigFile()
-    {
-        unlink($this->configFile);
     }
 
     protected function mockAlfredCallToScriptFilter()
@@ -45,19 +38,10 @@ class TestCase extends BaseTestCase
         return Workflow::output();
     }
 
-    protected function deleteWorkflowDataFolderAndContent()
+    protected function deleteWorkflowDataFolderAndConfigFile()
     {
-        $this->deleteConfigFile();
-
+        unlink($this->configFile);
         rmdir($this->workflowDataFolder);
-
-        // if (file_exists($this->configFile)) {
-        //     unlink($this->configFile);
-        // }
-
-        // if (file_exists($this->workflowDataFolder)) {
-        //     rmdir($this->workflowDataFolder);
-        // }
     }
 
     protected function enableToggl()

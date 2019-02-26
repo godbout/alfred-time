@@ -6,13 +6,6 @@ use Tests\TestCase;
 
 class TogglMenusTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->deleteConfigFile();
-    }
-
     /** @test */
     public function it_can_save_the_api_key_of_the_user_in_the_config_file()
     {

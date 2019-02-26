@@ -9,7 +9,7 @@ class MenusTest extends TestCase
     /** @test */
     public function it_proposes_a_setup_if_the_workflow_is_not_yet_configured()
     {
-        $this->deleteConfigFile();
+        $this->deleteWorkflowDataFolderAndConfigFile();
 
         $output = $this->reachWorkflowInitialMenu();
 

@@ -7,49 +7,37 @@ use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Workflow
 {
-    private $workflowDataFolder;
-
-    private $configFile;
+    private static $instance = null;
 
     private $config = null;
 
     private $scriptFilter = null;
 
-    private static $instance = null;
 
     protected function __construct()
     {
-        $this->workflowDataFolder = getenv('alfred_workflow_data');
-        $this->configFile = $this->workflowDataFolder . '/config.json';
-        self::createWorkflowDataFolderAndConfigFileIfNeeded();
         $this->config = Config::ifEmptyStartWith(self::getDefaultConfig());
+        $this->scriptFilter = ScriptFilter::create();
+    }
+
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
     }
 
     public static function output()
     {
-        self::getInstance();
-
-        ScriptFilter::create();
+        self::getInstance()->scriptFilter->create();
 
         foreach (self::getCurrentMenuClass()::content() as $item) {
-            ScriptFilter::add($item);
+            self::getInstance()->scriptFilter->add($item);
         }
 
-        return ScriptFilter::output();
-    }
-
-    private function createWorkflowDataFolderAndConfigFileIfNeeded()
-    {
-        if (! file_exists($this->workflowDataFolder)) {
-            mkdir($this->workflowDataFolder);
-        }
-
-        if (! file_exists($this->configFile)) {
-            file_put_contents(
-                $this->configFile,
-                json_encode(self::getDefaultConfig(), JSON_PRETTY_PRINT)
-            );
-        }
+        return self::getInstance()->scriptFilter->output();
     }
 
     private static function getDefaultConfig()
@@ -72,20 +60,6 @@ class Workflow
                 'api_token' => '',
             ],
         ];
-    }
-
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
-    }
-
-    public static function getConfigFile()
-    {
-        return self::getInstance()->configFile;
     }
 
     public static function getConfig()
