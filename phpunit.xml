@@ -22,7 +22,4 @@
             </exclude>
         </whitelist>
     </filter>
-    <php>
-        <env name="alfred_workflow_data" value="./tests/AlfredWorkflowDataFolderMock"/>
-    </php>
 </phpunit>

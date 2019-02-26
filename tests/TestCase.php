@@ -33,15 +33,23 @@ class TestCase extends BaseTestCase
         Config::destroy();
     }
 
-    protected function mockAlfredCallToScriptFilter()
+    protected function mockAlfredCallToScriptFilter($environmentVariable = '', $argument = '')
     {
-        return Workflow::output();
+        $environmentVariables = $this->buildEnvironmentVariables($environmentVariable);
+
+        $phpCommand = $this->buildPHPCommand($argument);
+
+        return shell_exec("$environmentVariables $phpCommand");
     }
 
-    protected function deleteWorkflowDataFolderAndConfigFile()
+    private function buildEnvironmentVariables($environmentVariable)
     {
-        unlink($this->configFile);
-        rmdir($this->workflowDataFolder);
+        return 'env -i alfred_workflow_data=' . $this->workflowDataFolder . ' ' .$environmentVariable;
+    }
+
+    private function buildPHPCommand($argument)
+    {
+        return 'php ' . __DIR__ . '/../src/app.php ' .$argument;
     }
 
     protected function disableAllTimerServices()
@@ -94,10 +102,12 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl_apikey_save');
     }
 
-    private function reachWorkflowMenu($environmentVariable)
+    private function reachWorkflowMenu($environmentVariable = '')
     {
-        putenv($environmentVariable);
+        $output = $this->mockAlfredCallToScriptFilter($environmentVariable);
 
-        return $this->mockAlfredCallToScriptFilter();
+        // var_dump($output);die;
+
+        return $output;
     }
 }

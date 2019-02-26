@@ -27,11 +27,8 @@ class WorkflowTest extends TestCase
     {
         $this->disableToggl();
 
-        $this->reachTogglSetupMenu();
+        $output = $this->reachTogglSetupMenu();
 
-        $this->assertStringContainsString(
-            '"toggl_enabled":"true"',
-            ScriptFilter::add(Entrance::content())::output()
-        );
+        $this->assertStringContainsString('"toggl_enabled":"true"', $output);
     }
 }

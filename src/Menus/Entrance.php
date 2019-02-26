@@ -27,9 +27,11 @@ class Entrance extends Menu
 
     private static function setupWorkflow()
     {
-        return Item::create()
-            ->title('Setup the workflow')
-            ->arg('setup')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'));
+        if (empty(Workflow::servicesEnabled()) || (empty(self::userInput()))) {
+            return Item::create()
+                ->title('Setup the workflow')
+                ->arg('setup')
+                ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'));
+        }
     }
 }

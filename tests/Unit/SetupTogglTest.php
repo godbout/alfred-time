@@ -14,12 +14,9 @@ class SetupTogglTest extends TestCase
     {
         $this->disableToggl();
 
-        $this->reachTogglSetupMenu();
+        $output = $this->reachTogglSetupMenu();
 
-        $this->assertStringContainsString(
-            '"toggl_enabled":"true"',
-            ScriptFilter::add(Entrance::content())::output()
-        );
+        $this->assertStringContainsString('"toggl_enabled":"true"', $output);
     }
 
     /** @test */
@@ -27,11 +24,8 @@ class SetupTogglTest extends TestCase
     {
         $this->enableToggl();
 
-        $this->reachTogglSetupMenu();
+        $output = $this->reachTogglSetupMenu();
 
-        $this->assertStringContainsString(
-            '"toggl_enabled":"false"',
-            ScriptFilter::add(Entrance::content())::output()
-        );
+        $this->assertStringContainsString('"toggl_enabled":"false"', $output);
     }
 }
