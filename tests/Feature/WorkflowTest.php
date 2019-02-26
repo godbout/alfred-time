@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Godbout\Alfred\Time\Menus\None;
+use Godbout\Alfred\Time\Menus\Entrance;
 use Godbout\Alfred\Workflow\ScriptFilter;
 use Godbout\Alfred\Time\Menus\SetupTogglState;
 
@@ -14,7 +14,7 @@ class WorkflowTest extends TestCase
     {
         $output = $this->reachWorkflowInitialMenu();
 
-        $this->assertSame(ScriptFilter::add(None::content())::output(), $output);
+        $this->assertSame(ScriptFilter::add(Entrance::content())::output(), $output);
 
         $output = $this->reachTogglStateSavedMenu();
 

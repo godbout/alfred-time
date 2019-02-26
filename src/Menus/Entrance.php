@@ -5,7 +5,7 @@ namespace Godbout\Alfred\Time\Menus;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
 
-class None extends Menu
+class Entrance extends Menu
 {
     public static function content(): array
     {

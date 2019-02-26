@@ -61,7 +61,7 @@ class TestCase extends BaseTestCase
 
     protected function reachWorkflowInitialMenu()
     {
-        return $this->reachWorkflowMenu('action=none');
+        return $this->reachWorkflowMenu('action=entrance');
     }
 
     protected function reachWorkflowSetupMenu()

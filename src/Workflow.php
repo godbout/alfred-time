@@ -66,7 +66,7 @@ class Workflow
 
     private static function getMenuClassName($action)
     {
-        return str_replace('_', '', ucwords($action === false ? 'none' : $action, '_'));
+        return str_replace('_', '', ucwords($action === false ? 'entrance' : $action, '_'));
     }
 
     private function __clone()
