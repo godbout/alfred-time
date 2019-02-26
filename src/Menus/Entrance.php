@@ -10,23 +10,26 @@ class Entrance extends Menu
 {
     public static function content(): array
     {
-        $items = [];
+        return [
+            self::startTimer(),
+            self::setupWorkflow()
+        ];
+    }
 
-        global $argv;
-
-        $servicesEnabled = Workflow::servicesEnabled();
-
-        if (! empty($servicesEnabled)) {
-            $items[] = Item::create()
-                ->title('Start "' . trim($argv[1] ?? '') . '"')
+    private static function startTimer()
+    {
+        if (! empty(Workflow::servicesEnabled())) {
+            return Item::create()
+                ->title('Start "' . self::userInput() . '"')
                 ->arg('setup_timer');
         }
+    }
 
-        $items[] = Item::create()
+    private static function setupWorkflow()
+    {
+        return Item::create()
             ->title('Setup the workflow')
             ->arg('setup')
             ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'));
-
-        return $items;
     }
 }
