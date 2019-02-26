@@ -1,6 +1,6 @@
 <?php
 
-namespace Godbout\Time\Menus;
+namespace Godbout\Alfred\Time\Menus;
 
 abstract class Menu
 {

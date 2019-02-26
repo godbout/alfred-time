@@ -2,54 +2,37 @@
 
 namespace Tests;
 
-use Godbout\Time\Workflow;
+use Godbout\Alfred\Time\Workflow;
+use Godbout\Alfred\Workflow\Config;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
-    private $command = 'php src/Workflow.php';
-
-    protected $alfredWorkflowData = __DIR__ . '/AlfredWorkflowDataFolderMock';
+    protected $workflowDataFolder = __DIR__ . '/mo.com.sleeplessmind.time';
 
     protected $configFile = null;
+
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->setConfigFilePath();
-        $this->setAlfredEnvironmentVariables();
-        $this->createAlfredWorkflowDataFolder();
-        $this->writeConfigFile();
+        $this->configFile = $this->workflowDataFolder . '/config.json';
+
+        putenv("alfred_workflow_data={$this->workflowDataFolder}");
+
+        Config::ifEmptyStartWith([]);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
 
         Workflow::destroy();
 
-        $this->deleteAlfredWorkflowDataFolderAndContent();
-    }
+        Config::destroy();
 
-    private function setConfigFilePath()
-    {
-        $this->configFile = $this->alfredWorkflowData . '/config.json';
-    }
-
-    private function setAlfredEnvironmentVariables()
-    {
-        putenv("alfred_workflow_data={$this->alfredWorkflowData}");
-    }
-
-    private function createAlfredWorkflowDataFolder()
-    {
-        mkdir($this->alfredWorkflowData);
-    }
-
-    private function writeConfigFile()
-    {
-        file_put_contents($this->configFile, json_encode([]));
+        $this->deleteWorkflowDataFolderAndContent();
     }
 
     protected function deleteConfigFile()
@@ -62,10 +45,19 @@ class TestCase extends BaseTestCase
         return Workflow::output();
     }
 
-    protected function deleteAlfredWorkflowDataFolderAndContent()
+    protected function deleteWorkflowDataFolderAndContent()
     {
         $this->deleteConfigFile();
-        rmdir($this->alfredWorkflowData);
+
+        rmdir($this->workflowDataFolder);
+
+        // if (file_exists($this->configFile)) {
+        //     unlink($this->configFile);
+        // }
+
+        // if (file_exists($this->workflowDataFolder)) {
+        //     rmdir($this->workflowDataFolder);
+        // }
     }
 
     protected function enableToggl()
@@ -103,7 +95,7 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl_apikey');
     }
 
-    protected function reachTogglStateSetupMenu()
+    protected function reachTogglStateSavedMenu()
     {
         return $this->reachWorkflowMenu('action=setup_toggl_state');
     }

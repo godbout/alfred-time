@@ -44,9 +44,19 @@ class MenusTest extends TestCase
         $this->assertStringContainsString('"setup_toggl"', $output);
     }
 
-    /**
-     * iTodo
-     *
-     * - Tests avout the STATE option
-     */
+    /** @test */
+    public function it_proposes_a_go_back_option_if_toggl_api_key_is_saved()
+    {
+        $output = $this->reachTogglApikeySavedMenu();
+
+        $this->assertStringContainsString('"setup_toggl"', $output);
+    }
+
+    /** @test */
+    public function it_proposes_a_go_back_option_if_toggl_state_is_saved()
+    {
+        $output = $this->reachTogglStateSavedMenu();
+
+        $this->assertStringContainsString('"setup_toggl"', $output);
+    }
 }

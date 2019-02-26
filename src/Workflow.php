@@ -1,9 +1,9 @@
 <?php
 
-namespace Godbout\Time;
+namespace Godbout\Alfred\Time;
 
-use Godbout\Alfred\Config;
-use Godbout\Alfred\ScriptFilter;
+use Godbout\Alfred\Workflow\Config;
+use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Workflow
 {
@@ -95,6 +95,8 @@ class Workflow
 
     public static function destroy()
     {
+        ScriptFilter::destroy();
+
         self::$instance = null;
     }
 

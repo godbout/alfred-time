@@ -1,11 +1,10 @@
 <?php
 
-namespace Godbout\Time\Menus;
+namespace Godbout\Alfred\Time\Menus;
 
-use Godbout\Alfred\Icon;
-use Godbout\Alfred\Item;
-use Godbout\Time\Config;
-use Godbout\Time\Workflow;
+use Godbout\Alfred\Time\Workflow;
+use Godbout\Alfred\Workflow\Icon;
+use Godbout\Alfred\Workflow\Item;
 
 class SetupTogglState extends Menu
 {
@@ -21,7 +20,7 @@ class SetupTogglState extends Menu
 
     private static function saveState()
     {
-        Workflow::getConfig()->write('toggle.is_active', (getenv('toggl_enabled') === 'true'));
+        Workflow::getConfig()->write('toggl.is_active', (getenv('toggl_enabled') === 'true'));
     }
 
     private static function stateSaved()

@@ -31,7 +31,7 @@ class TogglMenusTest extends TestCase
     {
         putenv('toggl_enabled=true');
 
-        $output = $this->reachTogglStateSetupMenu();
+        $output = $this->reachTogglStateSavedMenu();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
@@ -43,7 +43,7 @@ class TogglMenusTest extends TestCase
     {
         putenv('toggl_enabled=false');
 
-        $output = $this->reachTogglStateSetupMenu();
+        $output = $this->reachTogglStateSavedMenu();
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
@@ -77,6 +77,7 @@ class TogglMenusTest extends TestCase
 
         $output = $this->reachTogglSetupMenu();
 
+        $this->assertStringContainsString('"title":"Enable"', $output);
         $this->assertStringContainsString('"subtitle":"Currently disabled"', $output);
     }
 
@@ -87,6 +88,7 @@ class TogglMenusTest extends TestCase
 
         $output = $this->reachTogglSetupMenu();
 
+        $this->assertStringContainsString('"title":"Disable"', $output);
         $this->assertStringContainsString('"subtitle":"Currently enabled"', $output);
     }
 }

@@ -4,15 +4,74 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d82e169b86485deb4705e681c4f90b01",
+    "content-hash": "5a91d598216292f908a3a1e5ae9b9f36",
     "packages": [
         {
-            "name": "godbout/alfred-workflow-config",
-            "version": "dev-develop",
+            "name": "adbario/php-dot-notation",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adbario/php-dot-notation.git",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e"
+            },
             "dist": {
-                "type": "path",
-                "url": "../alfred-workflow-config",
-                "reference": "315dfd3744c46530cc9d2923b5988b64502fb52e"
+                "type": "zip",
+                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0|^6.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Adbar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riku Särkinen",
+                    "email": "riku@adbar.io"
+                }
+            ],
+            "description": "PHP dot notation access to arrays",
+            "homepage": "https://github.com/adbario/php-dot-notation",
+            "keywords": [
+                "ArrayAccess",
+                "dotnotation"
+            ],
+            "time": "2019-01-01T23:59:15+00:00"
+        },
+        {
+            "name": "godbout/alfred-workflow-config",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/godbout/alfred-workflow-config.git",
+                "reference": "3f8440d942d6ba13847c47ad7e7e0e75107dd5ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/3f8440d942d6ba13847c47ad7e7e0e75107dd5ad",
+                "reference": "3f8440d942d6ba13847c47ad7e7e0e75107dd5ad",
+                "shasum": ""
+            },
+            "require": {
+                "adbario/php-dot-notation": "^2.2",
+                "php": "^7.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.0"
@@ -20,14 +79,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Godbout\\Alfred\\": "src/"
+                    "Godbout\\Alfred\\Workflow\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -45,20 +100,21 @@
                 "config",
                 "php",
                 "workflow"
-            ]
+            ],
+            "time": "2019-02-25T07:41:40+00:00"
         },
         {
-            "name": "godbout/alfred-workflow-php",
-            "version": "0.2.0",
+            "name": "godbout/alfred-workflow-scriptfilter",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/godbout/alfred-workflow-php.git",
-                "reference": "12821e4b7bb145e42cdbee4e18ae79e53750f4dd"
+                "url": "https://github.com/godbout/alfred-workflow-scriptfilter.git",
+                "reference": "c996b28b2224969893c5c73a30b21be96c718df1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-php/zipball/12821e4b7bb145e42cdbee4e18ae79e53750f4dd",
-                "reference": "12821e4b7bb145e42cdbee4e18ae79e53750f4dd",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/c996b28b2224969893c5c73a30b21be96c718df1",
+                "reference": "c996b28b2224969893c5c73a30b21be96c718df1",
                 "shasum": ""
             },
             "require": {
@@ -71,7 +127,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Godbout\\Alfred\\": "src"
+                    "Godbout\\Alfred\\Workflow\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -86,13 +142,13 @@
                 }
             ],
             "description": "Makes it easy and fun to build Alfred 3 Workflows in PHP.",
-            "homepage": "https://github.com/godbout/alfred-workflow-php",
+            "homepage": "https://github.com/godbout/alfred-workflow-scriptfilter",
             "keywords": [
                 "alfred",
                 "php",
                 "workflow"
             ],
-            "time": "2019-02-10T09:43:45+00:00"
+            "time": "2019-02-25T10:27:42+00:00"
         }
     ],
     "packages-dev": [
@@ -1828,9 +1884,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "godbout/alfred-workflow-config": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

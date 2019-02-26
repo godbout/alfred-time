@@ -1,9 +1,9 @@
 <?php
 
-namespace Godbout\Time\Menus;
+namespace Godbout\Alfred\Time\Menus;
 
-use Godbout\Alfred\Icon;
-use Godbout\Alfred\Item;
+use Godbout\Alfred\Workflow\Icon;
+use Godbout\Alfred\Workflow\Item;
 
 class SetupTogglApikey extends Menu
 {

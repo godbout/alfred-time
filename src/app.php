@@ -2,6 +2,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Godbout\Time\Workflow;
+use Godbout\Alfred\Time\Workflow;
 
 echo Workflow::output();

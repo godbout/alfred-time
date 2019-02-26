@@ -1,11 +1,10 @@
 <?php
 
-namespace Godbout\Time\Menus;
+namespace Godbout\Alfred\Time\Menus;
 
-use Godbout\Alfred\Icon;
-use Godbout\Alfred\Item;
-use Godbout\Time\Config;
-use Godbout\Time\Workflow;
+use Godbout\Alfred\Time\Workflow;
+use Godbout\Alfred\Workflow\Icon;
+use Godbout\Alfred\Workflow\Item;
 
 class SetupTogglApikeySave extends Menu
 {

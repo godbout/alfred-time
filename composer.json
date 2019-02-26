@@ -1,13 +1,7 @@
 {
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../alfred-workflow-config"
-        }
-    ],
     "require": {
-        "godbout/alfred-workflow-php": "^0.2.0",
-        "godbout/alfred-workflow-config": "dev-develop"
+        "godbout/alfred-workflow-scriptfilter": "^1.0.0",
+        "godbout/alfred-workflow-config": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
@@ -15,7 +9,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Godbout\\Time\\": "src"
+            "Godbout\\Alfred\\Time\\": "src"
         }
     },
     "autoload-dev": {
