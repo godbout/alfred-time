@@ -42,24 +42,7 @@ class Workflow
 
     private static function getDefaultConfig()
     {
-        return [
-            'timer' => [
-                'primary_service' => 'toggl',
-                'is_running' => false,
-                'toggl_id' => null,
-                'harvest_id' => null,
-                'description' => '',
-            ],
-            'toggl' => [
-                'is_active' => true,
-                'api_token' => '',
-            ],
-            'harvest' => [
-                'is_active' => false,
-                'domain' => '',
-                'api_token' => '',
-            ],
-        ];
+        return include __DIR__ . '/../config/default.php';
     }
 
     public static function getConfig()
