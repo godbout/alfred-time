@@ -21,9 +21,9 @@ class SetupTogglApikey extends Menu
 
         return Item::create()
             ->title('Enter your API KEY above')
-            ->subtitle('Save ' . trim($argv[1] ?? ''))
+            ->subtitle('Save ' . self::userInput())
             ->arg('setup_toggl_apikey_save')
-            ->variable('toggl_apikey', trim($argv[1] ?? ''))
+            ->variable('toggl_apikey', self::userInput())
             ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
     }
 
