@@ -90,7 +90,7 @@ class TestCase extends BaseTestCase
     {
         $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
 
-        $envCommand = 'env -i alfred_workflow_data=' . $this->workflowDataFolder;
+        $envCommand = 'env alfred_workflow_data=' . $this->workflowDataFolder;
 
         foreach ($envVariables as $variable) {
             $envCommand .= " $variable";
