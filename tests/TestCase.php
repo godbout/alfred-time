@@ -74,9 +74,7 @@ class TestCase extends BaseTestCase
 
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
     {
-        $output = $this->mockAlfredCallToScriptFilter($envVariables, $arguments);
-
-        return $output;
+        return $this->mockAlfredCallToScriptFilter($envVariables, $arguments);
     }
 
     protected function mockAlfredCallToScriptFilter($envVariables = [], $arguments = [])
