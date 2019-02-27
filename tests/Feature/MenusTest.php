@@ -43,7 +43,7 @@ class MenusTest extends TestCase
 
         $output = $this->reachWorkflowInitialMenu();
 
-        $this->assertStringContainsString('"arg":"setup_timer"', $output);
+        $this->assertStringContainsString('"arg":"start_timer"', $output);
     }
 
     /** @test */
