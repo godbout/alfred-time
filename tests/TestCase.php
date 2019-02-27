@@ -20,17 +20,6 @@ class TestCase extends BaseTestCase
         $this->configFile = $this->workflowDataFolder . '/config.json';
 
         putenv("alfred_workflow_data={$this->workflowDataFolder}");
-
-        Config::ifEmptyStartWith([]);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        Workflow::destroy();
-
-        Config::destroy();
     }
 
     protected function disableAllTimerServices()

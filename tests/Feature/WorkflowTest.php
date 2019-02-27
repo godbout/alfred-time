@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Godbout\Alfred\Time\Menus\Entrance;
+use Godbout\Alfred\Time\Menus\SetupToggl;
 use Godbout\Alfred\Time\Menus\SetupTogglState;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\ScriptFilter;
@@ -13,14 +14,16 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_returns_a_correct_output()
     {
-        $this->markTestIncomplete();
-        // $output = $this->reachWorkflowInitialMenu();
+        $this->disableAllTimerServices();
 
-        // $this->assertSame(ScriptFilter::add(Entrance::content())::output(), $output);
-        Workflow::output();
+        $this->assertJsonStringEqualsJsonString(
+            '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/icon.png"}}]}',
+            $this->reachWorkflowInitialMenu(null, '')
+        );
 
-        $output = $this->reachTogglStateSavedMenu();
-
-        $this->assertSame(ScriptFilter::add(SetupTogglState::content())::output(), $output);
+        $this->assertJsonStringEqualsJsonString(
+            '{"items":[{"title":"Setup Toggl","subtitle":"","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/toggl.png"},"arg":"setup_toggl"},{"title":"Setup Harvest","subtitle":"","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/harvest.png"},"arg":"setup_harvest"}]}',
+            $this->reachWorkflowSetupMenu()
+        );
     }
 }
