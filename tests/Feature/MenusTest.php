@@ -30,7 +30,7 @@ class MenusTest extends TestCase
     {
         $this->enableToggl();
 
-        $output = $this->reachWorkflowInitialMenu();
+        $output = $this->reachWorkflowInitialMenu(null, 'some typing made by the user');
 
         $this->assertStringNotContainsString('"arg":"setup"', $output);
     }

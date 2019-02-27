@@ -10,9 +10,8 @@ class TogglMenusTest extends TestCase
     public function it_can_save_the_api_key_of_the_user_in_the_config_file()
     {
         $apiKey = 'e695b4364ad1ea7200035fec1bbc87cf';
-        putenv("toggl_apikey=$apiKey");
 
-        $output = $this->reachTogglApikeySavedMenu();
+        $output = $this->reachTogglApikeySavedMenu("toggl_apikey=$apiKey");
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('api_token', $fileContentAsArray['toggl']);
@@ -22,9 +21,7 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_can_enable_toggl()
     {
-        putenv('toggl_enabled=true');
-
-        $output = $this->reachTogglStateSavedMenu();
+        $output = $this->reachTogglStateSavedMenu('toggl_enabled=true');
 
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
