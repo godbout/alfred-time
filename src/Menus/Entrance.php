@@ -31,7 +31,7 @@ class Entrance extends Menu
             return Item::create()
                 ->title('Setup the workflow')
                 ->arg('setup')
-                ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'));
+                ->icon(Icon::create('resources/icons/icon.png'));
         }
     }
 }

@@ -20,7 +20,7 @@ class Setup extends Menu
         return Item::create()
             ->title('Setup Toggl')
             ->subtitle('')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'))
+            ->icon(Icon::create('resources/icons/toggl.png'))
             ->arg('setup_toggl');
     }
 
@@ -29,7 +29,7 @@ class Setup extends Menu
         return Item::create()
             ->title('Setup Harvest')
             ->subtitle('')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/harvest.png'))
+            ->icon(Icon::create('resources/icons/harvest.png'))
             ->arg('setup_harvest');
     }
 }

@@ -23,7 +23,7 @@ class SetupToggl extends Menu
             ->title(self::apikeyTitle())
             ->subtitle(self::apikeySubtitle())
             ->arg('setup_toggl_apikey')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
+            ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
     private static function apikeyTitle()
@@ -45,7 +45,7 @@ class SetupToggl extends Menu
             ->subtitle(self::stateSubtitle())
             ->arg('setup_toggl_state')
             ->variable('toggl_enabled', Workflow::getConfig()->read('toggl.is_active') ? 'false' : 'true')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
+            ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
     private static function stateTitle()
@@ -63,6 +63,6 @@ class SetupToggl extends Menu
         return Item::create()
             ->title('Back')
             ->arg('setup')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/icon.png'));
+            ->icon(Icon::create('resources/icons/icon.png'));
     }
 }

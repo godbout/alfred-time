@@ -24,7 +24,7 @@ class SetupTogglApikey extends Menu
             ->subtitle('Save ' . self::userInput())
             ->arg('setup_toggl_apikey_save')
             ->variable('toggl_apikey', self::userInput())
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
+            ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
     private static function back()
@@ -33,6 +33,6 @@ class SetupTogglApikey extends Menu
             ->title('Back')
             ->subtitle('Go back to Toggl options')
             ->arg('setup_toggl')
-            ->icon(Icon::create(__DIR__ . '/../../resources/icons/toggl.png'));
+            ->icon(Icon::create('resources/icons/toggl.png'));
     }
 }

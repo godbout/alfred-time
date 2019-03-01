@@ -17,12 +17,12 @@ class WorkflowTest extends TestCase
         $this->disableAllTimerServices();
 
         $this->assertJsonStringEqualsJsonString(
-            '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/icon.png"}}]}',
+            '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
             $this->reachWorkflowInitialMenu(null, '')
         );
 
         $this->assertJsonStringEqualsJsonString(
-            '{"items":[{"title":"Setup Toggl","subtitle":"","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/toggl.png"},"arg":"setup_toggl"},{"title":"Setup Harvest","subtitle":"","icon":{"path":"\/Users\/guill\/Development\/alfred-time\/src\/Menus\/..\/..\/resources\/icons\/harvest.png"},"arg":"setup_harvest"}]}',
+            '{"items":[{"title":"Setup Toggl","subtitle":"","icon":{"path":"resources\/icons\/toggl.png"},"arg":"setup_toggl"},{"title":"Setup Harvest","subtitle":"","icon":{"path":"resources\/icons\/harvest.png"},"arg":"setup_harvest"}]}',
             $this->reachWorkflowSetupMenu()
         );
     }
