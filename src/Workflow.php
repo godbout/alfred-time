@@ -50,15 +50,13 @@ class Workflow
         return self::getInstance()->config;
     }
 
-    public static function servicesEnabled()
+    public static function serviceEnabled()
     {
-        $services = [];
-
         if (self::getInstance()->getConfig()->read('toggl.is_active')) {
-            $services[] = 'toggl';
+            return 'toggl';
         }
 
-        return $services;
+        return null;
     }
 
     public static function destroy()

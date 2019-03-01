@@ -18,7 +18,7 @@ class Entrance extends Menu
 
     private static function startTimer()
     {
-        if (! empty(Workflow::servicesEnabled())) {
+        if (! empty(Workflow::serviceEnabled())) {
             return Item::create()
                 ->title('Start "' . self::userInput() . '"')
                 ->arg('start_timer');
@@ -27,7 +27,7 @@ class Entrance extends Menu
 
     private static function setupWorkflow()
     {
-        if (empty(Workflow::servicesEnabled()) || (empty(self::userInput()))) {
+        if (empty(Workflow::serviceEnabled()) || (empty(self::userInput()))) {
             return Item::create()
                 ->title('Setup the workflow')
                 ->arg('setup')

@@ -10,16 +10,15 @@ use Godbout\Alfred\Workflow\ScriptFilter;
 class WorkflowTest extends TestCase
 {
     /** @test */
-    public function it_returns_the_time_services_enabled()
+    public function it_returns_the_time_service_enabled()
     {
         $this->disableAllTimerServices();
 
-        $this->assertEmpty(Workflow::servicesEnabled());
+        $this->assertEmpty(Workflow::serviceEnabled());
 
         $this->enableToggl();
 
-        $this->assertCount(1, Workflow::servicesEnabled());
-        $this->assertContains('toggl', Workflow::servicesEnabled());
+        $this->assertStringContainsString('toggl', Workflow::serviceEnabled());
     }
 
     /** @test */
