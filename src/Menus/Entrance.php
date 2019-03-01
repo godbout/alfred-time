@@ -21,7 +21,7 @@ class Entrance extends Menu
         if (! empty(Workflow::serviceEnabled())) {
             return Item::create()
                 ->title('Start "' . self::userInput() . '"')
-                ->arg('start_timer');
+                ->arg('choose_project');
         }
     }
 

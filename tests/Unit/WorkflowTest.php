@@ -30,4 +30,12 @@ class WorkflowTest extends TestCase
 
         $this->assertStringContainsString('"toggl_enabled":"true"', $output);
     }
+
+    /** @test */
+    public function it_can_return_the_projects_of_the_service_enabled()
+    {
+        $this->enableToggl();
+
+        $this->assertSame([], Workflow::serviceEnabled()->projects());
+    }
 }

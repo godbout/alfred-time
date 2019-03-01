@@ -53,7 +53,7 @@ class Workflow
     public static function serviceEnabled()
     {
         if (self::getInstance()->getConfig()->read('toggl.is_active')) {
-            return 'toggl';
+            return new Toggl(Workflow::getConfig()->read('toggl.api_token'));
         }
 
         return null;

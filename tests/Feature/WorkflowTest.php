@@ -26,4 +26,10 @@ class WorkflowTest extends TestCase
             $this->reachWorkflowSetupMenu()
         );
     }
+
+    /** @test */
+    public function it_disables_all_timers_except_the_one_chosen_when_the_user_enables_a_timer()
+    {
+        $this->markTestIncomplete();
+    }
 }
