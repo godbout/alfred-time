@@ -2,10 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Time\Menus\Entrance;
+use Godbout\Alfred\Time\Toggl;
+use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\ScriptFilter;
+use Tests\TestCase;
 
 class WorkflowTest extends TestCase
 {
@@ -32,10 +33,13 @@ class WorkflowTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_the_projects_of_the_service_enabled()
+    public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
         $this->enableToggl();
+        $this->togglApikey('wrong apikey');
 
-        $this->assertSame([], Workflow::serviceEnabled()->projects());
+        $service = Workflow::serviceEnabled();
+
+        $this->assertSame([], $service->projects());
     }
 }

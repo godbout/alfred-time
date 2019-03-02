@@ -17,21 +17,18 @@ class Toggl
     {
         $data = $this->client->getMe(true);
 
+        if (! isset($data->projects)) {
+            return [];
+        }
+
         return $this->getProjectsFromData($data->projects);
     }
 
     private function getProjectsFromData($data)
     {
-        $projects = [];
-
-        foreach ($data as $project) {
-            $projects[] = $project->name;
-        }
-
-        var_dump($projects);die;
-
-
-        return $projects;
+        return array_map(function ($project) {
+            return $project->name;
+        }, $data);
     }
 
     public function __toString()
