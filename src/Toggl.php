@@ -27,7 +27,7 @@ class Toggl
     private function getProjectsFromData($data)
     {
         return array_map(function ($project) {
-            return $project->name;
+            return [$project->id, $project->name];
         }, $data);
     }
 
