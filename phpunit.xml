@@ -22,4 +22,12 @@
             </exclude>
         </whitelist>
     </filter>
+    <groups>
+        <include>
+            <group>default</group>
+        </include>
+        <exclude>
+            <group>timerServicesApiCalls</group>
+        </exclude>
+    </groups>
 </phpunit>
