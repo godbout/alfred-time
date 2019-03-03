@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Dotenv\Dotenv;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Config;
 use PHPUnit\Framework\TestCase as BaseTestCase;
@@ -20,6 +21,13 @@ class TestCase extends BaseTestCase
         $this->configFile = $this->workflowDataFolder . '/config.json';
 
         putenv("alfred_workflow_data={$this->workflowDataFolder}");
+
+        $this->loadSecretApikeys();
+    }
+
+    private function loadSecretApikeys()
+    {
+        Dotenv::create(__DIR__ . '/..//')->load();
     }
 
     protected function disableAllTimerServices()

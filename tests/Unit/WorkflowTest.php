@@ -2,11 +2,8 @@
 
 namespace Tests\Unit;
 
-use Godbout\Alfred\Time\Menus\Entrance;
-use Godbout\Alfred\Time\Toggl;
-use Godbout\Alfred\Time\Workflow;
-use Godbout\Alfred\Workflow\ScriptFilter;
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class WorkflowTest extends TestCase
 {
@@ -30,16 +27,5 @@ class WorkflowTest extends TestCase
         $output = $this->reachTogglSetupMenu();
 
         $this->assertStringContainsString('"toggl_enabled":"true"', $output);
-    }
-
-    /** @test */
-    public function it_returns_zero_project_if_the_service_cannot_authenticate()
-    {
-        $this->enableToggl();
-        $this->togglApikey('wrong apikey');
-
-        $service = Workflow::serviceEnabled();
-
-        $this->assertSame([], $service->projects());
     }
 }
