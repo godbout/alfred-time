@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "godbout/alfred-workflow-scriptfilter": "^1.0.1",
         "godbout/alfred-workflow-config": "^1.1.0",
         "morningtrain/toggl-api": "^1.0.3",

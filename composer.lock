@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03eb1b77727623164235128873e78952",
+    "content-hash": "cef39eade5bbaff43b0f3bab53ddda3a",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -57,24 +57,24 @@
         },
         {
             "name": "godbout/alfred-workflow-config",
-            "version": "1.1.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-config.git",
-                "reference": "3f8440d942d6ba13847c47ad7e7e0e75107dd5ad"
+                "reference": "61aa6b06720cb647ced9963ab5beb42baefdc630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/3f8440d942d6ba13847c47ad7e7e0e75107dd5ad",
-                "reference": "3f8440d942d6ba13847c47ad7e7e0e75107dd5ad",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/61aa6b06720cb647ced9963ab5beb42baefdc630",
+                "reference": "61aa6b06720cb647ced9963ab5beb42baefdc630",
                 "shasum": ""
             },
             "require": {
                 "adbario/php-dot-notation": "^2.2",
-                "php": "^7.2"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "autoload": {
@@ -101,20 +101,20 @@
                 "php",
                 "workflow"
             ],
-            "time": "2019-02-25T07:41:40+00:00"
+            "time": "2019-03-03T13:57:18+00:00"
         },
         {
             "name": "godbout/alfred-workflow-scriptfilter",
-            "version": "1.0.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-scriptfilter.git",
-                "reference": "c996b28b2224969893c5c73a30b21be96c718df1"
+                "reference": "7b3bd79cadac2ed29740d9c2e8d204596f27c215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/c996b28b2224969893c5c73a30b21be96c718df1",
-                "reference": "c996b28b2224969893c5c73a30b21be96c718df1",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/7b3bd79cadac2ed29740d9c2e8d204596f27c215",
+                "reference": "7b3bd79cadac2ed29740d9c2e8d204596f27c215",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +148,7 @@
                 "php",
                 "workflow"
             ],
-            "time": "2019-02-25T10:27:42+00:00"
+            "time": "2019-03-03T13:58:41+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2310,7 +2310,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.0"
+        "php": "^7.1"
     },
     "platform-dev": []
 }
