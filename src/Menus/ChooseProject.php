@@ -3,7 +3,6 @@
 namespace Godbout\Alfred\Time\Menus;
 
 use Godbout\Alfred\Time\Workflow;
-use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
 
 class ChooseProject extends Menu

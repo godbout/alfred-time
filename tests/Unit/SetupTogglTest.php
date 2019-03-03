@@ -3,8 +3,6 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Godbout\Alfred\Time\Menus\Entrance;
-use Godbout\Alfred\Workflow\ScriptFilter;
 
 class SetupTogglTest extends TestCase
 {

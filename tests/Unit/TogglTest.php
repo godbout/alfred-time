@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
-use Dotenv\Dotenv;
-use Godbout\Alfred\Time\Workflow;
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class TogglTest extends TestCase
 {

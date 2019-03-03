@@ -4,7 +4,6 @@ namespace Tests;
 
 use Dotenv\Dotenv;
 use Godbout\Alfred\Time\Workflow;
-use Godbout\Alfred\Workflow\Config;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
@@ -27,7 +26,9 @@ class TestCase extends BaseTestCase
 
     private function loadSecretApikeys()
     {
-        Dotenv::create(__DIR__ . '/..//')->load();
+        if (file_exists(__DIR__ . '/../.env')) {
+            Dotenv::create(__DIR__ . '/..//')->load();
+        }
     }
 
     protected function disableAllTimerServices()

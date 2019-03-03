@@ -2,11 +2,6 @@
 
 namespace Tests\Feature;
 
-use Godbout\Alfred\Time\Menus\Entrance;
-use Godbout\Alfred\Time\Menus\SetupToggl;
-use Godbout\Alfred\Time\Menus\SetupTogglState;
-use Godbout\Alfred\Time\Workflow;
-use Godbout\Alfred\Workflow\ScriptFilter;
 use Tests\TestCase;
 
 class WorkflowTest extends TestCase

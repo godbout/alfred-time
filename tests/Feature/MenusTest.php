@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Godbout\Alfred\Time\Menus\Entrance;
 use Tests\TestCase;
 
 class MenusTest extends TestCase
