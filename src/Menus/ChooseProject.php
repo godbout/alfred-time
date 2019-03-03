@@ -3,33 +3,42 @@
 namespace Godbout\Alfred\Time\Menus;
 
 use Godbout\Alfred\Time\Workflow;
+use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
 
 class ChooseProject extends Menu
 {
     public static function content(): array
     {
-        $projects = [];
+        $projects =  [
+            self::getNoProject()
+        ];
 
+        $projects += self::getServiceProjects(Workflow::serviceEnabled());
 
+        return $projects;
+    }
 
-        $noProject[] = Item::create()
+    private static function getNoProject()
+    {
+        return Item::create()
             ->title('No project')
             ->subtitle('Timer will be created without a project')
-            ->arg('no_project');
+            ->arg('choose_tag');
+    }
 
+    private static function getServiceProjects($service)
+    {
+        $projects = [];
 
-        /**
-         * iTodo
-         *
-         * - Write a test for the real list of projects
-         */
-        foreach (Workflow::serviceEnabled()->projects() as $project) {
+        foreach ($service->projects() as $id => $name) {
             $projects[] = Item::create()
-                ->title($project[1])
-                ->variable('project_id', $project[0]);
+                ->title($name)
+                ->variable('project_id', $id)
+                ->arg('choose_tag')
+                ->icon(Icon::create("resources/icons/$service.png"));
         }
 
-        return $noProject + $projects;
+        return $projects;
     }
 }

@@ -81,6 +81,16 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu(['action=setup_toggl_apikey_save', $envVariable]);
     }
 
+    protected function reachWorkflowChooseProjectMenu()
+    {
+        return $this->reachWorkflowMenu('action=choose_project');
+    }
+
+    protected function reachWorkflowChooseTagMenu()
+    {
+        return $this->reachWorkflowMenu('action=choose_tag');
+    }
+
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
     {
         return $this->mockAlfredCallToScriptFilter($envVariables, $arguments);

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class MenusTest extends TestCase
+class SetupMenusTest extends TestCase
 {
     /** @test */
     public function it_proposes_to_setup_the_workflow_at_first_menu_if_no_timer_services_enabled()
@@ -32,27 +32,6 @@ class MenusTest extends TestCase
         $output = $this->reachWorkflowInitialMenu(null, 'some typing made by the user');
 
         $this->assertStringNotContainsString('"arg":"setup"', $output);
-    }
-
-    /** @test */
-    public function it_proposes_to_start_a_timer_if_there_is_at_least_one_timer_service_enabled()
-    {
-        $this->disableAllTimerServices();
-        $this->enableToggl();
-
-        $output = $this->reachWorkflowInitialMenu();
-
-        $this->assertStringContainsString('"arg":"choose_project"', $output);
-    }
-
-    /** @test */
-    public function it_does_not_propose_to_start_a_timer_if_there_is_no_timer_services_enabled()
-    {
-        $this->disableAllTimerServices();
-
-        $output = $this->reachWorkflowInitialMenu();
-
-        $this->assertStringNotContainsString('"arg":"setup_timer"', $output);
     }
 
     /** @test */

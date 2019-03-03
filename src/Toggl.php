@@ -8,6 +8,9 @@ class Toggl
 {
     private $client;
 
+    private $data = null;
+
+
     public function __construct($apiToken)
     {
         $this->client = new TogglApi($apiToken);
@@ -15,18 +18,32 @@ class Toggl
 
     public function projects()
     {
-        $data = $this->client->getMe(true);
+        return $this->extractFromData('projects');
+    }
 
-        if (! isset($data->projects)) {
+    public function tags()
+    {
+        return $this->extractFromData('tags');
+    }
+
+    private function extractFromData($needle)
+    {
+        $data = $this->getData();
+
+        if (! isset($data->$needle)) {
             return [];
         }
 
-        return $this->getProjectsFromData($data->projects);
+        return array_column($data->$needle, 'name', 'id');
     }
 
-    private function getProjectsFromData($data)
+    private function getData()
     {
-        return array_column($data, 'name', 'id');
+        if (is_null($this->data)) {
+            return $this->client->getMe(true);
+        }
+
+        return $this->data;
     }
 
     public function __toString()

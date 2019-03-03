@@ -15,7 +15,7 @@ class TogglTest extends TestCase
 
         $service = Workflow::serviceEnabled();
 
-        $this->assertSame([], $service->projects());
+        $this->assertEmpty($service->projects());
     }
 
     /**
@@ -31,5 +31,31 @@ class TogglTest extends TestCase
 
         $this->assertArrayHasKey(35673866, $projects);
         $this->assertSame('Alfred-Time', $projects[35673866]);
+    }
+
+    /** @test */
+    public function it_returns_zero_tag_if_the_service_annot_authenticate()
+    {
+        $this->enableToggl();
+        $this->togglApikey('wrong apikey');
+
+        $service = Workflow::serviceEnabled();
+
+        $this->assertEmpty($service->tags());
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_returns_tags_if_the_service_can_authenticate()
+    {
+        $this->enableToggl();
+        $this->togglApikey(getenv('TOGGL_APIKEY'));
+
+        $tags = Workflow::serviceEnabled()->tags();
+
+        $this->assertArrayHasKey(2755832, $tags);
+        $this->assertSame('All Included Package', $tags[2755832]);
     }
 }
