@@ -28,7 +28,7 @@ class ChooseProject extends Menu
         foreach (Workflow::serviceEnabled()->projects() as $project) {
             $projects[] = Item::create()
                 ->title($project[1])
-                ->variable('project', $project[0]);
+                ->variable('project_id', $project[0]);
         }
 
         return $noProject + $projects;

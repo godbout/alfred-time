@@ -7,3 +7,5 @@
 coverage
 
 .env
+
+tests/*/config.json
