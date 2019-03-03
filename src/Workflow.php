@@ -70,7 +70,7 @@ class Workflow
     {
         $action = getenv('action');
 
-        return __NAMESPACE__ . '\\Menus\\' . self::getMenuClassName($action);
+        return __NAMESPACE__ . '\\Menus\\' . (self::getMenuClassName($action) ?: 'Entrance');
     }
 
     private static function getMenuClassName($action)
