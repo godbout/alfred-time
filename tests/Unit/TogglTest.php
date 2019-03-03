@@ -58,4 +58,16 @@ class TogglTest extends TestCase
         $this->assertArrayHasKey(2755832, $tags);
         $this->assertSame('All Included Package', $tags[2755832]);
     }
+
+    /** @test */
+    public function it_does_not_show_projects_that_have_been_deleted_serverwise()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /** @test */
+    public function it_does_not_show_tags_that_havbe_been_deleted_serverwise()
+    {
+        $this->markTestIncomplete();
+    }
 }

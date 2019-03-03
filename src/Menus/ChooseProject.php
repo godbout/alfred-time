@@ -11,7 +11,7 @@ class ChooseProject extends Menu
     public static function content(): array
     {
         return array_merge(
-            (array) self::getNoProject(),
+            [self::getNoProject()],
             self::getServiceProjects(Workflow::serviceEnabled())
         );
     }
