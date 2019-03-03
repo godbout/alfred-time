@@ -26,6 +26,6 @@ class ChooseTag extends Menu
                 ->icon(Icon::create("resources/icons/$serviceEnabled.png"));
         }
 
-        return $noTag + $tags;
+        return array_merge($noTag, $tags);
     }
 }

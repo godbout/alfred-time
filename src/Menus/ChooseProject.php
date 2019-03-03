@@ -10,13 +10,10 @@ class ChooseProject extends Menu
 {
     public static function content(): array
     {
-        $projects =  [
-            self::getNoProject()
-        ];
-
-        $projects += self::getServiceProjects(Workflow::serviceEnabled());
-
-        return $projects;
+        return array_merge(
+            (array) self::getNoProject(),
+            self::getServiceProjects(Workflow::serviceEnabled())
+        );
     }
 
     private static function getNoProject()
