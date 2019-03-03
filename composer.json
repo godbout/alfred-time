@@ -2,8 +2,9 @@
     "require": {
         "godbout/alfred-workflow-scriptfilter": "^1.0.1",
         "godbout/alfred-workflow-config": "^1.1.0",
-        "morningtrain/toggl-api": "^1.0",
-        "vlucas/phpdotenv": "^3.3"
+        "morningtrain/toggl-api": "^1.0.3",
+        "vlucas/phpdotenv": "^3.3",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
