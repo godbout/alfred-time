@@ -78,6 +78,11 @@ class Workflow
         return str_replace('_', '', ucwords($action === false ? 'entrance' : $action, '_'));
     }
 
+    public static function go()
+    {
+        return true;
+    }
+
     private function __clone()
     {
     }

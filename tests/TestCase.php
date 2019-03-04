@@ -91,6 +91,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=choose_tag');
     }
 
+    protected function reachWorkflowGoAction()
+    {
+        return $this->reachWorkflowMenu('action=go');
+    }
+
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
     {
         return $this->mockAlfredCallToScriptFilter($envVariables, $arguments);
