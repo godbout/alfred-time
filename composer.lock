@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cef39eade5bbaff43b0f3bab53ddda3a",
+    "content-hash": "3714c82720dd3c89819a69d7b72c8445",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -335,20 +335,20 @@
         },
         {
             "name": "morningtrain/toggl-api",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Morning-Train/toggl-api.git",
-                "reference": "d9327e2340b2023109babd0de4f60b5ae7453083"
+                "reference": "231f9bdb7637652e447829bdee694f205b4b106c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Morning-Train/toggl-api/zipball/d9327e2340b2023109babd0de4f60b5ae7453083",
-                "reference": "d9327e2340b2023109babd0de4f60b5ae7453083",
+                "url": "https://api.github.com/repos/Morning-Train/toggl-api/zipball/231f9bdb7637652e447829bdee694f205b4b106c",
+                "reference": "231f9bdb7637652e447829bdee694f205b4b106c",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.0"
+                "guzzlehttp/guzzle": "^6.3"
             },
             "require-dev": {
                 "escapestudios/symfony2-coding-standard": "2.*",
@@ -379,7 +379,7 @@
                 "php",
                 "toggl"
             ],
-            "time": "2017-10-02T13:42:58+00:00"
+            "time": "2019-03-04T07:37:07+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -2155,16 +2155,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "d461670ee145092b7e2a56c1da7118f19cadadb0"
+                "reference": "761fa560a937fd7686e5274ff89dcfa87a5047df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/d461670ee145092b7e2a56c1da7118f19cadadb0",
-                "reference": "d461670ee145092b7e2a56c1da7118f19cadadb0",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/761fa560a937fd7686e5274ff89dcfa87a5047df",
+                "reference": "761fa560a937fd7686e5274ff89dcfa87a5047df",
                 "shasum": ""
             },
             "require": {
@@ -2210,7 +2210,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-16T20:35:37+00:00"
+            "time": "2019-02-23T15:17:42+00:00"
         },
         {
             "name": "theseer/tokenizer",
