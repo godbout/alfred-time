@@ -66,7 +66,36 @@ class TogglTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_show_tags_that_havbe_been_deleted_serverwise()
+    public function it_does_not_show_tags_that_have_been_deleted_serverwise()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_start_a_timer()
+    {
+        /**
+         * iTodo
+         *
+         * - Fails. Probably because of tag (when empty)
+         */
+        $this->enableToggl();
+        $this->togglApikey(getenv('TOGGL_APIKEY'));
+
+        $output = Workflow::serviceEnabled()->startTimer();
+
+        $this->assertTrue($output);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     * @depends it_can_start_a_timer
+     */
+    public function it_can_stop_a_timer()
     {
         $this->markTestIncomplete();
     }

@@ -15,16 +15,18 @@ class ChooseTag extends Menu
         $noTag[] = Item::create()
             ->title('No tag')
             ->subtitle('Timer will be created without a tag')
-            ->arg('go');
+            ->arg('go')
+            ->variable('timer_action', 'start');
 
         $serviceEnabled = Workflow::serviceEnabled();
 
         foreach ($serviceEnabled->tags() as $id => $name) {
             $tags[] = Item::create()
                 ->title($name)
-                ->variable('tag_id', $id)
+                ->variable('timer_tag', $name)
                 ->icon(Icon::create("resources/icons/$serviceEnabled.png"))
-                ->arg('go');
+                ->arg('go')
+                ->variable('timer_action', 'start');
         }
 
         return array_merge($noTag, $tags);

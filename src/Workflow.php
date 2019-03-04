@@ -80,7 +80,9 @@ class Workflow
 
     public static function go()
     {
-        return true;
+        $action = getenv('timer_action');
+
+        return Timer::$action();
     }
 
     private function __clone()

@@ -2,6 +2,7 @@
 
 namespace Godbout\Alfred\Time;
 
+use Exception;
 use MorningTrain\TogglApi\TogglApi;
 
 class Toggl
@@ -24,6 +25,22 @@ class Toggl
     public function tags()
     {
         return $this->extractFromData('tags');
+    }
+
+    public function startTimer()
+    {
+        try {
+            $response = $this->client->startTimeEntry([
+                'description' => getenv('timer_description'),
+                'pid' => getenv('timer_project'),
+                'tags' => [getenv('timer_tag')],
+                'created_with' => 'Alfred Time'
+            ]);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     private function extractFromData($needle)

@@ -25,7 +25,7 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_can_do_an_action_with_the_timer()
     {
-        $output = $this->reachWorkflowGoAction();
+        $output = $this->reachWorkflowGoAction('timer_action=start');
 
         $this->assertSame('1', $output);
     }

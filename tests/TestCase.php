@@ -91,9 +91,9 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=choose_tag');
     }
 
-    protected function reachWorkflowGoAction()
+    protected function reachWorkflowGoAction($envVariable = '')
     {
-        return $this->reachWorkflowMenu('action=go');
+        return $this->reachWorkflowMenu(['action=go', $envVariable]);
     }
 
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
