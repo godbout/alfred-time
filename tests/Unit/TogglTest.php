@@ -3,31 +3,43 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Godbout\Alfred\Time\Toggl;
 use Godbout\Alfred\Time\Workflow;
 
 class TogglTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->toggl = new Toggl(getenv('TOGGL_APIKEY'));
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        if ($timerId = $this->toggl->runningTimer()) {
+            $this->toggl->stopCurrentTimer();
+            $this->toggl->deleteTimer($timerId);
+        }
+    }
+
     /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
-        $this->enableToggl();
-        $this->togglApikey('wrong apikey');
+        $toggl = new Toggl('wrong apikey');
 
-        $service = Workflow::serviceEnabled();
-
-        $this->assertEmpty($service->projects());
+        $this->assertEmpty($toggl->projects());
     }
 
     /**
      * @test
-     * @group default
+     * @group timerServicesApiCalls
      */
     public function it_returns_projects_if_the_service_can_authenticate()
     {
-        $this->enableToggl();
-        $this->togglApikey(getenv('TOGGL_APIKEY'));
-
-        $projects = Workflow::serviceEnabled()->projects();
+        $projects = $this->toggl->projects();
 
         $this->assertArrayHasKey(getenv('TOGGL_PROJECT_ID'), $projects);
         $this->assertSame(getenv('TOGGL_PROJECT_NAME'), $projects[getenv('TOGGL_PROJECT_ID')]);
@@ -36,12 +48,9 @@ class TogglTest extends TestCase
     /** @test */
     public function it_returns_zero_tag_if_the_service_annot_authenticate()
     {
-        $this->enableToggl();
-        $this->togglApikey('wrong apikey');
+        $toggl = new Toggl('wrong apikey again');
 
-        $service = Workflow::serviceEnabled();
-
-        $this->assertEmpty($service->tags());
+        $this->assertEmpty($toggl->tags());
     }
 
     /**
@@ -50,10 +59,7 @@ class TogglTest extends TestCase
      */
     public function it_returns_tags_if_the_service_can_authenticate()
     {
-        $this->enableToggl();
-        $this->togglApikey(getenv('TOGGL_APIKEY'));
-
-        $tags = Workflow::serviceEnabled()->tags();
+        $tags = $this->toggl->tags();
 
         $this->assertArrayHasKey(getenv('TOGGL_TAG_ID'), $tags);
         $this->assertSame(getenv('TOGGL_TAG_NAME'), $tags[getenv('TOGGL_TAG_ID')]);
@@ -77,27 +83,43 @@ class TogglTest extends TestCase
      */
     public function it_can_start_a_timer()
     {
-        /**
-         * iTodo
-         *
-         * - Fails. Probably because of tag (when empty)
-         */
-        $this->markTestSkipped();
-        $this->enableToggl();
-        $this->togglApikey(getenv('TOGGL_APIKEY'));
-
-        $output = Workflow::serviceEnabled()->startTimer();
-
-        $this->assertTrue($output);
+        $this->assertNotFalse($this->toggl->startTimer());
     }
 
     /**
      * @test
      * @group timerServicesApiCalls
-     * @depends it_can_start_a_timer
      */
     public function it_can_stop_a_timer()
     {
-        $this->markTestIncomplete();
+        $this->assertFalse($this->toggl->stopCurrentTimer());
+
+        $timerId = $this->toggl->startTimer();
+        $this->assertTrue($this->toggl->stopCurrentTimer());
+
+        $this->toggl->deleteTimer($timerId);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_get_the_running_timer()
+    {
+        $this->assertFalse($this->toggl->runningTimer());
+
+        $timerId = $this->toggl->startTimer();
+        $this->assertNotFalse($this->toggl->runningTimer());
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_delete_a_timer()
+    {
+        $timerId = $this->toggl->startTimer();
+
+        $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
 }

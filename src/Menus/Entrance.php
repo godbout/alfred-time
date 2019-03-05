@@ -11,9 +11,31 @@ class Entrance extends Menu
     public static function content(): array
     {
         return [
-            self::startTimer(),
+            self::timerAction(),
             self::setupWorkflow()
         ];
+    }
+
+    private static function timerAction()
+    {
+        $serviceEnabled = Workflow::serviceEnabled();
+
+        if (! $serviceEnabled) {
+            return;
+        }
+
+        if ($serviceEnabled->runningTimer()) {
+            return self::stopCurrentTimer();
+        }
+
+        return self::startTimer();
+    }
+
+    private static function stopCurrentTimer()
+    {
+        return Item::create()
+            ->title('Stop current timer')
+            ->subtitle('That timer is currently running!');
     }
 
     private static function startTimer()

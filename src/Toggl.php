@@ -30,17 +30,56 @@ class Toggl
     public function startTimer()
     {
         try {
-            $response = $this->client->startTimeEntry([
+            $timer = $this->client->startTimeEntry([
                 'description' => getenv('timer_description'),
                 'pid' => getenv('timer_project'),
                 'tags' => getenv('timer_tag') ? [getenv('timer_tag')] : '',
                 'created_with' => 'Alfred Time'
             ]);
+
+            if (! isset($timer->id)) {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return $timer->id;
+    }
+
+    public function stopCurrentTimer()
+    {
+        if ($timerId = $this->runningTimer()) {
+            $response = $this->client->stopTimeEntry($timerId);
+
+            if (! isset($response->id)) {
+                throw new Exception("Can't stop current running timer.", 1);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function deleteTimer($timerId)
+    {
+        try {
+            $this->client->deleteTimeEntry($timerId);
         } catch (Exception $e) {
             return false;
         }
 
         return true;
+    }
+
+    public function runningTimer()
+    {
+        $timer = $this->client->getRunningTimeEntry();
+
+        return $timer->id ?? false;
     }
 
     private function extractFromData($needle)

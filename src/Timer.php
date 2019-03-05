@@ -10,6 +10,11 @@ class Timer
     {
         $toggl = new Toggl(Workflow::getConfig()->read('toggl.api_token'));
 
-        return $toggl->startTimer();
+        return (bool) $toggl->startTimer();
+    }
+
+    public static function stop()
+    {
+        return true;
     }
 }
