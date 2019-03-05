@@ -33,7 +33,7 @@ class Toggl
             $response = $this->client->startTimeEntry([
                 'description' => getenv('timer_description'),
                 'pid' => getenv('timer_project'),
-                'tags' => [getenv('timer_tag')],
+                'tags' => getenv('timer_tag') ? [getenv('timer_tag')] : '',
                 'created_with' => 'Alfred Time'
             ]);
         } catch (Exception $e) {
