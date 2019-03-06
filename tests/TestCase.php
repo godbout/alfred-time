@@ -17,13 +17,18 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        $this->setUpWorkflowDataFolderAndConfigFilePath();
+
+        $this->resetWorkflowToDefaultSettings();
+
+        $this->loadSecretApikeys();
+    }
+
+    private function setUpWorkflowDataFolderAndConfigFilePath()
+    {
         $this->configFile = $this->workflowDataFolder . '/config.json';
 
         putenv("alfred_workflow_data={$this->workflowDataFolder}");
-
-        $this->loadSecretApikeys();
-
-        $this->resetWorkflowToDefaultSettings();
     }
 
     private function resetWorkflowToDefaultSettings()
@@ -38,6 +43,7 @@ class TestCase extends BaseTestCase
     private function resetConfigToDefaultSettings()
     {
         $this->disableAllTimerServices();
+
         $this->togglApikey('');
     }
 

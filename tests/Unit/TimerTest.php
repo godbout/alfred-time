@@ -12,12 +12,8 @@ class TimerTest extends TestCase
     {
         $this->markTestSkipped();
 
-        $this->assertTrue(Timer::start());
+        $this->togglApikey(getenv('TOGGL_APIKEY'));
 
-        /**
-         * iTodo
-         *
-         * - Add better tests for this (and develop source)
-         */
+        $this->assertTrue(Timer::start());
     }
 }
