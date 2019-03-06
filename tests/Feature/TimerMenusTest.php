@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Godbout\Alfred\Time\Workflow;
 use Tests\TestCase;
 
 class TimerMenusTest extends TestCase

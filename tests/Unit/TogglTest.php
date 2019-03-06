@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Godbout\Alfred\Time\Toggl;
-use Godbout\Alfred\Time\Workflow;
 
 class TogglTest extends TestCase
 {

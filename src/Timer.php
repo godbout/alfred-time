@@ -2,8 +2,6 @@
 
 namespace Godbout\Alfred\Time;
 
-use Godbout\Alfred\Time\Toggl;
-
 class Timer
 {
     public static function start()
