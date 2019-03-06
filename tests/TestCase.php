@@ -22,11 +22,6 @@ class TestCase extends BaseTestCase
         putenv("alfred_workflow_data={$this->workflowDataFolder}");
 
         $this->loadSecretApikeys();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
 
         $this->resetWorkflowToDefaultSettings();
     }
