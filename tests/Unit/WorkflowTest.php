@@ -10,8 +10,6 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_returns_the_time_service_enabled()
     {
-        $this->disableAllTimerServices();
-
         $this->assertEmpty(Workflow::serviceEnabled());
 
         $this->enableToggl();

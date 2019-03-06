@@ -10,10 +10,6 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_returns_a_correct_output()
     {
-        $this->disableAllTimerServices();
-
-        Workflow::destroy();
-
         $this->assertJsonStringEqualsJsonString(
             '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
             $this->reachWorkflowInitialMenu()
@@ -41,6 +37,7 @@ class WorkflowTest extends TestCase
     {
         $this->enableToggl();
         $this->togglApikey(getenv('TOGGL_APIKEY'));
+
         $service = Workflow::serviceEnabled();
 
         $timerId = $service->startTimer();
