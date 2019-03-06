@@ -44,7 +44,7 @@ class WorkflowTest extends TestCase
 
         $this->assertStringContainsString(
             'Stop current timer',
-            Workflow::output()
+            Workflow::currentMenu()
         );
 
         $service->deleteTimer($timerId);

@@ -29,7 +29,7 @@ class Workflow
         return self::$instance;
     }
 
-    public static function output()
+    public static function currentMenu()
     {
         self::getInstance()->scriptFilter->create();
 
@@ -78,7 +78,7 @@ class Workflow
         return str_replace('_', '', ucwords($action === false ? 'entrance' : $action, '_'));
     }
 
-    public static function go()
+    public static function do()
     {
         $action = getenv('timer_action');
 

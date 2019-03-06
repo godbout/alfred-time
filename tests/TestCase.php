@@ -17,18 +17,23 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->setUpWorkflowDataFolderAndConfigFilePath();
+        $this->setUpWorkflowDataFolder();
+
+        $this->setUpConfigFilePath();
 
         $this->resetWorkflowToDefaultSettings();
 
         $this->loadSecretApikeys();
     }
 
-    private function setUpWorkflowDataFolderAndConfigFilePath()
+    private function setUpWorkflowDataFolder()
+    {
+        putenv("alfred_workflow_data={$this->workflowDataFolder}");
+    }
+
+    private function setUpConfigFilePath()
     {
         $this->configFile = $this->workflowDataFolder . '/config.json';
-
-        putenv("alfred_workflow_data={$this->workflowDataFolder}");
     }
 
     private function resetWorkflowToDefaultSettings()
@@ -94,20 +99,16 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl_apikey');
     }
 
-    protected function reachTogglStateSavedMenu($envVariable = [])
+    protected function reachTogglStateSavedMenu($envVariables = [])
     {
-        $envVariables = is_array($envVariable) ? $envVariable : [$envVariable];
-
-        $envVariables = array_merge(['action=setup_toggl_state'], $envVariables);
+        $envVariables = array_merge(['action=setup_toggl_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
-    protected function reachTogglApikeySavedMenu($envVariable = [])
+    protected function reachTogglApikeySavedMenu($envVariables = [])
     {
-        $envVariables = is_array($envVariable) ? $envVariable : [$envVariable];
-
-        $envVariables = array_merge(['action=setup_toggl_apikey_save'], $envVariables);
+        $envVariables = array_merge(['action=setup_toggl_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
@@ -122,44 +123,43 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=choose_tag');
     }
 
-    protected function reachWorkflowGoAction($envVariable = '')
+    protected function reachWorkflowGoAction($envVariables = [])
     {
-        return $this->reachWorkflowAction(['action=go', $envVariable]);
+        $envVariables = array_merge(['action=do'], (array) $envVariables);
+
+        return $this->reachWorkflowAction($envVariables);
     }
 
     private function reachWorkflowAction($envVariables = [], $arguments = [])
     {
-        $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
+        $this->buildWorkflowWorld($envVariables, $arguments);
 
-        $this->buildEnvironmentVariables($envVariables);
-
-        $this->buildArguments($arguments);
-
-        return Workflow::go();
+        return Workflow::do();
     }
 
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
     {
-        $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
+        $this->buildWorkflowWorld($envVariables, $arguments);
 
-        $this->buildEnvironmentVariables($envVariables);
-
-        $this->buildArguments($arguments);
-
-        return Workflow::output();
+        return Workflow::currentMenu();
     }
 
-    private function buildEnvironmentVariables($envVariables = [])
+    private function buildWorkflowWorld($envVariables = [], $arguments = [])
+    {
+        $this->buildEnvironmentVariables((array) $envVariables);
+
+        $this->buildArguments((array) $arguments);
+    }
+
+    private function buildEnvironmentVariables(array $envVariables = [])
     {
         foreach ($envVariables as $envVariable) {
             putenv($envVariable);
         }
     }
 
-    private function buildArguments($arguments = [])
+    private function buildArguments(array $arguments = [])
     {
-        $arguments = is_array($arguments) ? $arguments : [$arguments];
-
         foreach ($arguments as $argument) {
             $_SERVER['argv'][] = $argument;
         }

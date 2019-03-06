@@ -15,7 +15,7 @@ class ChooseTag extends Menu
         $noTag[] = Item::create()
             ->title('No tag')
             ->subtitle('Timer will be created without a tag')
-            ->arg('go')
+            ->arg('do')
             ->variable('timer_action', 'start');
 
         $serviceEnabled = Workflow::serviceEnabled();
@@ -25,7 +25,7 @@ class ChooseTag extends Menu
                 ->title($name)
                 ->variable('timer_tag', $name)
                 ->icon(Icon::create("resources/icons/$serviceEnabled.png"))
-                ->arg('go')
+                ->arg('do')
                 ->variable('timer_action', 'start');
         }
 

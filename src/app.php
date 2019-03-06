@@ -4,8 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Godbout\Alfred\Time\Workflow;
 
-if (getenv('action') === 'go') {
-    print Workflow::go();
+if (getenv('action') === 'do') {
+    Workflow::do();
 } else {
-    print Workflow::output();
+    print Workflow::currentMenu();
 }
