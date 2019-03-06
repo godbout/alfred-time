@@ -12,10 +12,14 @@ class WorkflowTest extends TestCase
     {
         $this->disableAllTimerServices();
 
+        Workflow::destroy();
+
         $this->assertJsonStringEqualsJsonString(
             '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
-            $this->reachWorkflowInitialMenu(null, '')
+            $this->reachWorkflowInitialMenu()
         );
+
+        Workflow::destroy();
 
         $this->assertJsonStringEqualsJsonString(
             '{"items":[{"title":"Setup Toggl","subtitle":"","icon":{"path":"resources\/icons\/toggl.png"},"arg":"setup_toggl"},{"title":"Setup Harvest","subtitle":"","icon":{"path":"resources\/icons\/harvest.png"},"arg":"setup_harvest"}]}',
@@ -26,12 +30,12 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_can_do_an_action_with_the_timer()
     {
-        $this->assertSame('1', $this->reachWorkflowGoAction('timer_action=stop'));
+        $this->assertTrue($this->reachWorkflowGoAction('timer_action=stop'));
     }
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_detects_when_a_timer_is_already_running_and_proposes_to_stop_timer_instead_of_start_timer()
     {

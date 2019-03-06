@@ -24,6 +24,28 @@ class TestCase extends BaseTestCase
         $this->loadSecretApikeys();
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->resetWorkflowToDefaultSettings();
+    }
+
+    private function resetWorkflowToDefaultSettings()
+    {
+        Workflow::destroy();
+
+        $this->resetConfigToDefaultSettings();
+
+        putenv('action=');
+    }
+
+    private function resetConfigToDefaultSettings()
+    {
+        $this->disableAllTimerServices();
+        $this->togglApikey('');
+    }
+
     private function loadSecretApikeys()
     {
         if (file_exists(__DIR__ . '/../.env')) {
@@ -71,14 +93,22 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl_apikey');
     }
 
-    protected function reachTogglStateSavedMenu($envVariable = '')
+    protected function reachTogglStateSavedMenu($envVariable = [])
     {
-        return $this->reachWorkflowMenu(['action=setup_toggl_state', $envVariable]);
+        $envVariables = is_array($envVariable) ? $envVariable : [$envVariable];
+
+        $envVariables = array_merge(['action=setup_toggl_state'], $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
     }
 
-    protected function reachTogglApikeySavedMenu($envVariable = '')
+    protected function reachTogglApikeySavedMenu($envVariable = [])
     {
-        return $this->reachWorkflowMenu(['action=setup_toggl_apikey_save', $envVariable]);
+        $envVariables = is_array($envVariable) ? $envVariable : [$envVariable];
+
+        $envVariables = array_merge(['action=setup_toggl_apikey_save'], $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachWorkflowChooseProjectMenu()
@@ -93,46 +123,44 @@ class TestCase extends BaseTestCase
 
     protected function reachWorkflowGoAction($envVariable = '')
     {
-        return $this->reachWorkflowMenu(['action=go', $envVariable]);
+        return $this->reachWorkflowAction(['action=go', $envVariable]);
+    }
+
+    private function reachWorkflowAction($envVariables = [], $arguments = [])
+    {
+        $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
+
+        $this->buildEnvironmentVariables($envVariables);
+
+        $this->buildArguments($arguments);
+
+        return Workflow::go();
     }
 
     private function reachWorkflowMenu($envVariables = [], $arguments = [])
     {
-        return $this->mockAlfredCallToScriptFilter($envVariables, $arguments);
-    }
+        $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
 
-    protected function mockAlfredCallToScriptFilter($envVariables = [], $arguments = [])
-    {
-        $envCommand = $this->buildEnvironmentVariables($envVariables);
+        $this->buildEnvironmentVariables($envVariables);
 
-        $phpCommand = $this->buildPHPCommand($arguments);
+        $this->buildArguments($arguments);
 
-        return shell_exec("$envCommand $phpCommand");
+        return Workflow::output();
     }
 
     private function buildEnvironmentVariables($envVariables = [])
     {
-        $envVariables = is_array($envVariables) ? $envVariables : [$envVariables];
-
-        $envCommand = 'env alfred_workflow_data=' . $this->workflowDataFolder;
-
-        foreach ($envVariables as $variable) {
-            $envCommand .= " $variable";
+        foreach ($envVariables as $envVariable) {
+            putenv($envVariable);
         }
-
-        return $envCommand;
     }
 
-    private function buildPHPCommand($arguments = [])
+    private function buildArguments($arguments = [])
     {
         $arguments = is_array($arguments) ? $arguments : [$arguments];
 
-        $phpCommand = 'php ' . __DIR__ . '/../src/app.php';
-
         foreach ($arguments as $argument) {
-            $phpCommand .= " $argument";
+            $_SERVER['argv'][] = $argument;
         }
-
-        return $phpCommand;
     }
 }

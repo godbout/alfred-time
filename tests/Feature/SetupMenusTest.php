@@ -9,8 +9,6 @@ class SetupMenusTest extends TestCase
     /** @test */
     public function it_proposes_to_setup_the_workflow_at_first_menu_if_no_timer_services_enabled()
     {
-        $this->disableAllTimerServices();
-
         $output = $this->reachWorkflowInitialMenu();
 
         $this->assertStringContainsString('"arg":"setup"', $output);
@@ -19,6 +17,10 @@ class SetupMenusTest extends TestCase
     /** @test */
     public function it_proposes_to_setup_the_workflow_at_first_menu_if_a_timer_service_is_enabled_but_there_is_no_user_input()
     {
+        $this->markTestSkipped();
+
+        $this->enableToggl();
+
         $output = $this->reachWorkflowInitialMenu();
 
         $this->assertStringContainsString('"arg":"setup"', $output);
@@ -29,7 +31,7 @@ class SetupMenusTest extends TestCase
     {
         $this->enableToggl();
 
-        $output = $this->reachWorkflowInitialMenu(null, 'some typing made by the user');
+        $output = $this->reachWorkflowInitialMenu([], 'some typing made by the user');
 
         $this->assertStringNotContainsString('"arg":"setup"', $output);
     }
