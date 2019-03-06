@@ -4,7 +4,7 @@
 
 .DS_Store
 
-coverage
+build
 
 .env
 
