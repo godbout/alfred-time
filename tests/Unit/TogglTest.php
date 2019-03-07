@@ -64,19 +64,16 @@ class TogglTest extends TestCase
         $this->assertSame(getenv('TOGGL_TAG_NAME'), $tags[getenv('TOGGL_TAG_ID')]);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
     public function it_does_not_show_projects_that_have_been_deleted_serverwise()
     {
         $projects = $this->toggl->projects();
 
         $this->assertArrayNotHasKey(getenv('TOGGL_DELETED_PROJECT_ID'), $projects);
-        $this->assertNull(getenv('TOGGL_DELETED_PROJECT_NAME'), $projects[getenv('TOGGL_PROJECT_ID')]);
-    }
-
-    /** @test */
-    public function it_does_not_show_tags_that_have_been_deleted_serverwise()
-    {
-        $this->markTestIncomplete();
+        $this->assertNotContains(getenv('TOGGL_DELETED_PROJECT_NAME'), $projects);
     }
 
     /**
