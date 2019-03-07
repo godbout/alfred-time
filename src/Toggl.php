@@ -90,7 +90,9 @@ class Toggl
             return [];
         }
 
-        return array_column($data->$needle, 'name', 'id');
+        $nonDeletedData = $this->filterOutServerwiseDeletedItemsFromData($data->$needle);
+
+        return array_column($nonDeletedData, 'name', 'id');
     }
 
     private function getData()
@@ -100,6 +102,13 @@ class Toggl
         }
 
         return $this->data;
+    }
+
+    private function filterOutServerwiseDeletedItemsFromData($items = [])
+    {
+        return array_filter($items, function ($item) {
+            return ! isset($item->server_deleted_at);
+        });
     }
 
     public function __toString()
