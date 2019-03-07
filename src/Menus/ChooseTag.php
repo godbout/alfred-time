@@ -23,7 +23,6 @@ class ChooseTag extends Menu
         foreach ($serviceEnabled->tags() as $id => $name) {
             $tags[] = Item::create()
                 ->title($name)
-                ->subtitle($id)
                 ->variable('timer_tag', $name)
                 ->icon(Icon::create("resources/icons/$serviceEnabled.png"))
                 ->arg('do')
