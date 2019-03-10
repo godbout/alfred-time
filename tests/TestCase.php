@@ -38,11 +38,18 @@ class TestCase extends BaseTestCase
 
     private function resetWorkflowToDefaultSettings()
     {
-        Workflow::destroy();
+        $this->resetWorkflowSingleton();
 
         $this->resetConfigToDefaultSettings();
 
-        putenv('action=');
+        $this->resetEnvVariables();
+
+        $this->resetScriptArguments();
+    }
+
+    private function resetWorkflowSingleton()
+    {
+        Workflow::destroy();
     }
 
     private function resetConfigToDefaultSettings()
@@ -50,6 +57,17 @@ class TestCase extends BaseTestCase
         $this->disableAllTimerServices();
 
         $this->togglApikey('');
+    }
+
+    private function resetEnvVariables()
+    {
+        putenv('action=');
+    }
+
+    private function resetScriptArguments()
+    {
+        global $argv;
+        $argv = [];
     }
 
     private function loadSecretApikeys()
@@ -160,8 +178,12 @@ class TestCase extends BaseTestCase
 
     private function buildArguments(array $arguments = [])
     {
+        global $argv;
+
+        $argv[0] = 'src/app.php';
+
         foreach ($arguments as $argument) {
-            $_SERVER['argv'][] = $argument;
+            $argv[] = $argument;
         }
     }
 }
