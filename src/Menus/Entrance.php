@@ -35,7 +35,9 @@ class Entrance extends Menu
     {
         return Item::create()
             ->title('Stop current timer')
-            ->subtitle('That timer is currently running!');
+            ->subtitle('That timer is currently running!')
+            ->arg('do')
+            ->variable('timer_action', 'stop');
     }
 
     private static function startTimer()
