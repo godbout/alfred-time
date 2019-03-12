@@ -105,16 +105,16 @@
         },
         {
             "name": "godbout/alfred-workflow-scriptfilter",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-scriptfilter.git",
-                "reference": "7b3bd79cadac2ed29740d9c2e8d204596f27c215"
+                "reference": "3d6957d669b7bef6658ebc7ed08ec28d65024f47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/7b3bd79cadac2ed29740d9c2e8d204596f27c215",
-                "reference": "7b3bd79cadac2ed29740d9c2e8d204596f27c215",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/3d6957d669b7bef6658ebc7ed08ec28d65024f47",
+                "reference": "3d6957d669b7bef6658ebc7ed08ec28d65024f47",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +148,7 @@
                 "php",
                 "workflow"
             ],
-            "time": "2019-03-03T13:58:41+00:00"
+            "time": "2019-03-12T12:14:22+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -581,16 +581,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "1ee9369cfbf26cfcf1f2515d98f15fab54e9647a"
+                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1ee9369cfbf26cfcf1f2515d98f15fab54e9647a",
-                "reference": "1ee9369cfbf26cfcf1f2515d98f15fab54e9647a",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/dbcc609971dd9b55f48b8008b553d79fd372ddde",
+                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde",
                 "shasum": ""
             },
             "require": {
@@ -629,7 +629,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2019-01-30T10:43:17+00:00"
+            "time": "2019-03-06T09:39:45+00:00"
         }
     ],
     "packages-dev": [
