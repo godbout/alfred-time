@@ -4,7 +4,7 @@ namespace Godbout\Alfred\Time\Menus;
 
 abstract class Menu
 {
-    abstract public static function content(): array;
+    abstract public static function scriptFilter();
 
     public static function userInput()
     {

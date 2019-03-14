@@ -31,11 +31,7 @@ class Workflow
 
     public static function currentMenu()
     {
-        self::getInstance()->scriptFilter->create();
-
-        foreach (self::getCurrentMenuClass()::content() as $item) {
-            self::getInstance()->scriptFilter->add($item);
-        }
+        self::getCurrentMenuClass()::scriptFilter();
 
         return self::getInstance()->scriptFilter->output();
     }

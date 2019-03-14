@@ -5,17 +5,18 @@ namespace Godbout\Alfred\Time\Menus;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Workflow\ScriptFilter;
 
 class SetupTogglState extends Menu
 {
-    public static function content(): array
+    public static function scriptFilter()
     {
         self::saveState();
 
-        return [
+        ScriptFilter::add(
             self::stateSaved(),
             self::back()
-        ];
+        );
     }
 
     private static function saveState()

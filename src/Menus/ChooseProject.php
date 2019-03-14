@@ -5,15 +5,21 @@ namespace Godbout\Alfred\Time\Menus;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Workflow\ScriptFilter;
 
 class ChooseProject extends Menu
 {
-    public static function content(): array
+    public static function scriptFilter()
     {
-        return array_merge(
-            [self::getNoProject()],
-            self::getServiceProjects(Workflow::serviceEnabled())
-        );
+        ScriptFilter::add(self::getNoProject());
+
+        foreach (self::getServiceProjects(Workflow::serviceEnabled()) as $project) {
+            ScriptFilter::add($project);
+        }
+
+        if (self::userInput()) {
+            ScriptFilter::filterItems(self::userInput());
+        }
     }
 
     private static function getNoProject()

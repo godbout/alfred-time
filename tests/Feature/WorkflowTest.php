@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use Godbout\Alfred\Time\Timer;
-use Godbout\Alfred\Time\Workflow;
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class WorkflowTest extends TestCase
 {

@@ -5,15 +5,16 @@ namespace Godbout\Alfred\Time\Menus;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Entrance extends Menu
 {
-    public static function content(): array
+    public static function scriptFilter()
     {
-        return [
+        ScriptFilter::add(
             self::timerAction(),
             self::setupWorkflow()
-        ];
+        );
     }
 
     private static function timerAction()
