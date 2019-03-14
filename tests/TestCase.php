@@ -13,7 +13,7 @@ class TestCase extends BaseTestCase
     protected $configFile = null;
 
 
-    protected function setUp(): void
+    protected function setUp()
     {
         parent::setUp();
 

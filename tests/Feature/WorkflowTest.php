@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Godbout\Alfred\Time\Timer;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class WorkflowTest extends TestCase
 {
@@ -26,7 +27,7 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_can_do_an_action_with_the_timer()
     {
-        $this->assertTrue($this->reachWorkflowGoAction('timer_action=stop'));
+        $this->assertFalse($this->reachWorkflowGoAction('timer_action=running'));
     }
 
     /**
