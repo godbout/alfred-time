@@ -97,6 +97,11 @@ class TestCase extends BaseTestCase
         Workflow::getConfig()->write('toggl.api_token', $apikey);
     }
 
+    protected function harvestApitoken($apitoken = '1153865.pt.Vjxherj4YPfPiEhTp3jORa3OZYIK15VD2wkAPmrA1Y7uOBUzsi-WtFznKGxJIuc2rnnFDxWV-lj946fGI42hNQ')
+    {
+        Workflow::getConfig()->write('harvest.api_token', $apitoken);
+    }
+
     protected function reachWorkflowInitialMenu($envVariables = [], $arguments = [])
     {
         return $this->reachWorkflowMenu($envVariables, $arguments);
@@ -112,6 +117,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl');
     }
 
+    protected function reachHarvestSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_harvest');
+    }
+
     protected function reachTogglApikeySetupMenu()
     {
         return $this->reachWorkflowMenu('action=setup_toggl_apikey');
@@ -124,9 +134,23 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu($envVariables);
     }
 
+    protected function reachHarvestStateSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['action=setup_harvest_state'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=setup_toggl_apikey_save'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
+    protected function reachHarvestApitokenSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['action=setup_harvest_apitoken_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }

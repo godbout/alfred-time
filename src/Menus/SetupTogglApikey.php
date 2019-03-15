@@ -21,7 +21,7 @@ class SetupTogglApikey extends Menu
         global $argv;
 
         return Item::create()
-            ->title('Enter your API KEY above')
+            ->title('Enter your API token above')
             ->subtitle('Save ' . self::userInput())
             ->arg('setup_toggl_apikey_save')
             ->variable('toggl_apikey', self::userInput())
