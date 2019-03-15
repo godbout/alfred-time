@@ -36,6 +36,26 @@ class Workflow
         return self::getInstance()->scriptFilter->output();
     }
 
+    public static function do()
+    {
+        $action = getenv('timer_action');
+
+        return Timer::$action();
+    }
+
+    public static function notify($result = false)
+    {
+        $action = getenv('timer_action');
+
+        $service = ucfirst(self::serviceEnabled());
+
+        if ($result === false) {
+            return "Oops... $service cannot $action.";
+        }
+
+        return "$service $action!";
+    }
+
     private static function getDefaultConfig()
     {
         return include __DIR__ . '/../config/default.php';
@@ -55,13 +75,6 @@ class Workflow
         return null;
     }
 
-    public static function destroy()
-    {
-        ScriptFilter::destroy();
-
-        self::$instance = null;
-    }
-
     private static function getCurrentMenuClass()
     {
         $action = getenv('action');
@@ -74,11 +87,11 @@ class Workflow
         return str_replace('_', '', ucwords($action === false ? 'entrance' : $action, '_'));
     }
 
-    public static function do()
+    public static function destroy()
     {
-        $action = getenv('timer_action');
+        ScriptFilter::destroy();
 
-        return Timer::$action();
+        self::$instance = null;
     }
 
     private function __clone()

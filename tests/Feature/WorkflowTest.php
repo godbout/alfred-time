@@ -11,7 +11,7 @@ class WorkflowTest extends TestCase
     public function it_returns_a_correct_output()
     {
         $this->assertJsonStringEqualsJsonString(
-            '{"items":[{"title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
+            '{"items":[{"uid": "setup_timers","title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
             $this->reachWorkflowInitialMenu()
         );
 
@@ -26,6 +26,8 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_can_do_an_action_with_the_timer()
     {
+        $this->enableToggl();
+
         $this->assertFalse($this->reachWorkflowGoAction('timer_action=running'));
     }
 

@@ -35,6 +35,7 @@ class Entrance extends Menu
     private static function stopCurrentTimer()
     {
         return Item::create()
+            ->uid('stop_timer')
             ->title('Stop current timer')
             ->subtitle('That timer is currently running!')
             ->arg('do')
