@@ -45,6 +45,7 @@ class Entrance extends Menu
     {
         if (! empty(Workflow::serviceEnabled())) {
             return Item::create()
+                ->uid('start_timer')
                 ->title('Start "' . self::userInput() . '"')
                 ->arg('choose_project')
                 ->variable('timer_description', self::userInput());
@@ -55,6 +56,7 @@ class Entrance extends Menu
     {
         if (empty(Workflow::serviceEnabled()) || (empty(self::userInput()))) {
             return Item::create()
+                ->uid('setup_timers')
                 ->title('Setup the workflow')
                 ->arg('setup')
                 ->icon(Icon::create('resources/icons/icon.png'));
