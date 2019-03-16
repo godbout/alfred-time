@@ -45,7 +45,7 @@ class SetupHarvestCredentials extends Menu
     {
         $apitoken = Workflow::getConfig()->read('harvest.api_token');
 
-        return empty($apitoken) ? 'No API token found' : 'Current API token: ' . substr($token, 0, 11) . '...';
+        return empty($apitoken) ? 'No API token found' : 'Current API token: ' . substr($apitoken, 0, 11) . '...';
     }
 
     private static function accountIdTitle()
@@ -57,7 +57,7 @@ class SetupHarvestCredentials extends Menu
     {
         $accountId = Workflow::getConfig()->read('harvest.account_id');
 
-        return empty($accountId) ? 'No Account ID found' : 'Current Account ID: ' . substr($token, 0, 4) . '...';
+        return empty($accountId) ? 'No Account ID found' : 'Current Account ID: ' . substr($accountId, 0, 4) . '...';
     }
 
     private static function back()

@@ -12,6 +12,10 @@ class TimerTest extends TestCase
         $this->markTestIncomplete(
             'Need to be able to delete the timer LOL. Functionality not done yet.'
         );
+
+        $this->markTestIncomplete(
+            'Need to test for each specific service: start Toggl; stop Toggl; start Harvest, etc...'
+        );
     }
 
     protected function tearDown()

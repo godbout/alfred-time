@@ -127,6 +127,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=setup_toggl_apikey');
     }
 
+    protected function reachHarvestCredentialsSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=setup_harvest_credentials');
+    }
+
     protected function reachTogglStateSavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=setup_toggl_state'], (array) $envVariables);
@@ -151,6 +156,13 @@ class TestCase extends BaseTestCase
     protected function reachHarvestApitokenSavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=setup_harvest_apitoken_save'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
+    protected function reachHarvestAccountIdSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['action=setup_harvest_account_id_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }

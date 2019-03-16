@@ -7,27 +7,27 @@ use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupHarvestApitokenSave extends Menu
+class SetupHarvestAccountIdSave extends Menu
 {
     public static function scriptFilter()
     {
-        self::saveApitoken();
+        self::saveAccountId();
 
         ScriptFilter::add(
-            self::apitokenSaved(),
+            self::accountIdSaved(),
             self::back()
         );
     }
 
-    private static function saveApitoken()
+    private static function saveAccountId()
     {
-        Workflow::getConfig()->write('harvest.api_token', getenv('harvest_apitoken'));
+        Workflow::getConfig()->write('harvest.account_id', getenv('harvest_account_id'));
     }
 
-    private static function apitokenSaved()
+    private static function accountIdSaved()
     {
         return Item::create()
-            ->title('API TOKEN SAVED!')
+            ->title('Account ID SAVED!')
             ->subtitle('You can just press Enter.')
             ->arg('notification')
             ->icon(Icon::create('resources/icons/harvest.png'));
@@ -37,7 +37,7 @@ class SetupHarvestApitokenSave extends Menu
     {
         return Item::create()
             ->title('Back')
-            ->subtitle('Go back to Harvest Setup')
+            ->subtitle('Go back to Harvest credentials options')
             ->arg('setup_harvest_credentials')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
