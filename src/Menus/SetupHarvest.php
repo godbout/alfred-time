@@ -12,32 +12,44 @@ class SetupHarvest extends Menu
     public static function scriptFilter()
     {
         ScriptFilter::add(
-            self::apitoken(),
+            // self::apitoken(),
+            self::credentials(),
             self::state(),
             self::back()
         );
     }
 
-    private static function apitoken()
+    private static function credentials()
     {
         return Item::create()
-            ->title(self::apitokenTitle())
-            ->subtitle(self::apitokenSubtitle())
-            ->arg('setup_harvest_apitoken')
+            ->title('Set credentials')
+            ->subtitle('API token and Account ID')
+            ->arg('setup_harvest_credentials')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
 
-    private static function apitokenTitle()
-    {
-        return empty(Workflow::getConfig()->read('harvest.api_token')) ? 'Set API token' : 'Update API token';
-    }
 
-    private static function apitokenSubtitle()
-    {
-        $apitoken = Workflow::getConfig()->read('harvest.api_token');
 
-        return empty($apitoken) ? 'No API token found' : 'Current API token: ' . substr($token, 0, 11) . '...';
-    }
+    // private static function apitoken()
+    // {
+    //     return Item::create()
+    //         ->title(self::apitokenTitle())
+    //         ->subtitle(self::apitokenSubtitle())
+    //         ->arg('setup_harvest_apitoken')
+    //         ->icon(Icon::create('resources/icons/harvest.png'));
+    // }
+
+    // private static function apitokenTitle()
+    // {
+    //     return empty(Workflow::getConfig()->read('harvest.api_token')) ? 'Set API token' : 'Update API token';
+    // }
+
+    // private static function apitokenSubtitle()
+    // {
+    //     $apitoken = Workflow::getConfig()->read('harvest.api_token');
+
+    //     return empty($apitoken) ? 'No API token found' : 'Current API token: ' . substr($token, 0, 11) . '...';
+    // }
 
     private static function state()
     {
