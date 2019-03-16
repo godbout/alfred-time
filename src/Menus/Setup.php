@@ -14,6 +14,8 @@ class Setup extends Menu
             self::toggl(),
             self::harvest()
         );
+
+        ScriptFilter::sortItems();
     }
 
     private static function toggl()

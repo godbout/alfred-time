@@ -14,13 +14,6 @@ class WorkflowTest extends TestCase
             '{"items":[{"uid": "setup_timers","title":"Setup the workflow","arg":"setup","icon":{"path":"resources\/icons\/icon.png"}}]}',
             $this->reachWorkflowInitialMenu()
         );
-
-        Workflow::destroy();
-
-        $this->assertJsonStringEqualsJsonString(
-            '{"items":[{"title":"Setup Toggl","subtitle":"","icon":{"path":"resources\/icons\/toggl.png"},"arg":"setup_toggl"},{"title":"Setup Harvest","subtitle":"","icon":{"path":"resources\/icons\/harvest.png"},"arg":"setup_harvest"}]}',
-            $this->reachWorkflowSetupMenu()
-        );
     }
 
     /** @test */

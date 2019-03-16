@@ -20,6 +20,8 @@ class ChooseProject extends Menu
         if (self::userInput()) {
             ScriptFilter::filterItems(self::userInput());
         }
+
+        ScriptFilter::sortItems('asc', 'match');
     }
 
     private static function getNoProject()
@@ -27,6 +29,7 @@ class ChooseProject extends Menu
         return Item::create()
             ->title('No project')
             ->subtitle('Timer will be created without a project')
+            ->match('')
             ->arg('choose_tag');
     }
 
@@ -38,6 +41,7 @@ class ChooseProject extends Menu
             $projects[] = Item::create()
                 ->title($name)
                 ->variable('timer_project', $id)
+                ->match($name)
                 ->arg('choose_tag')
                 ->icon(Icon::create("resources/icons/$service.png"));
         }

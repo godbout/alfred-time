@@ -22,6 +22,8 @@ class ChooseTag extends Menu
         if ($userInput) {
             ScriptFilter::filterItems($userInput);
         }
+
+        ScriptFilter::sortItems('asc', 'match');
     }
 
     private static function getNoTag()
@@ -29,6 +31,7 @@ class ChooseTag extends Menu
         return Item::create()
             ->title('No tag')
             ->subtitle('Timer will be created without a tag')
+            ->match('')
             ->arg('do')
             ->variable('timer_action', 'start');
     }
@@ -41,6 +44,7 @@ class ChooseTag extends Menu
             $tags[] = Item::create()
                 ->title($name)
                 ->variable('timer_tag', $name)
+                ->match($name)
                 ->icon(Icon::create("resources/icons/$service.png"))
                 ->arg('do')
                 ->variable('timer_action', 'start');
