@@ -9,6 +9,9 @@ class HarvestMenusTest extends TestCase
     /** @test */
     public function it_shows_setting_up_credentials_as_a_menu_option()
     {
+        $this->harvestApitoken('');
+        $this->harvestAccountId('');
+
         $output = $this->reachHarvestSetupMenu();
 
         $this->assertStringContainsString('"title":"Set credentials"', $output);
@@ -17,7 +20,20 @@ class HarvestMenusTest extends TestCase
     /** @test */
     public function it_shows_updating_credentials_if_some_are_found_in_the_config()
     {
-        $this->markTestIncomplete('iTodo');
+        $this->harvestApitoken('234kjh2kjhfkajdsf');
+        $this->harvestAccountId('');
+
+        $output = $this->reachHarvestSetupMenu();
+
+        $this->assertStringContainsString('"title":"Update credentials"', $output);
+
+
+        $this->harvestApitoken('');
+        $this->harvestAccountId('987654');
+
+        $output = $this->reachHarvestSetupMenu();
+
+        $this->assertStringContainsString('"title":"Update credentials"', $output);
     }
 
     /** @test */

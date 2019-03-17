@@ -102,6 +102,11 @@ class TestCase extends BaseTestCase
         Workflow::getConfig()->write('harvest.api_token', $apitoken);
     }
 
+    protected function harvestAccountId($accountId = '987654')
+    {
+        Workflow::getConfig()->write('harvest.account_id', $accountId);
+    }
+
     protected function reachWorkflowInitialMenu($envVariables = [], $arguments = [])
     {
         return $this->reachWorkflowMenu($envVariables, $arguments);
