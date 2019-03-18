@@ -106,7 +106,10 @@ class Workflow
         }
 
         if (self::getInstance()->getConfig()->read('harvest.is_active')) {
-            return new Harvest(Workflow::getConfig()->read('harvest.api_token'));
+            return new Harvest(
+                Workflow::getConfig()->read('harvest.account_id'),
+                Workflow::getConfig()->read('harvest.api_token')
+            );
         }
 
         return null;

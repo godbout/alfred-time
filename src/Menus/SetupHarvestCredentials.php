@@ -12,8 +12,8 @@ class SetupHarvestCredentials extends Menu
     public static function scriptFilter()
     {
         ScriptFilter::add(
-            self::apitoken(),
             self::accountId(),
+            self::apitoken(),
             self::back()
         );
     }

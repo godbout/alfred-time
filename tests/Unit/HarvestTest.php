@@ -11,8 +11,7 @@ class HarvestTest extends TestCase
     {
         parent::setUp();
 
-        // $this->harvest = new Toggl(getenv('TOGGL_APIKEY'));
-        $this->harvest = new Harvest();
+        $this->harvest = new Harvest(getenv('HARVEST_ACCOUNT_ID'), getenv('HARVEST_APIKEY'));
     }
 
     // public function tearDown(): void
@@ -25,57 +24,45 @@ class HarvestTest extends TestCase
     //     }
     // }
 
-    // /** @test */
-    // public function it_returns_zero_project_if_the_service_cannot_authenticate()
-    // {
-    //     $toggl = new Toggl('wrong apikey');
+    /** @test */
+    public function it_returns_zero_project_if_the_service_cannot_authenticate()
+    {
+        $harvest = new Harvest('wrong account', 'wrong token');
 
-    //     $this->assertEmpty($toggl->projects());
-    // }
+        $this->assertEmpty($harvest->projects());
+    }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_returns_projects_if_the_service_can_authenticate()
-    // {
-    //     $projects = $this->toggl->projects();
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_returns_projects_if_the_service_can_authenticate()
+    {
+        $projects = $this->harvest->projects();
 
-    //     $this->assertArrayHasKey(getenv('TOGGL_PROJECT_ID'), $projects);
-    //     $this->assertSame(getenv('TOGGL_PROJECT_NAME'), $projects[getenv('TOGGL_PROJECT_ID')]);
-    // }
+        $this->assertArrayHasKey(getenv('HARVEST_PROJECT_ID'), $projects);
+        $this->assertSame(getenv('HARVEST_PROJECT_NAME'), $projects[getenv('HARVEST_PROJECT_ID')]);
+    }
 
-    // /** @test */
-    // public function it_returns_zero_tag_if_the_service_annot_authenticate()
-    // {
-    //     $toggl = new Toggl('wrong apikey again');
+    /** @test */
+    public function it_returns_zero_tag_if_the_service_annot_authenticate()
+    {
+        $harvest = new Harvest('wrong account', 'wrong token');
 
-    //     $this->assertEmpty($toggl->tags());
-    // }
+        $this->assertEmpty($harvest->tags());
+    }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_returns_tags_if_the_service_can_authenticate()
-    // {
-    //     $tags = $this->toggl->tags();
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_returns_tags_if_the_service_can_authenticate()
+    {
+        $tags = $this->harvest->tags();
 
-    //     $this->assertArrayHasKey(getenv('TOGGL_TAG_ID'), $tags);
-    //     $this->assertSame(getenv('TOGGL_TAG_NAME'), $tags[getenv('TOGGL_TAG_ID')]);
-    // }
-
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_does_not_show_projects_that_have_been_deleted_serverwise()
-    // {
-    //     $projects = $this->toggl->projects();
-
-    //     $this->assertArrayNotHasKey(getenv('TOGGL_DELETED_PROJECT_ID'), $projects);
-    //     $this->assertNotContains(getenv('TOGGL_DELETED_PROJECT_NAME'), $projects);
-    // }
+        $this->assertArrayHasKey(getenv('HARVEST_TAG_ID'), $tags);
+        $this->assertSame(getenv('HARVEST_TAG_NAME'), $tags[getenv('HARVEST_TAG_ID')]);
+    }
 
     // /**
     //  * @test

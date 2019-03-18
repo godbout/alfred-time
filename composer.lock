@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "181f4dd06809bcecd9bd59fb7337b16a",
+    "content-hash": "010041acaa0ad8a46b9cff34578b0b36",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -566,7 +566,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -578,6 +578,54 @@
                 "portable"
             ],
             "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
+            "name": "valsplat/harvest-php-client",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/valsplat/harvest-php-client.git",
+                "reference": "770e8f08d8c3c7ac15b223063996191bb8e6e65d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/valsplat/harvest-php-client/zipball/770e8f08d8c3c7ac15b223063996191bb8e6e65d",
+                "reference": "770e8f08d8c3c7ac15b223063996191bb8e6e65d",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Valsplat\\Harvest\\": "src/Valsplat/Harvest"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bjorn Post",
+                    "email": "bjorn@valsplat.nl"
+                },
+                {
+                    "name": "Joris Leker",
+                    "email": "joris@valsplat.nl"
+                }
+            ],
+            "description": "A PHP Client for the Harvest V2 API",
+            "homepage": "https://github.com/valsplat/harvest-php-client",
+            "keywords": [
+                "Guzzle",
+                "Harvest",
+                "api",
+                "php"
+            ],
+            "time": "2019-01-04T16:22:03+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
