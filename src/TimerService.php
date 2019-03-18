@@ -8,6 +8,8 @@ abstract class TimerService
 
     abstract public function tags();
 
+    abstract public function startTimer();
+
     abstract public function runningTimer();
 
     public function __toString()

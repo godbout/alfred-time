@@ -64,14 +64,14 @@ class HarvestTest extends TestCase
         $this->assertSame(getenv('HARVEST_TAG_NAME'), $tags[getenv('HARVEST_TAG_ID')]);
     }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_can_start_a_timer()
-    // {
-    //     $this->assertNotFalse($this->toggl->startTimer());
-    // }
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_start_a_timer()
+    {
+        $this->assertNotFalse($this->harvest->startTimer());
+    }
 
     // /**
     //  * @test
@@ -87,17 +87,17 @@ class HarvestTest extends TestCase
     //     $this->toggl->deleteTimer($timerId);
     // }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_can_get_the_running_timer()
-    // {
-    //     $this->assertFalse($this->toggl->runningTimer());
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_get_the_running_timer()
+    {
+        $this->assertFalse($this->harvest->runningTimer());
 
-    //     $timerId = $this->toggl->startTimer();
-    //     $this->assertNotFalse($this->toggl->runningTimer());
-    // }
+        $timerId = $this->harvest->startTimer();
+        $this->assertNotFalse($this->harvest->runningTimer());
+    }
 
     // /**
     //  * @test
