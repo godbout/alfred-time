@@ -79,17 +79,7 @@ class TestCase extends BaseTestCase
 
     protected function disableAllTimerServices()
     {
-        $this->disableToggl();
-    }
-
-    protected function enableToggl()
-    {
-        Workflow::getConfig()->write('toggl.is_active', true);
-    }
-
-    protected function disableToggl()
-    {
-        Workflow::getConfig()->write('toggl.is_active', false);
+        Workflow::disableAllServices();
     }
 
     protected function togglApikey($apikey = 'e695b4364ad1ea7200035fec1bbc87cf')

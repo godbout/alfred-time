@@ -3,13 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class TimerMenusTest extends TestCase
 {
     /** @test */
     public function it_proposes_to_start_a_timer_if_there_is_at_least_one_timer_service_enabled()
     {
-        $this->enableToggl();
+        Workflow::enableService('toggl');
 
         $output = $this->reachWorkflowInitialMenu();
 
@@ -27,7 +28,7 @@ class TimerMenusTest extends TestCase
     /** @test */
     public function it_proposes_a_choice_of_projects_after_having_entered_the_timer_description()
     {
-        $this->enableToggl();
+        Workflow::enableService('toggl');
         $this->togglApikey('wrong key');
 
         $output = $this->reachWorkflowChooseProjectMenu();
@@ -38,7 +39,7 @@ class TimerMenusTest extends TestCase
     /** @test */
     public function it_proposes_a_choice_of_tags_after_having_chosen_a_project()
     {
-        $this->enableToggl();
+        Workflow::enableService('toggl');
         $this->togglApikey('wrong key');
 
         $output = $this->reachWorkflowChooseTagMenu();

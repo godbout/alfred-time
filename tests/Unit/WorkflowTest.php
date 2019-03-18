@@ -12,7 +12,7 @@ class WorkflowTest extends TestCase
     {
         $this->assertEmpty(Workflow::serviceEnabled());
 
-        $this->enableToggl();
+        Workflow::enableService('toggl');
 
         $this->assertStringContainsString('toggl', Workflow::serviceEnabled());
     }
@@ -20,7 +20,7 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_sets_the_toggl_enabled_argument_to_true_if_the_user_enables_toggl()
     {
-        $this->disableToggl();
+        Workflow::disableService('toggl');
 
         $output = $this->reachTogglSetupMenu();
 

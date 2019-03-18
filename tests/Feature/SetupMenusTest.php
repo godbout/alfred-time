@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class SetupMenusTest extends TestCase
 {
@@ -17,7 +18,7 @@ class SetupMenusTest extends TestCase
     /** @test */
     public function it_does_not_propose_to_setup_the_workflow_at_first_menu_if_a_timer_service_is_enabled_and_there_is_user_input()
     {
-        $this->enableToggl();
+        Workflow::enableService('toggl');
 
         $output = $this->reachWorkflowInitialMenu([], 'some typing made by the user');
 

@@ -21,7 +21,11 @@ class SetupTogglState extends Menu
 
     private static function saveState()
     {
-        Workflow::getConfig()->write('toggl.is_active', (getenv('toggl_enabled') === 'true'));
+        Workflow::disableAllServices();
+
+        getenv('toggl_enabled') === 'true'
+            ? Workflow::enableService('toggl')
+            : Workflow::disableService('toggl');
     }
 
     private static function stateSaved()

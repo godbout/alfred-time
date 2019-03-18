@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Godbout\Alfred\Time\Workflow;
 
 class TogglMenusTest extends TestCase
 {
@@ -63,7 +64,7 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_shows_the_state_as_disabled_if_toggl_is_disabled()
     {
-        $this->disableToggl();
+        Workflow::disableService('toggl');
 
         $output = $this->reachTogglSetupMenu();
 
@@ -74,7 +75,7 @@ class TogglMenusTest extends TestCase
     /** @test */
     public function it_shows_the_state_as_enabled_if_toggl_is_enabled()
     {
-        $this->enableToggl();
+        Workflow::enableService('toggl');
 
         $output = $this->reachTogglSetupMenu();
 

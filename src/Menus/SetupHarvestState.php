@@ -21,7 +21,11 @@ class SetupHarvestState extends Menu
 
     private static function saveState()
     {
-        Workflow::getConfig()->write('harvest.is_active', (getenv('harvest_enabled') === 'true'));
+        Workflow::disableAllServices();
+
+        getenv('harvest_enabled') === 'true'
+            ? Workflow::enableService('harvest')
+            : Workflow::disableService('harvest');
     }
 
     private static function stateSaved()

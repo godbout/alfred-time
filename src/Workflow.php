@@ -7,6 +7,11 @@ use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Workflow
 {
+    const SERVICES = [
+        'toggl',
+        'harvest'
+    ];
+
     private static $instance = null;
 
     private $config = null;
@@ -66,13 +71,52 @@ class Workflow
         return self::getInstance()->config;
     }
 
+    public static function enableService($service = '')
+    {
+        return self::getInstance()->serviceStatus($service, true);
+    }
+
+    public static function disableService($service = '')
+    {
+        return self::getInstance()->serviceStatus($service, false);
+    }
+
+    protected function serviceStatus($service, $status = false)
+    {
+        self::getInstance()->disableAllServices();
+
+        if (self::getInstance()->classExistsForService($service)) {
+            Workflow::getConfig()->write("$service.is_active", $status);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function classExistsForService($service = '')
+    {
+        return class_exists(__NAMESPACE__ . '\\' . ucfirst($service));
+    }
+
     public static function serviceEnabled()
     {
         if (self::getInstance()->getConfig()->read('toggl.is_active')) {
             return new Toggl(Workflow::getConfig()->read('toggl.api_token'));
         }
 
+        if (self::getInstance()->getConfig()->read('harvest.is_active')) {
+            return new Harvest(Workflow::getConfig()->read('harvest.api_token'));
+        }
+
         return null;
+    }
+
+    public static function disableAllServices()
+    {
+        foreach (self::SERVICES as $service) {
+            Workflow::getConfig()->write("$service.is_active", false);
+        }
     }
 
     private static function getCurrentMenuClass()
