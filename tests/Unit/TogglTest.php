@@ -121,4 +121,10 @@ class TogglTest extends TestCase
 
         $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
+
+    /** @test */
+    public function an_Toggl_object_returns_toggl_as_a_string()
+    {
+        $this->assertSame('toggl', (string) $this->toggl);
+    }
 }

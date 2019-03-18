@@ -2,10 +2,9 @@
 
 namespace Godbout\Alfred\Time;
 
-class Harvest
+class Harvest extends TimerService
 {
-    public function __toString()
+    public function runningTimer()
     {
-        return 'harvest';
     }
 }

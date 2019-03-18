@@ -5,7 +5,7 @@ namespace Godbout\Alfred\Time;
 use Exception;
 use MorningTrain\TogglApi\TogglApi;
 
-class Toggl
+class Toggl extends TimerService
 {
     private $client;
 
@@ -109,10 +109,5 @@ class Toggl
         return array_filter($items, function ($item) {
             return ! isset($item->server_deleted_at);
         });
-    }
-
-    public function __toString()
-    {
-        return 'toggl';
     }
 }
