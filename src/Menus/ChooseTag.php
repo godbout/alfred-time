@@ -11,16 +11,19 @@ class ChooseTag extends Menu
 {
     public static function scriptFilter()
     {
-        ScriptFilter::add(self::getNoTag());
 
-        foreach (self::getServiceTags(Workflow::serviceEnabled()) as $tag) {
+        $service = Workflow::serviceEnabled();
+
+        if ($service->allowsEmptyTag) {
+            ScriptFilter::add(self::getNoTag());
+        }
+
+        foreach (self::getServiceTags($service) as $tag) {
             ScriptFilter::add($tag);
         }
 
-        $userInput = self::userInput();
-
-        if ($userInput) {
-            ScriptFilter::filterItems($userInput);
+        if (self::userInput()) {
+            ScriptFilter::filterItems(self::userInput());
         }
 
         ScriptFilter::sortItems('asc', 'match');

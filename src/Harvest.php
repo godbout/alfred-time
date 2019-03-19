@@ -8,6 +8,10 @@ use Valsplat\Harvest\Exceptions\ApiException;
 
 class Harvest extends TimerService
 {
+    public $allowsEmptyProject = false;
+
+    public $allowsEmptyTag = false;
+
     private $client;
 
 
@@ -62,8 +66,6 @@ class Harvest extends TimerService
                 return false;
             }
         } catch (ApiException $e) {
-            var_dump($e->getMessage());
-            var_dump($timer);die;
             return false;
         }
 

@@ -11,9 +11,13 @@ class ChooseProject extends Menu
 {
     public static function scriptFilter()
     {
-        ScriptFilter::add(self::getNoProject());
+        $service = Workflow::serviceEnabled();
 
-        foreach (self::getServiceProjects(Workflow::serviceEnabled()) as $project) {
+        if ($service->allowsEmptyProject) {
+            ScriptFilter::add(self::getNoProject());
+        }
+
+        foreach (self::getServiceProjects($service) as $project) {
             ScriptFilter::add($project);
         }
 

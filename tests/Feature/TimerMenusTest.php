@@ -37,6 +37,34 @@ class TimerMenusTest extends TestCase
     }
 
     /** @test */
+    public function it_proposes_an_empty_project_amongst_the_choice_of_projects_if_the_service_allows_it()
+    {
+        Workflow::enableService('toggl');
+
+        $this->assertStringContainsString('"title":"No project"', $this->reachWorkflowChooseProjectMenu());
+
+        Workflow::destroy();
+
+        Workflow::enableService('harvest');
+
+        $this->assertStringNotContainsString('"title":"No project"', $this->reachWorkflowChooseProjectMenu());
+    }
+
+    /** @test */
+    public function it_proposes_an_empty_tag_amongst_the_choice_of_tags_if_the_service_allows_it()
+    {
+        Workflow::enableService('toggl');
+
+        $this->assertStringContainsString('"title":"No tag"', $this->reachWorkflowChooseTagMenu());
+
+        Workflow::destroy();
+
+        Workflow::enableService('harvest');
+
+        $this->assertStringNotContainsString('"title":"No tag"', $this->reachWorkflowChooseTagMenu());
+    }
+
+    /** @test */
     public function it_proposes_a_choice_of_tags_after_having_chosen_a_project()
     {
         Workflow::enableService('toggl');

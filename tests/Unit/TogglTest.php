@@ -127,4 +127,10 @@ class TogglTest extends TestCase
     {
         $this->assertSame('toggl', (string) $this->toggl);
     }
+
+    /** @test */
+    public function it_allows_empty_project_for_timer()
+    {
+        $this->assertTrue($this->toggl->allowsEmptyProject);
+    }
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class HarvestMenusTest extends TestCase
+class HarvestSetupMenusTest extends TestCase
 {
     /** @test */
     public function it_shows_setting_up_credentials_as_a_menu_option()

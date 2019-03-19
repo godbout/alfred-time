@@ -115,4 +115,10 @@ class HarvestTest extends TestCase
     {
         $this->assertSame('harvest', (string) $this->harvest);
     }
+
+    /** @test */
+    public function it_does_not_allow_empty_project_for_timer()
+    {
+        $this->assertFalse($this->harvest->allowsEmptyProject);
+    }
 }
