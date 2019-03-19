@@ -8,13 +8,15 @@ abstract class TimerService
 
     public $allowsEmptyTag = true;
 
-    abstract public function projects();
-
-    abstract public function tags();
-
     abstract public function startTimer();
 
     abstract public function runningTimer();
+
+    abstract public function stopCurrentTimer();
+
+    abstract public function projects();
+
+    abstract public function tags();
 
     public function __toString()
     {

@@ -66,26 +66,34 @@ class HarvestTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_start_a_timer()
     {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
+
         $this->assertNotFalse($this->harvest->startTimer());
     }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_can_stop_a_timer()
-    // {
-    //     $this->assertFalse($this->toggl->stopCurrentTimer());
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_stop_a_timer()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
 
-    //     $timerId = $this->toggl->startTimer();
-    //     $this->assertTrue($this->toggl->stopCurrentTimer());
+        $this->assertFalse($this->harvest->stopCurrentTimer());
 
-    //     $this->toggl->deleteTimer($timerId);
-    // }
+        $timerId = $this->harvest->startTimer();
+        $this->assertTrue($this->harvest->stopCurrentTimer());
+
+        $this->harvest->deleteTimer($timerId);
+    }
 
     /**
      * @test

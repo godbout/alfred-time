@@ -53,13 +53,6 @@ class Harvest extends TimerService
             $timer->task_id = getenv('timer_tag');
             $timer->spent_date = date('Y-m-d');
 
-            /**
-             * iTodo
-             *
-             * - project id and task id mandatory
-             * need to send them from test
-             */
-
             $timer->save();
 
             if (! isset($timer->id)) {
@@ -74,5 +67,35 @@ class Harvest extends TimerService
 
     public function runningTimer()
     {
+        /**
+         * The API is supposed to return only timers that are running
+         * but it seems to be buggy. Returns all of them started
+         * with newest on top.
+         */
+        $timer = $this->client->timeEntry()->list(['is_running' => true])[0];
+
+        return $timer->is_running ? $timer->id : false;
+    }
+
+    public function stopCurrentTimer()
+    {
+        if ($timerId = $this->runningTimer()) {
+            $timer = $this->client->timeEntry()->get($timerId);
+
+            $timer->is_running = false;
+            $res = $timer->save();
+
+            var_dump($res);die;
+
+            if (! isset($timer->id)) {
+                throw new \Exception("Can't stop current running timer.", 1);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
