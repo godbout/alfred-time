@@ -14,6 +14,8 @@ abstract class TimerService
 
     abstract public function stopCurrentTimer();
 
+    abstract public function deleteTimer($timerId);
+
     abstract public function projects();
 
     abstract public function tags();

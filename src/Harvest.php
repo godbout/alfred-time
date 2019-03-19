@@ -2,9 +2,10 @@
 
 namespace Godbout\Alfred\Time;
 
-use Valsplat\Harvest\Connection;
-use Valsplat\Harvest\Harvest as HarvestApi;
-use Valsplat\Harvest\Exceptions\ApiException;
+use Required\Harvest\Client;
+use Required\Harvest\Exception\AuthenticationException;
+use Required\Harvest\Exception\NotFoundException;
+use Required\Harvest\Exception\ValidationFailedException;
 
 class Harvest extends TimerService
 {
@@ -17,28 +18,26 @@ class Harvest extends TimerService
 
     public function __construct($accountId, $apiToken)
     {
-        $connection = new Connection();
-        $connection->setAccountId($accountId);
-        $connection->setAccessToken($apiToken);
+        $this->client = new Client();
 
-        $this->client = new HarvestApi($connection);
+        $this->client->authenticate($accountId, $apiToken);
     }
 
     public function projects()
     {
-        return $this->items('project');
+        return $this->items('projects');
     }
 
     public function tags()
     {
-        return $this->items('task');
+        return $this->items('tasks');
     }
 
     protected function items($items = '')
     {
         try {
-            return array_column($this->client->$items()->list(), 'name', 'id');
-        } catch (ApiException $e) {
+            return array_column($this->client->$items()->all(), 'name', 'id');
+        } catch (AuthenticationException $e) {
             return [];
         }
     }
@@ -46,48 +45,36 @@ class Harvest extends TimerService
     public function startTimer()
     {
         try {
-            $timer = $this->client->timeEntry();
+            $timer = $this->client->timeEntries()->create([
+                'notes' => getenv('timer_description'),
+                'project_id' => (int) getenv('timer_project'),
+                'task_id' => (int) getenv('timer_tag'),
+                'spent_date' => date('Y-m-d')
+            ]);
 
-            $timer->notes = getenv('timer_description');
-            $timer->project_id = getenv('timer_project');
-            $timer->task_id = getenv('timer_tag');
-            $timer->spent_date = date('Y-m-d');
-
-            $timer->save();
-
-            if (! isset($timer->id)) {
+            if (! isset($timer['id'])) {
                 return false;
             }
-        } catch (ApiException $e) {
+        } catch (ValidationFailedException $e) {
             return false;
         }
 
-        return $timer->id;
+        return $timer['id'];
     }
 
     public function runningTimer()
     {
-        /**
-         * The API is supposed to return only timers that are running
-         * but it seems to be buggy. Returns all of them started
-         * with newest on top.
-         */
-        $timer = $this->client->timeEntry()->list(['is_running' => true])[0];
+        $timer = $this->client->timeEntries()->all(['is_running' => true]);
 
-        return $timer->is_running ? $timer->id : false;
+        return $timer[0]['id'] ?? false;
     }
 
     public function stopCurrentTimer()
     {
         if ($timerId = $this->runningTimer()) {
-            $timer = $this->client->timeEntry()->get($timerId);
+            $timer = $this->client->timeEntries()->stop($timerId);
 
-            $timer->is_running = false;
-            $res = $timer->save();
-
-            var_dump($res);die;
-
-            if (! isset($timer->id)) {
+            if (! isset($timer['id'])) {
                 throw new \Exception("Can't stop current running timer.", 1);
 
                 return false;
@@ -97,5 +84,16 @@ class Harvest extends TimerService
         }
 
         return false;
+    }
+
+    public function deleteTimer($timerId)
+    {
+        try {
+            $this->client->timeEntries()->remove($timerId);
+        } catch (NotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 }

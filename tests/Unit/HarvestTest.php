@@ -14,15 +14,15 @@ class HarvestTest extends TestCase
         $this->harvest = new Harvest(getenv('HARVEST_ACCOUNT_ID'), getenv('HARVEST_APIKEY'));
     }
 
-    // public function tearDown(): void
-    // {
-    //     parent::tearDown();
+    public function tearDown(): void
+    {
+        parent::tearDown();
 
-    //     if ($timerId = $this->toggl->runningTimer()) {
-    //         $this->toggl->stopCurrentTimer();
-    //         $this->toggl->deleteTimer($timerId);
-    //     }
-    // }
+        if ($timerId = $this->harvest->runningTimer()) {
+            $this->harvest->stopCurrentTimer();
+            $this->harvest->deleteTimer($timerId);
+        }
+    }
 
     /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
@@ -79,7 +79,7 @@ class HarvestTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_stop_a_timer()
     {
@@ -101,22 +101,30 @@ class HarvestTest extends TestCase
      */
     public function it_can_get_the_running_timer()
     {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
+
         $this->assertFalse($this->harvest->runningTimer());
 
         $timerId = $this->harvest->startTimer();
         $this->assertNotFalse($this->harvest->runningTimer());
     }
 
-    // /**
-    //  * @test
-    //  * @group timerServicesApiCalls
-    //  */
-    // public function it_can_delete_a_timer()
-    // {
-    //     $timerId = $this->toggl->startTimer();
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_delete_a_timer()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
 
-    //     $this->assertTrue($this->toggl->deleteTimer($timerId));
-    // }
+        $timerId = $this->harvest->startTimer();
+
+        $this->assertTrue($this->harvest->deleteTimer($timerId));
+    }
 
     /** @test */
     public function an_Harvest_object_returns_harvest_as_a_string()
