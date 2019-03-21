@@ -21,3 +21,12 @@ script:
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+
+jobs:
+  include:
+    - stage: tests_php71
+      php: 7.1
+    - stage: tests_php72
+      php: 7.2
+    - stage: tests_php73
+      php: 7.3
