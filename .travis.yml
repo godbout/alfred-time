@@ -24,27 +24,27 @@ after_script:
 
 jobs:
   include:
-    - stage: tests_php71_lowest
+    - stage: tests_php71_lowest_real_api_calls
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - stage: tests_php73_lowest
+    - stage: tests_php72_lowest_real_api_calls
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - stage: tests_php73_lowest
+    - stage: tests_php73_lowest_real_api_calls
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - stage: tests_php71
+    - stage: tests_php71_real_api_calls
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
-    - stage: tests_php73
+    - stage: tests_php72_real_api_calls
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
-    - stage: tests_php73
+    - stage: tests_php73_real_api_calls
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
