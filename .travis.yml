@@ -31,27 +31,22 @@ jobs:
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: "Tests hitting api endpoints — 72 lowest"
-      name: "Tests hitting api endpoints - php72 prefer-lowest"
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: "Tests hitting api endpoints — 73 lowest"
-      name: "Tests hitting api endpoints - php73 prefer-lowest"
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: "Tests hitting api endpoints — 71"
-      name: "Tests hitting api endpoints - php71"
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
     - stage: "Tests hitting api endpoints — 72"
-      name: "Tests hitting api endpoints - php72"
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
     - stage: "Tests hitting api endpoints — 73"
-      name: "Tests hitting api endpoints - php73"
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
