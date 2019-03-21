@@ -12,7 +12,6 @@ class TestCase extends BaseTestCase
 
     protected $configFile = null;
 
-
     protected function setUp()
     {
         parent::setUp();
@@ -191,6 +190,21 @@ class TestCase extends BaseTestCase
         $this->buildWorkflowWorld($envVariables, $arguments);
 
         return Workflow::currentMenu();
+    }
+
+    private function setTogglTimerAttributes()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('TOGGL_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('TOGGL_TAG_ID'));
+    }
+
+
+    private function setHarvestTimerAttributes()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
     }
 
     private function buildWorkflowWorld($envVariables = [], $arguments = [])

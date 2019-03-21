@@ -15,6 +15,8 @@ class HarvestTest extends TestCase
         $this->harvest = new Harvest(getenv('HARVEST_ACCOUNT_ID'), getenv('HARVEST_APIKEY'));
 
         Workflow::enableService('harvest');
+
+        $this->setHarvestTimerAttributes();
     }
 
     public function tearDown(): void
@@ -73,10 +75,6 @@ class HarvestTest extends TestCase
      */
     public function it_can_start_a_timer()
     {
-        putenv('timer_description=description');
-        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
-
         $this->assertNotFalse($this->harvest->startTimer());
     }
 
@@ -86,10 +84,6 @@ class HarvestTest extends TestCase
      */
     public function it_can_stop_a_timer()
     {
-        putenv('timer_description=description');
-        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
-
         $this->assertFalse($this->harvest->stopCurrentTimer());
 
         $timerId = $this->harvest->startTimer();
@@ -100,14 +94,10 @@ class HarvestTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_get_the_running_timer()
     {
-        putenv('timer_description=description');
-        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
-
         $this->assertFalse($this->harvest->runningTimer());
 
         $timerId = $this->harvest->startTimer();
@@ -116,14 +106,10 @@ class HarvestTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_delete_a_timer()
     {
-        putenv('timer_description=description');
-        putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
-
         $timerId = $this->harvest->startTimer();
 
         $this->assertTrue($this->harvest->deleteTimer($timerId));

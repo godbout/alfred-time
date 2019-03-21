@@ -16,9 +16,7 @@ class TogglTest extends TestCase
 
         Workflow::enableService('toggl');
 
-        putenv('timer_description=');
-        putenv('timer_project=');
-        putenv('timer_tag=');
+        $this->setTogglTimerAttributes();
     }
 
     public function tearDown(): void

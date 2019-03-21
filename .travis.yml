@@ -1,5 +1,7 @@
 language: php
 
+name: "Tests without hitting api endpoints"
+
 php:
   - 7.1
   - 7.2
@@ -25,26 +27,32 @@ after_script:
 jobs:
   include:
     - stage: tests_php71_lowest_real_api_calls
+      name: "Tests hitting api endpoints - php71 prefer-lowest"
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: tests_php72_lowest_real_api_calls
+      name: "Tests hitting api endpoints - php72 prefer-lowest"
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: tests_php73_lowest_real_api_calls
+      name: "Tests hitting api endpoints - php73 prefer-lowest"
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: tests_php71_real_api_calls
+      name: "Tests hitting api endpoints - php71"
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
     - stage: tests_php72_real_api_calls
+      name: "Tests hitting api endpoints - php72"
       php: 7.2
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
     - stage: tests_php73_real_api_calls
+      name: "Tests hitting api endpoints - php73"
       php: 7.3
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS=""
