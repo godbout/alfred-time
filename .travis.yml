@@ -1,6 +1,6 @@
 language: php
 
-name: "Tests without hitting api endpoints"
+stage: "Tests without hitting api endpoints"
 
 php:
   - 7.1
@@ -26,8 +26,7 @@ after_script:
 
 jobs:
   include:
-    - stage: tests_php71_lowest_real_api_calls
-      name: "Tests hitting api endpoints - php71 prefer-lowest"
+    - stage: "Tests hitting api endpoints - php71 prefer-lowest"
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
