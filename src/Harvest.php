@@ -25,18 +25,23 @@ class Harvest extends TimerService
 
     public function projects()
     {
-        return $this->items('projects');
+        try {
+            return array_column($this->client->projects()->all(['']), 'name', 'id');
+        } catch (AuthenticationException $e) {
+            return [];
+        }
     }
 
     public function tags()
     {
-        return $this->items('tasks');
-    }
-
-    protected function items($items = '')
-    {
         try {
-            return array_column($this->client->$items()->all(), 'name', 'id');
+            $taskAssignments = $this->client->projects()->taskAssignments()->all((int) getenv('timer_project'), ['is_active' => true]);
+
+            array_walk($taskAssignments, function ($taskAssignment) use (&$tags) {
+                $tags[$taskAssignment['task']['id']] = $taskAssignment['task']['name'];
+            });
+
+            return $tags;
         } catch (AuthenticationException $e) {
             return [];
         }
@@ -48,7 +53,7 @@ class Harvest extends TimerService
             $timer = $this->client->timeEntries()->create([
                 'notes' => getenv('timer_description'),
                 'project_id' => (int) getenv('timer_project'),
-                'task_id' => (int) getenv('timer_tag'),
+                'task_id' => (int) getenv('timer_tag_id'),
                 'spent_date' => date('Y-m-d')
             ]);
 

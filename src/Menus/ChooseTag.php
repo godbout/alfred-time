@@ -46,6 +46,7 @@ class ChooseTag extends Menu
             $tags[] = Item::create()
                 ->title($name)
                 ->variable('timer_tag', $name)
+                ->variable('timer_tag_id', $id)
                 ->match($name)
                 ->icon(Icon::create("resources/icons/$service.png"))
                 ->arg('do')

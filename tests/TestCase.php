@@ -196,7 +196,7 @@ class TestCase extends BaseTestCase
     {
         putenv('timer_description=description');
         putenv('timer_project=' . getenv('TOGGL_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('TOGGL_TAG_ID'));
+        putenv('timer_tag=' . getenv('TOGGL_TAG_NAME'));
     }
 
 
@@ -204,7 +204,7 @@ class TestCase extends BaseTestCase
     {
         putenv('timer_description=description');
         putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
-        putenv('timer_tag=' . getenv('HARVEST_TAG_ID'));
+        putenv('timer_tag_id=' . getenv('HARVEST_TAG_ID'));
     }
 
     private function buildWorkflowWorld($envVariables = [], $arguments = [])

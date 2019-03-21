@@ -73,6 +73,17 @@ class HarvestTest extends TestCase
      * @test
      * @group timerServicesApiCalls
      */
+    public function it_returns_only_the_tags_assigned_to_the_specific_project_chosen()
+    {
+        $tags = $this->harvest->tags();
+
+        $this->assertArrayNotHasKey(getenv('HARVEST_TAG_ID_FROM_OTHER_PROJET'), $tags);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
     public function it_can_start_a_timer()
     {
         $this->assertNotFalse($this->harvest->startTimer());
