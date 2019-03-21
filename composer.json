@@ -41,5 +41,9 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit --group=default,timerServicesApiCalls --color=always",
+        "format": "php-cs-fixer fix src tests -vvv --config=.php_cs.dist --ansi"
     }
 }

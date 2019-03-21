@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Godbout\Alfred\Time\Toggl;
+use Godbout\Alfred\Time\Workflow;
 
 class TogglTest extends TestCase
 {
@@ -12,6 +13,12 @@ class TogglTest extends TestCase
         parent::setUp();
 
         $this->toggl = new Toggl(getenv('TOGGL_APIKEY'));
+
+        Workflow::enableService('toggl');
+
+        putenv('timer_description=');
+        putenv('timer_project=');
+        putenv('timer_tag=');
     }
 
     public function tearDown(): void

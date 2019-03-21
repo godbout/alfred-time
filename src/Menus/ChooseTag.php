@@ -11,7 +11,6 @@ class ChooseTag extends Menu
 {
     public static function scriptFilter()
     {
-
         $service = Workflow::serviceEnabled();
 
         if ($service->allowsEmptyTag) {

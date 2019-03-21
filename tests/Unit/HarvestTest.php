@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Godbout\Alfred\Time\Harvest;
+use Godbout\Alfred\Time\Workflow;
 
 class HarvestTest extends TestCase
 {
@@ -12,6 +13,8 @@ class HarvestTest extends TestCase
         parent::setUp();
 
         $this->harvest = new Harvest(getenv('HARVEST_ACCOUNT_ID'), getenv('HARVEST_APIKEY'));
+
+        Workflow::enableService('harvest');
     }
 
     public function tearDown(): void

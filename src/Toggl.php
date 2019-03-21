@@ -41,6 +41,7 @@ class Toggl extends TimerService
                 return false;
             }
         } catch (Exception $e) {
+            var_dump($e->getMessage());
             return false;
         }
 
