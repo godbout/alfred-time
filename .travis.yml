@@ -1,16 +1,11 @@
 language: php
 
-php:
-  - 7.1
-  - 7.2
-  - 7.3
-
 env:
   global:
     - alfred_workflow_data=./tests/mo.com.sleeplessmind.time
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
+  # matrix:
+  #   - COMPOSER_FLAGS=""
+  #   - COMPOSER_FLAGS=""
 
 before_script:
   - travis_retry composer self-update
