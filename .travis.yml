@@ -1,6 +1,6 @@
 language: php
 
-stage: "Tests without hitting api endpoints"
+stage: "Tests not hitting api endpoints"
 
 php:
   - 7.1
@@ -26,7 +26,7 @@ after_script:
 
 jobs:
   include:
-    - stage: "Tests not hitting api endpoints"
+    - stage: "Tests hitting api endpoints"
       php: 7.1
       script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
       env: COMPOSER_FLAGS="--prefer-lowest"
