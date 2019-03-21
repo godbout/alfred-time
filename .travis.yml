@@ -1,27 +1,50 @@
 language: php
 
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
 env:
   global:
     - alfred_workflow_data=./tests/mo.com.sleeplessmind.time
-  # matrix:
-  #   - COMPOSER_FLAGS=""
-  #   - COMPOSER_FLAGS=""
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS=""
 
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit --group=default,timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpunit --group=default --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
 
 jobs:
   include:
+    - stage: tests_php71_lowest
+      php: 7.1
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - stage: tests_php73_lowest
+      php: 7.2
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - stage: tests_php73_lowest
+      php: 7.3
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
     - stage: tests_php71
       php: 7.1
-    - stage: tests_php72
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""
+    - stage: tests_php73
       php: 7.2
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""
     - stage: tests_php73
       php: 7.3
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""
