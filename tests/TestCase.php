@@ -192,7 +192,7 @@ class TestCase extends BaseTestCase
         return Workflow::currentMenu();
     }
 
-    private function setTogglTimerAttributes()
+    protected function setTogglTimerAttributes()
     {
         putenv('timer_description=description');
         putenv('timer_project=' . getenv('TOGGL_PROJECT_ID'));
@@ -200,7 +200,7 @@ class TestCase extends BaseTestCase
     }
 
 
-    private function setHarvestTimerAttributes()
+    protected function setHarvestTimerAttributes()
     {
         putenv('timer_description=description');
         putenv('timer_project=' . getenv('HARVEST_PROJECT_ID'));
