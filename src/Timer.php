@@ -16,6 +16,11 @@ class Timer
 
     public static function stop()
     {
-        return WOrkflow::serviceEnabled()->stopCurrentTimer();
+        return Workflow::serviceEnabled()->stopCurrentTimer();
+    }
+
+    public static function continue($timerId)
+    {
+        return Workflow::serviceEnabled()->continueTimer($timerId);
     }
 }
