@@ -32,7 +32,7 @@ class SetupHarvestState extends Menu
     {
         return Item::create()
             ->title(self::stateTitle())
-            ->subtitle('Press enter to quit the workflow.')
+            ->subtitle(self::stateSubtitle())
             ->arg('notification')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
@@ -40,6 +40,14 @@ class SetupHarvestState extends Menu
     private static function stateTitle()
     {
         return 'Harvest ' . ((getenv('harvest_enabled') === 'true') ? 'ENABLED!' : 'DISABLED!');
+    }
+
+    protected static function stateSubtitle()
+    {
+        return ((getenv('harvest_enabled') === 'true')
+            ? 'Other services disabled. '
+            : ''
+        ) . 'You may press enter to quit the workflow';
     }
 
     private static function back()

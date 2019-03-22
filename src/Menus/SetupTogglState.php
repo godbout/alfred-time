@@ -32,7 +32,7 @@ class SetupTogglState extends Menu
     {
         return Item::create()
             ->title(self::stateTitle())
-            ->subtitle('Press enter to quit the workflow.')
+            ->subtitle(self::stateSubtitle())
             ->arg('notification')
             ->icon(Icon::create('resources/icons/toggl.png'));
     }
@@ -40,6 +40,14 @@ class SetupTogglState extends Menu
     private static function stateTitle()
     {
         return 'Toggl ' . ((getenv('toggl_enabled') === 'true') ? 'ENABLED!' : 'DISABLED!');
+    }
+
+    protected static function stateSubtitle()
+    {
+        return ((getenv('toggl_enabled') === 'true')
+            ? 'Other services disabled. '
+            : ''
+        ) . 'You may press enter to quit the workflow';
     }
 
     private static function back()
