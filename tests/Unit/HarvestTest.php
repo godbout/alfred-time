@@ -117,7 +117,7 @@ class HarvestTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_continue_a_timer()
     {
