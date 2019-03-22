@@ -74,4 +74,10 @@ class TimerMenusTest extends TestCase
 
         $this->assertStringContainsString('"title":"No tag"', $output);
     }
+
+    /** @test */
+    public function it_proposes_to_continue_a_timer_if_the_user_press_cmd_when_starting_a_timer()
+    {
+        $this->markTestIncomplete('coz not done yet LOL.');
+    }
 }

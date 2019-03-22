@@ -127,8 +127,27 @@ class TogglTest extends TestCase
         $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
 
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_continue_a_timer()
+    {
+        $timerId = $this->toggl->startTimer();
+
+        $this->assertTrue($this->toggl->stopCurrentTimer());
+        $this->assertFalse($this->toggl->runningTimer());
+
+        $restartedTimerId = $this->toggl->continueTimer($timerId);
+
+        $this->assertNotFalse($restartedTimerId);
+        $this->assertSame($restartedTimerId, $this->toggl->runningTimer());
+
+        $this->toggl->deleteTimer($timerId);
+    }
+
     /** @test */
-    public function an_Toggl_object_returns_toggl_as_a_string()
+    public function a_Toggl_object_returns_toggl_as_a_string()
     {
         $this->assertSame('toggl', (string) $this->toggl);
     }

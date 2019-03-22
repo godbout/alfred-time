@@ -67,13 +67,6 @@ class Harvest extends TimerService
         return $timer['id'];
     }
 
-    public function runningTimer()
-    {
-        $timer = $this->client->timeEntries()->all(['is_running' => true]);
-
-        return $timer[0]['id'] ?? false;
-    }
-
     public function stopCurrentTimer()
     {
         if ($timerId = $this->runningTimer()) {
@@ -89,6 +82,20 @@ class Harvest extends TimerService
         }
 
         return false;
+    }
+
+    public function runningTimer()
+    {
+        $timer = $this->client->timeEntries()->all(['is_running' => true]);
+
+        return $timer[0]['id'] ?? false;
+    }
+
+    public function continueTimer($timerId)
+    {
+        $timer = $this->client->timeEntries()->restart($timerId);
+
+        return $timer['id'] ?? false;
     }
 
     public function deleteTimer($timerId)

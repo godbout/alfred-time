@@ -117,6 +117,25 @@ class HarvestTest extends TestCase
 
     /**
      * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_continue_a_timer()
+    {
+        $timerId = $this->harvest->startTimer();
+
+        $this->assertTrue($this->harvest->stopCurrentTimer());
+        $this->assertFalse($this->harvest->runningTimer());
+
+        $restartedTimerId = $this->harvest->continueTimer($timerId);
+
+        $this->assertNotFalse($restartedTimerId);
+        $this->assertSame($restartedTimerId, $this->harvest->runningTimer());
+
+        $this->harvest->deleteTimer($timerId);
+    }
+
+    /**
+     * @test
      * @group timerServicesApiCalls
      */
     public function it_can_delete_a_timer()

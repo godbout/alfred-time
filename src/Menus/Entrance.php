@@ -5,6 +5,7 @@ namespace Godbout\Alfred\Time\Menus;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Workflow\Mods\Cmd;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Entrance extends Menu
@@ -48,6 +49,11 @@ class Entrance extends Menu
             return Item::create()
                 ->uid('start_timer')
                 ->title('Start "' . self::userInput() . '"')
+                ->mod(
+                    Cmd::create()
+                        ->subtitle('Continue a timer')
+                        ->arg('choose_timer')
+                )
                 ->arg('choose_project')
                 ->variable('timer_description', self::userInput());
         }

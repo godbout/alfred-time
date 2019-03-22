@@ -65,6 +65,32 @@ class Toggl extends TimerService
         return false;
     }
 
+    public function runningTimer()
+    {
+        $timer = $this->client->getRunningTimeEntry();
+
+        return $timer->id ?? false;
+    }
+
+    public function continueTimer($timerId)
+    {
+        try {
+            $timer = $this->client->startTimeEntry([
+                'id' => $timerId,
+                'created_with' => 'Alfred Time'
+            ]);
+
+            if (! isset($timer->id)) {
+                return false;
+            }
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+            return false;
+        }
+
+        return $timer->id;
+    }
+
     public function deleteTimer($timerId)
     {
         try {
@@ -74,13 +100,6 @@ class Toggl extends TimerService
         }
 
         return true;
-    }
-
-    public function runningTimer()
-    {
-        $timer = $this->client->getRunningTimeEntry();
-
-        return $timer->id ?? false;
     }
 
     private function extractFromData($needle)

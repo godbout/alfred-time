@@ -12,15 +12,14 @@ class TimerTest extends TestCase
         $this->markTestIncomplete(
             'Need to be able to delete the timer LOL. Functionality not done yet.'
         );
-
-        $this->markTestIncomplete(
-            'Need to test for each specific service: start Toggl; stop Toggl; start Harvest, etc...'
-        );
     }
 
     protected function tearDown()
     {
-        Timer::stop();
+        if ($timerId = Timer::running()) {
+            Timer::stop();
+            Timer::delete($timerId);
+        }
     }
 
     /** @test */
@@ -51,5 +50,27 @@ class TimerTest extends TestCase
         $this->assertTrue(Timer::running());
         $this->assertTrue(Timer::stop());
         $this->assertFalse(Timer::running());
+    }
+
+    /** @test */
+    public function it_can_delete_a_timer()
+    {
+        $this->togglApikey(getenv('TOGGL_APIKEY'));
+
+        $timerId = Timer::start();
+        Timer::stop();
+
+        $this->assertTrue(Timer::delete($timerId));
+    }
+
+    /** @test */
+    public function it_can_continue_a_timer()
+    {
+        $this->togglApikey(getenv('TOGGL_APIKEY'));
+
+        $timerId = Timer::start();
+        $this->assertTrue(Timer::stop());
+
+        $this->assertTrue(Timer::contine($timerId));
     }
 }
