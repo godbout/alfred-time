@@ -18,6 +18,16 @@ class TimerMenusTest extends TestCase
     }
 
     /** @test */
+    public function it_proposes_to_continue_a_timer_if_there_is_at_least_one_timer_service_enabled()
+    {
+        Workflow::enableService('toggl');
+
+        $output = $this->reachWorkflowInitialMenu();
+
+        $this->assertStringContainsString('"arg":"choose_timer"', $output);
+    }
+
+    /** @test */
     public function it_does_not_propose_to_start_a_timer_if_there_is_no_timer_services_enabled()
     {
         $output = $this->reachWorkflowInitialMenu();
@@ -73,11 +83,5 @@ class TimerMenusTest extends TestCase
         $output = $this->reachWorkflowChooseTagMenu();
 
         $this->assertStringContainsString('"title":"No tag"', $output);
-    }
-
-    /** @test */
-    public function it_proposes_to_continue_a_timer_if_the_user_press_cmd_when_starting_a_timer()
-    {
-        $this->markTestIncomplete('coz not done yet LOL.');
     }
 }

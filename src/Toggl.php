@@ -3,6 +3,7 @@
 namespace Godbout\Alfred\Time;
 
 use Exception;
+use Carbon\Carbon;
 use MorningTrain\TogglApi\TogglApi;
 
 class Toggl extends TimerService
@@ -25,6 +26,17 @@ class Toggl extends TimerService
     public function tags()
     {
         return $this->extractFromData('tags');
+    }
+
+    public function pastTimers()
+    {
+        try {
+            return array_reverse(
+                $this->client->getTimeEntriesInRange(Carbon::today(), Carbon::today()->subDays(30))
+            );
+        } catch (Exception $e) {
+            return [];
+        }
     }
 
     public function startTimer()

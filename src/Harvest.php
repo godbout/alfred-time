@@ -47,6 +47,11 @@ class Harvest extends TimerService
         }
     }
 
+    public function pastTimers()
+    {
+        return [];
+    }
+
     public function startTimer()
     {
         try {

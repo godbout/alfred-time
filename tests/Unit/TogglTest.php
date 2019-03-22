@@ -85,6 +85,19 @@ class TogglTest extends TestCase
      * @test
      * @group timerServicesApiCalls
      */
+    public function it_can_return_the_list_of_past_timers()
+    {
+        $timerId = $this->toggl->startTimer();
+
+        $pastTimers = $this->toggl->pastTimers();
+
+        $this->assertSame($timerId, $pastTimers[0]->id);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
     public function it_can_start_a_timer()
     {
         $this->assertNotFalse($this->toggl->startTimer());

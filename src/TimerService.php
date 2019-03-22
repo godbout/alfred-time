@@ -22,6 +22,8 @@ abstract class TimerService
 
     abstract public function tags();
 
+    abstract public function pastTimers();
+
     public function __toString()
     {
         return strtolower((new \ReflectionClass(static::class))->getShortName());
