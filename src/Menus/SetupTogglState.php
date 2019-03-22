@@ -23,9 +23,7 @@ class SetupTogglState extends Menu
     {
         Workflow::disableAllServices();
 
-        getenv('toggl_enabled') === 'true'
-            ? Workflow::enableService('toggl')
-            : Workflow::disableService('toggl');
+        self::toEnable() ? Workflow::enableService('toggl') : Workflow::disableService('toggl');
     }
 
     private static function stateSaved()
@@ -39,15 +37,12 @@ class SetupTogglState extends Menu
 
     private static function stateTitle()
     {
-        return 'Toggl ' . ((getenv('toggl_enabled') === 'true') ? 'ENABLED!' : 'DISABLED!');
+        return 'Toggl ' . (self::toEnable() ? 'ENABLED!' : 'DISABLED!');
     }
 
     protected static function stateSubtitle()
     {
-        return ((getenv('toggl_enabled') === 'true')
-            ? 'Other services disabled. '
-            : ''
-        ) . 'You may press enter to quit the workflow';
+        return (self::toEnable() ? 'Other services disabled. ' : '') . 'You may press enter to quit the workflow';
     }
 
     private static function back()
@@ -57,5 +52,10 @@ class SetupTogglState extends Menu
             ->subtitle('Go back to Toggl options')
             ->arg('setup_toggl')
             ->icon(Icon::create('resources/icons/toggl.png'));
+    }
+
+    protected static function toEnable()
+    {
+        return getenv('toggl_enabled') === 'true';
     }
 }

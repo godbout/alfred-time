@@ -23,9 +23,7 @@ class SetupHarvestState extends Menu
     {
         Workflow::disableAllServices();
 
-        getenv('harvest_enabled') === 'true'
-            ? Workflow::enableService('harvest')
-            : Workflow::disableService('harvest');
+        self::toEnable() ? Workflow::enableService('harvest') : Workflow::disableService('harvest');
     }
 
     private static function stateSaved()
@@ -39,15 +37,12 @@ class SetupHarvestState extends Menu
 
     private static function stateTitle()
     {
-        return 'Harvest ' . ((getenv('harvest_enabled') === 'true') ? 'ENABLED!' : 'DISABLED!');
+        return 'Harvest ' . (self::toEnable() ? 'ENABLED!' : 'DISABLED!');
     }
 
     protected static function stateSubtitle()
     {
-        return ((getenv('harvest_enabled') === 'true')
-            ? 'Other services disabled. '
-            : ''
-        ) . 'You may press enter to quit the workflow';
+        return (self::toEnable() ? 'Other services disabled. ': '') . 'You may press enter to quit the workflow';
     }
 
     private static function back()
@@ -57,5 +52,10 @@ class SetupHarvestState extends Menu
             ->subtitle('Go back to Harvest options')
             ->arg('setup_harvest')
             ->icon(Icon::create('resources/icons/harvest.png'));
+    }
+
+    protected static function toEnable()
+    {
+        return getenv('harvest_enabled') === 'true';
     }
 }
