@@ -2,9 +2,11 @@
 
 namespace Godbout\Alfred\Time;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Required\Harvest\Client;
-use Required\Harvest\Exception\NotFoundException;
 use Required\Harvest\Exception\AuthenticationException;
+use Required\Harvest\Exception\NotFoundException;
 use Required\Harvest\Exception\ValidationFailedException;
 
 class Harvest extends TimerService
@@ -35,7 +37,10 @@ class Harvest extends TimerService
     public function tags()
     {
         try {
-            $taskAssignments = $this->client->projects()->taskAssignments()->all((int) getenv('timer_project'), ['is_active' => true]);
+            $taskAssignments = $this->client->projects()->taskAssignments()->all(
+                (int) getenv('timer_project'),
+                ['is_active' => true]
+            );
 
             array_walk($taskAssignments, function ($taskAssignment) use (&$tags) {
                 $tags[$taskAssignment['task']['id']] = $taskAssignment['task']['name'];
@@ -49,7 +54,16 @@ class Harvest extends TimerService
 
     public function pastTimers()
     {
-        return [];
+        try {
+            $harvestTimers = $this->client->timeEntries()->all([
+                'from' => Carbon::today()->subDays(30),
+                'to' => Carbon::today()
+            ]);
+
+            return $this->convertToPastTimers($harvestTimers);
+        } catch (AuthenticationException $e) {
+            return [];
+        }
     }
 
     public function startTimer()
@@ -112,5 +126,25 @@ class Harvest extends TimerService
         }
 
         return true;
+    }
+
+    protected function convertToPastTimers($harvestTimers)
+    {
+        return array_map(function ($harvestTimer) {
+            return $this->buildPastTimerObject($harvestTimer);
+        }, $harvestTimers);
+    }
+
+    protected function buildPastTimerObject($harvestTimer)
+    {
+        $pastTimer['id'] = $harvestTimer['id'];
+        $pastTimer['description'] = $harvestTimer['notes'];
+        $pastTimer['project'] = $harvestTimer['project']['name'];
+        $pastTimer['tags'] = $harvestTimer['task']['name'];
+        $pastTimer['duration'] = CarbonInterval::seconds(
+            floor($harvestTimer['hours'] * 3600)
+        )->cascade()->format('%H:%I:%S');
+
+        return (object) $pastTimer;
     }
 }
