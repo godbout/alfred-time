@@ -4,6 +4,7 @@ namespace Godbout\Alfred\Time;
 
 use Exception;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use MorningTrain\TogglApi\TogglApi;
 
 class Toggl extends TimerService
@@ -31,9 +32,11 @@ class Toggl extends TimerService
     public function pastTimers()
     {
         try {
-            return array_reverse(
-                $this->client->getTimeEntriesInRange(Carbon::today(), Carbon::today()->subDays(30))
-            );
+            $pastTimers = [];
+
+            $togglTimers = $this->client->getTimeEntriesInRange(Carbon::today(), Carbon::today()->subDays(30));
+
+            return $this->convertToPastTimers($togglTimers);
         } catch (Exception $e) {
             return [];
         }
@@ -139,5 +142,25 @@ class Toggl extends TimerService
         return array_filter($items, function ($item) {
             return ! isset($item->server_deleted_at);
         });
+    }
+
+    protected function convertToPastTimers($togglTimers)
+    {
+        return array_reverse(
+            array_map(function ($togglTimer) {
+                return $this->buildPastTimerObject($togglTimer);
+            }, $togglTimers)
+        );
+    }
+
+    protected function buildPastTimerObject($togglTimer)
+    {
+        $pastTimer['id'] = $togglTimer->id;
+        $pastTimer['description'] = $togglTimer->description;
+        $pastTimer['project'] = $togglTimer->pid;
+        $pastTimer['tags'] = implode(', ', $togglTimer->tags);
+        $pastTimer['duration'] = CarbonInterval::seconds($togglTimer->duration)->cascade()->format('%H:%I:%S');
+
+        return (object) $pastTimer;
     }
 }

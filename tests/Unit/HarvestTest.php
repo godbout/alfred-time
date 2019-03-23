@@ -82,6 +82,23 @@ class HarvestTest extends TestCase
 
     /**
      * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_return_the_list_of_past_timers()
+    {
+        $timerId = $this->harvest->startTimer();
+
+        $lastestTimer = $this->harvest->pastTimers()[0];
+
+        $this->assertSame($timerId, $lastestTimer->id);
+        $this->assertObjectHasAttribute('description', $lastestTimer);
+        $this->assertObjectHasAttribute('project', $lastestTimer);
+        $this->assertObjectHasAttribute('tags', $lastestTimer);
+        $this->assertObjectHasAttribute('duration', $lastestTimer);
+    }
+
+    /**
+     * @test
      * @group timerServicesApiCalls
      */
     public function it_can_start_a_timer()

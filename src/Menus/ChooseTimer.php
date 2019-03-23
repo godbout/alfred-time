@@ -41,6 +41,6 @@ class ChooseTimer extends Menu
 
     protected static function pastTimerSubtitle($pastTimer)
     {
-        return "$pastTimer->project, [$pastTimer->tags]. $pastTimer->duration";
+        return "$pastTimer->project, [$pastTimer->tags], $pastTimer->duration";
     }
 }

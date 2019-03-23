@@ -2,10 +2,9 @@
 
 namespace Tests\Unit;
 
-use Godbout\Alfred\Time\Timer;
-use Godbout\Alfred\Time\Toggl;
-use Godbout\Alfred\Time\Workflow;
 use Tests\TestCase;
+use Godbout\Alfred\Time\Timer;
+use Godbout\Alfred\Time\Workflow;
 
 class TimerTest extends TestCase
 {
