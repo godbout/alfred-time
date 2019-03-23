@@ -89,13 +89,13 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        $lastestTimer = $this->toggl->pastTimers()[0];
+        $latestTimer = $this->toggl->pastTimers()[0];
 
-        $this->assertSame($timerId, $lastestTimer->id);
-        $this->assertObjectHasAttribute('description', $lastestTimer);
-        $this->assertObjectHasAttribute('project', $lastestTimer);
-        $this->assertObjectHasAttribute('tags', $lastestTimer);
-        $this->assertObjectHasAttribute('duration', $lastestTimer);
+        $this->assertSame($timerId, $latestTimer->id);
+        $this->assertObjectHasAttribute('description', $latestTimer);
+        $this->assertObjectHasAttribute('project', $latestTimer);
+        $this->assertObjectHasAttribute('tags', $latestTimer);
+        $this->assertObjectHasAttribute('duration', $latestTimer);
     }
 
     /**
