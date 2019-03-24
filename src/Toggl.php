@@ -137,18 +137,20 @@ class Toggl extends TimerService
 
     protected function convertToPastTimers($togglTimers)
     {
+        $projects = $this->projects();
+
         return array_reverse(
-            array_map(function ($togglTimer) {
-                return $this->buildPastTimerObject($togglTimer);
+            array_map(function ($togglTimer) use ($projects) {
+                return $this->buildPastTimerObject($togglTimer, $projects);
             }, $togglTimers)
         );
     }
 
-    protected function buildPastTimerObject($togglTimer)
+    protected function buildPastTimerObject($togglTimer, $projects)
     {
         $pastTimer['id'] = $togglTimer->id;
         $pastTimer['description'] = $togglTimer->description;
-        $pastTimer['project'] = $togglTimer->pid;
+        $pastTimer['project'] = $projects[$togglTimer->pid];
         $pastTimer['tags'] = implode(', ', $togglTimer->tags);
         $pastTimer['duration'] = CarbonInterval::seconds($togglTimer->duration)->cascade()->format('%H:%I:%S');
 
