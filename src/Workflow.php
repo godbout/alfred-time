@@ -45,6 +45,10 @@ class Workflow
     {
         $action = getenv('timer_action');
 
+        if ($timerId = getenv('timer_id')) {
+            return Timer::$action($timerId);
+        }
+
         return Timer::$action();
     }
 

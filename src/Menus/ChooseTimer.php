@@ -33,7 +33,10 @@ class ChooseTimer extends Menu
                 ->icon(Icon::create("resources/icons/$service.png"))
                 ->arg('do')
                 ->variable('timer_action', 'continue')
-                ->variable('timer_id', $id);
+                ->variable('timer_id', $pastTimer->id)
+                ->variable('timer_description', $pastTimer->description)
+                ->variable('timer_project', $pastTimer->project)
+                ->variable('timer_tag', $pastTimer->tags);
         }
 
         return $pastTimers;

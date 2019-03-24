@@ -88,20 +88,11 @@ class Toggl extends TimerService
 
     public function continueTimer($timerId)
     {
-        try {
-            $timer = $this->client->startTimeEntry([
-                'id' => $timerId,
-                'created_with' => 'Alfred Time'
-            ]);
-
-            if (! isset($timer->id)) {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return $timer->id;
+        /**
+         * Timer attributes are stored in env variables
+         * gathered in startTimer.
+         */
+        return $this->startTimer();
     }
 
     public function deleteTimer($timerId)
