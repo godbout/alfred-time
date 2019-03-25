@@ -47,7 +47,7 @@ class Toggl extends TimerService
         try {
             $timer = $this->client->startTimeEntry([
                 'description' => getenv('timer_description'),
-                'pid' => getenv('timer_project'),
+                'pid' => getenv('timer_project_id'),
                 'tags' => getenv('timer_tag') ? [getenv('timer_tag')] : '',
                 'created_with' => 'Alfred Time'
             ]);
@@ -150,8 +150,9 @@ class Toggl extends TimerService
     {
         $pastTimer['id'] = $togglTimer->id;
         $pastTimer['description'] = $togglTimer->description;
+        $pastTimer['project_id'] = $togglTimer->pid;
         $pastTimer['project'] = $projects[$togglTimer->pid];
-        $pastTimer['tags'] = implode(', ', $togglTimer->tags);
+        $pastTimer['tags'] = implode(', ', (array) $togglTimer->tags);
         $pastTimer['duration'] = CarbonInterval::seconds($togglTimer->duration)->cascade()->format('%H:%I:%S');
 
         return (object) $pastTimer;

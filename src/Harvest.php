@@ -140,6 +140,7 @@ class Harvest extends TimerService
         $pastTimer['id'] = $harvestTimer['id'];
         $pastTimer['description'] = $harvestTimer['notes'];
         $pastTimer['project'] = $harvestTimer['project']['name'];
+        $pastTimer['project_id'] = $harvestTimer['project']['id'];
         $pastTimer['tags'] = $harvestTimer['task']['name'];
         $pastTimer['duration'] = CarbonInterval::seconds(
             floor($harvestTimer['hours'] * 3600)
