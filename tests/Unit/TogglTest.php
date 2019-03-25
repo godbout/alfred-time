@@ -93,8 +93,6 @@ class TogglTest extends TestCase
 
         $this->assertSame($timerId, $latestTimer->id);
         $this->assertObjectHasAttribute('description', $latestTimer);
-        $this->assertObjectHasAttribute('project', $latestTimer);
-        $this->assertObjectHasAttribute('tags', $latestTimer);
         $this->assertObjectHasAttribute('duration', $latestTimer);
     }
 

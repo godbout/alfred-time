@@ -150,10 +150,16 @@ class Toggl extends TimerService
     {
         $pastTimer['id'] = $togglTimer->id;
         $pastTimer['description'] = $togglTimer->description;
-        $pastTimer['project_id'] = $togglTimer->pid;
-        $pastTimer['project'] = $projects[$togglTimer->pid];
-        $pastTimer['tags'] = implode(', ', (array) $togglTimer->tags);
         $pastTimer['duration'] = CarbonInterval::seconds($togglTimer->duration)->cascade()->format('%H:%I:%S');
+
+        if (isset($togglTimer->pid)) {
+            $pastTimer['project_id'] = $togglTimer->pid;
+            $pastTimer['project'] = $projects[$togglTimer->pid];
+        }
+
+        if (isset($togglTimer->tags)) {
+            $pastTimer['tags'] = implode(', ', (array) $togglTimer->tags);
+        }
 
         return (object) $pastTimer;
     }
