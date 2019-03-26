@@ -36,7 +36,7 @@ class ChooseTimer extends Menu
                 ->variable('timer_id', $pastTimer->id)
                 ->variable('timer_description', $pastTimer->description)
                 ->variable('timer_project_id', $pastTimer->project_id)
-                ->variable('timer_project', $pastTimer->project)
+                ->variable('timer_project_name', $pastTimer->project_name)
                 ->variable('timer_tag', $pastTimer->tags);
         }
 

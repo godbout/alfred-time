@@ -38,7 +38,7 @@ class Harvest extends TimerService
     {
         try {
             $taskAssignments = $this->client->projects()->taskAssignments()->all(
-                (int) getenv('timer_project'),
+                (int) getenv('timer_project_id'),
                 ['is_active' => true]
             );
 
@@ -71,7 +71,7 @@ class Harvest extends TimerService
         try {
             $timer = $this->client->timeEntries()->create([
                 'notes' => getenv('timer_description'),
-                'project_id' => (int) getenv('timer_project'),
+                'project_id' => (int) getenv('timer_project_id'),
                 'task_id' => (int) getenv('timer_tag_id'),
                 'spent_date' => date('Y-m-d')
             ]);
@@ -139,8 +139,8 @@ class Harvest extends TimerService
     {
         $pastTimer['id'] = $harvestTimer['id'];
         $pastTimer['description'] = $harvestTimer['notes'];
-        $pastTimer['project'] = $harvestTimer['project']['name'];
         $pastTimer['project_id'] = $harvestTimer['project']['id'];
+        $pastTimer['project_name'] = $harvestTimer['project']['name'];
         $pastTimer['tags'] = $harvestTimer['task']['name'];
         $pastTimer['duration'] = CarbonInterval::seconds(
             floor($harvestTimer['hours'] * 3600)

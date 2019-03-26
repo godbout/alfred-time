@@ -44,7 +44,8 @@ class ChooseProject extends Menu
         foreach ($service->projects() as $id => $name) {
             $projects[] = Item::create()
                 ->title($name)
-                ->variable('timer_project', $id)
+                ->variable('timer_project_id', $id)
+                ->variable('timer_project_name', $name)
                 ->match($name)
                 ->arg('choose_tag')
                 ->icon(Icon::create("resources/icons/$service.png"));

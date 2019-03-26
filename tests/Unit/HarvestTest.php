@@ -92,7 +92,8 @@ class HarvestTest extends TestCase
 
         $this->assertSame($timerId, $lastestTimer->id);
         $this->assertObjectHasAttribute('description', $lastestTimer);
-        $this->assertObjectHasAttribute('project', $lastestTimer);
+        $this->assertObjectHasAttribute('project_id', $lastestTimer);
+        $this->assertObjectHasAttribute('project_name', $lastestTimer);
         $this->assertObjectHasAttribute('tags', $lastestTimer);
         $this->assertObjectHasAttribute('duration', $lastestTimer);
     }
@@ -141,7 +142,6 @@ class HarvestTest extends TestCase
         $timerId = $this->harvest->startTimer();
 
         $this->assertTrue($this->harvest->stopCurrentTimer());
-        $this->assertFalse($this->harvest->runningTimer());
 
         $restartedTimerId = $this->harvest->continueTimer($timerId);
 
