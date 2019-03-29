@@ -109,16 +109,16 @@
         },
         {
             "name": "godbout/alfred-workflow-config",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-config.git",
-                "reference": "61aa6b06720cb647ced9963ab5beb42baefdc630"
+                "reference": "30e2b321a93095c6a1f3ab80ddc48d742c3c838b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/61aa6b06720cb647ced9963ab5beb42baefdc630",
-                "reference": "61aa6b06720cb647ced9963ab5beb42baefdc630",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/30e2b321a93095c6a1f3ab80ddc48d742c3c838b",
+                "reference": "30e2b321a93095c6a1f3ab80ddc48d742c3c838b",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +153,7 @@
                 "php",
                 "workflow"
             ],
-            "time": "2019-03-03T13:57:18+00:00"
+            "time": "2019-03-29T16:12:13+00:00"
         },
         {
             "name": "godbout/alfred-workflow-scriptfilter",
@@ -435,16 +435,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.16.1",
+            "version": "2.16.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "b509524136d579f6b15ad9af4e5bd4533d1ab6c2"
+                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/b509524136d579f6b15ad9af4e5bd4533d1ab6c2",
-                "reference": "b509524136d579f6b15ad9af4e5bd4533d1ab6c2",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/720a9c36927396efeeb48a972e9d129d44b6dc28",
+                "reference": "720a9c36927396efeeb48a972e9d129d44b6dc28",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +491,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-03-20T12:20:01+00:00"
+            "time": "2019-03-29T12:23:12+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -2408,16 +2408,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.7",
+            "version": "7.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "eb343b86753d26de07ecba7868fa983104361948"
+                "reference": "c29c0525cf4572c11efe1db49a8b8aee9dfac58a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/eb343b86753d26de07ecba7868fa983104361948",
-                "reference": "eb343b86753d26de07ecba7868fa983104361948",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c29c0525cf4572c11efe1db49a8b8aee9dfac58a",
+                "reference": "c29c0525cf4572c11efe1db49a8b8aee9dfac58a",
                 "shasum": ""
             },
             "require": {
@@ -2488,7 +2488,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-03-16T07:31:17+00:00"
+            "time": "2019-03-26T13:23:54+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
