@@ -91,6 +91,7 @@ class TogglSetupMenusTest extends TestCase
         $output = $this->reachTogglApikeySavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
+        $this->assertStringContainsString('"timer_action":"exit"', $output);
     }
 
     /** @test */
@@ -101,5 +102,6 @@ class TogglSetupMenusTest extends TestCase
         $output = $this->reachTogglStateSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
+        $this->assertStringContainsString('"timer_action":"exit"', $output);
     }
 }

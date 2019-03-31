@@ -31,8 +31,9 @@ class SetupHarvestState extends Menu
         return Item::create()
             ->title(self::stateTitle())
             ->subtitle(self::stateSubtitle())
-            ->arg('notification')
-            ->icon(Icon::create('resources/icons/harvest.png'));
+            ->icon(Icon::create('resources/icons/harvest.png'))
+            ->arg('do')
+            ->variable('timer_action', 'exit');
     }
 
     private static function stateTitle()

@@ -29,8 +29,9 @@ class SetupHarvestApitokenSave extends Menu
         return Item::create()
             ->title('API TOKEN SAVED!')
             ->subtitle('You can just press Enter.')
-            ->arg('notification')
-            ->icon(Icon::create('resources/icons/harvest.png'));
+            ->icon(Icon::create('resources/icons/harvest.png'))
+            ->arg('do')
+            ->variable('timer_action', 'exit');
     }
 
     private static function back()

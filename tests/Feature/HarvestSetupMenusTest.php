@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Godbout\Alfred\Time\Workflow;
 use Tests\TestCase;
 
 class HarvestSetupMenusTest extends TestCase
@@ -100,5 +101,38 @@ class HarvestSetupMenusTest extends TestCase
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['harvest']);
         $this->assertSame(false, $fileContentAsArray['harvest']['is_active']);
+    }
+
+    /** @test */
+    public function it_allows_to_quit_the_workflow_after_apitoken_is_saved()
+    {
+        Workflow::enableService('harvest');
+
+        $output = $this->reachHarvestApitokenSavedMenu();
+
+        $this->assertStringContainsString('"arg":"do"', $output);
+        $this->assertStringContainsString('"timer_action":"exit"', $output);
+    }
+
+    /** @test */
+    public function it_allows_to_quit_the_workflow_after_account_id_is_saved()
+    {
+        Workflow::enableService('harvest');
+
+        $output = $this->reachHarvestAccountIdSavedMenu();
+
+        $this->assertStringContainsString('"arg":"do"', $output);
+        $this->assertStringContainsString('"timer_action":"exit"', $output);
+    }
+
+    /** @test */
+    public function it_allows_to_quit_the_workflow_after_status_is_changed()
+    {
+        Workflow::enableService('harvest');
+
+        $output = $this->reachHarvestStateSavedMenu();
+
+        $this->assertStringContainsString('"arg":"do"', $output);
+        $this->assertStringContainsString('"timer_action":"exit"', $output);
     }
 }
