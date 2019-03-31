@@ -6,7 +6,10 @@ use Godbout\Alfred\Time\Workflow;
 
 if (getenv('action') === 'do') {
     $result = Workflow::do();
-    print Workflow::notify($result);
+
+    if (getenv('timer_action') !== 'exit') {
+        print Workflow::notify($result);
+    }
 } else {
     print Workflow::currentMenu();
 }

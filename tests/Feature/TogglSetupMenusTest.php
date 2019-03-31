@@ -82,4 +82,24 @@ class TogglSetupMenusTest extends TestCase
         $this->assertStringContainsString('"title":"Disable"', $output);
         $this->assertStringContainsString('"subtitle":"Currently enabled"', $output);
     }
+
+    /** @test */
+    public function it_allows_to_quit_the_workflow_after_apikey_is_saved()
+    {
+        Workflow::enableService('toggl');
+
+        $output = $this->reachTogglApikeySavedMenu();
+
+        $this->assertStringContainsString('"arg":"do"', $output);
+    }
+
+    /** @test */
+    public function it_allows_to_quit_the_workflow_after_status_is_changed()
+    {
+        Workflow::enableService('toggl');
+
+        $output = $this->reachTogglStateSavedMenu();
+
+        $this->assertStringContainsString('"arg":"do"', $output);
+    }
 }

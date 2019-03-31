@@ -49,7 +49,11 @@ class Workflow
             return Timer::$action($timerId);
         }
 
-        return Timer::$action();
+        if (method_exists(Timer::class, $action)) {
+            return Timer::$action();
+        }
+
+        return true;
     }
 
     public static function notify($result = false)

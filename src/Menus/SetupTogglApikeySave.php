@@ -29,7 +29,7 @@ class SetupTogglApikeySave extends Menu
         return Item::create()
             ->title('API KEY SAVED!')
             ->subtitle('You can just press Enter.')
-            ->arg('notification')
+            ->arg('do')
             ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
