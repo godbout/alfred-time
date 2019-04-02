@@ -105,9 +105,13 @@ class Harvest extends TimerService
 
     public function runningTimer()
     {
-        $timer = $this->client->timeEntries()->all(['is_running' => true]);
+        try {
+            $timer = $this->client->timeEntries()->all(['is_running' => true]);
 
-        return $timer[0]['id'] ?? false;
+            return $timer[0]['id'] ?? false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public function continueTimer($timerId)
