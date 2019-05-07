@@ -3,6 +3,8 @@
 namespace Godbout\Alfred\Time;
 
 use Godbout\Alfred\Workflow\Config;
+use Godbout\Alfred\Time\Services\Toggl;
+use Godbout\Alfred\Time\Services\Harvest;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
 class Workflow
@@ -104,7 +106,7 @@ class Workflow
 
     protected function classExistsForService($service = '')
     {
-        return class_exists(__NAMESPACE__ . '\\' . ucfirst($service));
+        return class_exists(__NAMESPACE__ . '\\Services\\' . ucfirst($service));
     }
 
     public static function serviceEnabled()

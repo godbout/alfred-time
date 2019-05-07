@@ -1,6 +1,6 @@
 <?php
 
-namespace Godbout\Alfred\Time;
+namespace Godbout\Alfred\Time\Services;
 
 use Exception;
 use Carbon\Carbon;
