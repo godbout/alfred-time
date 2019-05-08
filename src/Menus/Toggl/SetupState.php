@@ -1,13 +1,14 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Toggl;
 
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupHarvestState extends Menu
+class SetupState extends Menu
 {
     public static function scriptFilter()
     {
@@ -23,7 +24,7 @@ class SetupHarvestState extends Menu
     {
         Workflow::disableAllServices();
 
-        self::toEnable() ? Workflow::enableService('harvest') : Workflow::disableService('harvest');
+        self::toEnable() ? Workflow::enableService('toggl') : Workflow::disableService('toggl');
     }
 
     private static function stateSaved()
@@ -31,32 +32,32 @@ class SetupHarvestState extends Menu
         return Item::create()
             ->title(self::stateTitle())
             ->subtitle(self::stateSubtitle())
-            ->icon(Icon::create('resources/icons/harvest.png'))
+            ->icon(Icon::create('resources/icons/toggl.png'))
             ->arg('do')
             ->variable('timer_action', 'exit');
     }
 
     private static function stateTitle()
     {
-        return 'Harvest ' . (self::toEnable() ? 'ENABLED!' : 'DISABLED!');
+        return 'Toggl ' . (self::toEnable() ? 'ENABLED!' : 'DISABLED!');
     }
 
     protected static function stateSubtitle()
     {
-        return (self::toEnable() ? 'Other services disabled. ': '') . 'You may press enter to quit the workflow';
+        return (self::toEnable() ? 'Other services disabled. ' : '') . 'You may press enter to quit the workflow';
     }
 
     private static function back()
     {
         return Item::create()
             ->title('Back')
-            ->subtitle('Go back to Harvest options')
-            ->arg('setup_harvest')
-            ->icon(Icon::create('resources/icons/harvest.png'));
+            ->subtitle('Go back to Toggl options')
+            ->arg('toggl_setup')
+            ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
     protected static function toEnable()
     {
-        return getenv('harvest_enabled') === 'true';
+        return getenv('toggl_enabled') === 'true';
     }
 }

@@ -1,30 +1,30 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Harvest;
 
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupHarvestAccountId extends Menu
+class SetupApitoken extends Menu
 {
     public static function scriptFilter()
     {
         ScriptFilter::add(
-            self::accountId(),
+            self::apitoken(),
             self::back()
         );
     }
 
-    private static function accountId()
+    private static function apitoken()
     {
         global $argv;
 
         return Item::create()
-            ->title('Enter your Account ID above')
+            ->title('Enter your API token above')
             ->subtitle('Save ' . self::userInput())
-            ->arg('setup_harvest_account_id_save')
-            ->variable('harvest_account_id', self::userInput())
+            ->arg('harvest_setup_apitoken_save')
+            ->variable('harvest_apitoken', self::userInput())
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
 
@@ -33,7 +33,7 @@ class SetupHarvestAccountId extends Menu
         return Item::create()
             ->title('Back')
             ->subtitle('Go back to Harvest credentials options')
-            ->arg('setup_harvest_credentials')
+            ->arg('harvest_setup_credentials')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
 }

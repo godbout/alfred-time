@@ -24,7 +24,7 @@ class Setup extends Menu
             ->title('Setup Toggl')
             ->subtitle('')
             ->icon(Icon::create('resources/icons/toggl.png'))
-            ->arg('setup_toggl');
+            ->arg('toggl_setup');
     }
 
     private static function harvest()
@@ -33,6 +33,6 @@ class Setup extends Menu
             ->title('Setup Harvest')
             ->subtitle('')
             ->icon(Icon::create('resources/icons/harvest.png'))
-            ->arg('setup_harvest');
+            ->arg('harvest_setup');
     }
 }

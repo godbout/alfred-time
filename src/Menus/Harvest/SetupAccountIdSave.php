@@ -1,13 +1,14 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Harvest;
 
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupHarvestAccountIdSave extends Menu
+class SetupAccountIdSave extends Menu
 {
     public static function scriptFilter()
     {
@@ -39,7 +40,7 @@ class SetupHarvestAccountIdSave extends Menu
         return Item::create()
             ->title('Back')
             ->subtitle('Go back to Harvest credentials options')
-            ->arg('setup_harvest_credentials')
+            ->arg('harvest_setup_credentials')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
 }

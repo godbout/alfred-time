@@ -1,13 +1,14 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Harvest;
 
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupHarvest extends Menu
+class Setup extends Menu
 {
     public static function scriptFilter()
     {
@@ -23,7 +24,7 @@ class SetupHarvest extends Menu
         return Item::create()
             ->title(self::credentialsTitle())
             ->subtitle('API token and Account ID')
-            ->arg('setup_harvest_credentials')
+            ->arg('harvest_setup_credentials')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }
 
@@ -45,7 +46,7 @@ class SetupHarvest extends Menu
         return Item::create()
             ->title(self::stateTitle())
             ->subtitle(self::stateSubtitle())
-            ->arg('setup_harvest_state')
+            ->arg('harvest_setup_state')
             ->variable('harvest_enabled', Workflow::getConfig()->read('harvest.is_active') ? 'false' : 'true')
             ->icon(Icon::create('resources/icons/harvest.png'));
     }

@@ -108,55 +108,55 @@ class TestCase extends BaseTestCase
 
     protected function reachTogglSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=setup_toggl');
+        return $this->reachWorkflowMenu('action=toggl_setup');
     }
 
     protected function reachHarvestSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=setup_harvest');
+        return $this->reachWorkflowMenu('action=harvest_setup');
     }
 
     protected function reachTogglApikeySetupMenu()
     {
-        return $this->reachWorkflowMenu('action=setup_toggl_apikey');
+        return $this->reachWorkflowMenu('action=toggl_setup_apikey');
     }
 
     protected function reachHarvestCredentialsSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=setup_harvest_credentials');
+        return $this->reachWorkflowMenu('action=harvest_setup_credentials');
     }
 
     protected function reachTogglStateSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=setup_toggl_state'], (array) $envVariables);
+        $envVariables = array_merge(['action=toggl_setup_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestStateSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=setup_harvest_state'], (array) $envVariables);
+        $envVariables = array_merge(['action=harvest_setup_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=setup_toggl_apikey_save'], (array) $envVariables);
+        $envVariables = array_merge(['action=toggl_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestApitokenSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=setup_harvest_apitoken_save'], (array) $envVariables);
+        $envVariables = array_merge(['action=harvest_setup_apitoken_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestAccountIdSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=setup_harvest_account_id_save'], (array) $envVariables);
+        $envVariables = array_merge(['action=harvest_setup_account_id_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }

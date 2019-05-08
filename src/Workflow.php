@@ -134,9 +134,16 @@ class Workflow
 
     private static function getCurrentMenuClass()
     {
-        $action = getenv('action');
+        $args = explode('_', getenv('action'));
 
-        return __NAMESPACE__ . '\\Menus\\' . (self::getMenuClassName($action) ?: 'Entrance');
+        if (in_array($args[0], self::SERVICES)) {
+            $service = ucfirst($args[0]);
+            $action = substr(getenv('action'), strlen($args[0]));
+
+            return __NAMESPACE__ . "\\Menus\\$service\\" . self::getMenuClassName($action);
+        }
+
+        return __NAMESPACE__ . "\\Menus\\" . (self::getMenuClassName(getenv('action')) ?: 'Entrance');
     }
 
     private static function getMenuClassName($action)

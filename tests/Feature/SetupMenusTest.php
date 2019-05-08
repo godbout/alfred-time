@@ -30,8 +30,8 @@ class SetupMenusTest extends TestCase
     {
         $output = $this->reachWorkflowSetupMenu();
 
-        $this->assertStringContainsString('"setup_toggl"', $output);
-        $this->assertStringContainsString('"setup_harvest"', $output);
+        $this->assertStringContainsString('"toggl_setup"', $output);
+        $this->assertStringContainsString('"harvest_setup"', $output);
     }
 
     /** @test */
@@ -39,8 +39,8 @@ class SetupMenusTest extends TestCase
     {
         $output = $this->reachTogglSetupMenu();
 
-        $this->assertStringContainsString('"setup_toggl_apikey"', $output);
-        $this->assertStringContainsString('"setup_toggl_state"', $output);
+        $this->assertStringContainsString('toggl_setup_apikey"', $output);
+        $this->assertStringContainsString('toggl_setup_state"', $output);
         $this->assertStringContainsString('"setup"', $output);
     }
 
@@ -49,8 +49,8 @@ class SetupMenusTest extends TestCase
     {
         $output = $this->reachTogglApikeySetupMenu();
 
-        $this->assertStringContainsString('"setup_toggl_apikey_save"', $output);
-        $this->assertStringContainsString('"setup_toggl"', $output);
+        $this->assertStringContainsString('toggl_setup_apikey_save"', $output);
+        $this->assertStringContainsString('toggl_setup"', $output);
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class SetupMenusTest extends TestCase
     {
         $output = $this->reachTogglApikeySavedMenu();
 
-        $this->assertStringContainsString('"setup_toggl"', $output);
+        $this->assertStringContainsString('toggl_setup"', $output);
     }
 
     /** @test */
@@ -66,6 +66,6 @@ class SetupMenusTest extends TestCase
     {
         $output = $this->reachTogglStateSavedMenu();
 
-        $this->assertStringContainsString('"setup_toggl"', $output);
+        $this->assertStringContainsString('toggl_setup"', $output);
     }
 }

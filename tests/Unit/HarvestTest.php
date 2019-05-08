@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Godbout\Alfred\Time\Services\Harvest;
 use Godbout\Alfred\Time\Workflow;
+use Godbout\Alfred\Time\Services\Harvest;
 
 class HarvestTest extends TestCase
 {

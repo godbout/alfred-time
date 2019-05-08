@@ -83,7 +83,7 @@ class TogglTest extends TestCase
 
     /**
      * @test
-     * @group timerServicesApiCalls
+     * group timerServicesApiCalls
      */
     public function it_can_return_the_list_of_past_timers()
     {

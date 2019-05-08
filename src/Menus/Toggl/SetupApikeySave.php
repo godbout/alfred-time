@@ -1,13 +1,14 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Toggl;
 
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupTogglApikeySave extends Menu
+class SetupApikeySave extends Menu
 {
     public static function scriptFilter()
     {
@@ -39,7 +40,7 @@ class SetupTogglApikeySave extends Menu
         return Item::create()
             ->title('Back')
             ->subtitle('Go back to Toggl Setup')
-            ->arg('setup_toggl')
+            ->arg('toggl_setup')
             ->icon(Icon::create('resources/icons/toggl.png'));
     }
 }

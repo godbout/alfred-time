@@ -1,13 +1,14 @@
 <?php
 
-namespace Godbout\Alfred\Time\Menus;
+namespace Godbout\Alfred\Time\Menus\Toggl;
 
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
-class SetupToggl extends Menu
+class Setup extends Menu
 {
     public static function scriptFilter()
     {
@@ -23,7 +24,7 @@ class SetupToggl extends Menu
         return Item::create()
             ->title(self::apikeyTitle())
             ->subtitle(self::apikeySubtitle())
-            ->arg('setup_toggl_apikey')
+            ->arg('toggl_setup_apikey')
             ->icon(Icon::create('resources/icons/toggl.png'));
     }
 
@@ -44,7 +45,7 @@ class SetupToggl extends Menu
         return Item::create()
             ->title(self::stateTitle())
             ->subtitle(self::stateSubtitle())
-            ->arg('setup_toggl_state')
+            ->arg('toggl_setup_state')
             ->variable('toggl_enabled', Workflow::getConfig()->read('toggl.is_active') ? 'false' : 'true')
             ->icon(Icon::create('resources/icons/toggl.png'));
     }
