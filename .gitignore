@@ -1,9 +1,11 @@
+/vendor
+.phpunit.result.cache
+.php_cs.cache
+
 .DS_Store
 
-node_modules/
+build
 
-tests/_output/*
-vendor/
+.env
 
-.php_cs.cache
-.phpunit.result.cache
+tests/*/config.json

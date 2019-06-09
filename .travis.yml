@@ -1,10 +1,15 @@
 language: php
 
+stage: "Tests not hitting api endpoints"
+
 php:
+  - 7.1
   - 7.2
   - 7.3
 
 env:
+  global:
+    - alfred_workflow_data=./tests/mo.com.sleeplessmind.time
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
@@ -14,7 +19,34 @@ before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpunit --group=default --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+
+jobs:
+  include:
+    - stage: "Tests hitting api endpoints — 71 lowest"
+      php: 7.1
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - stage: "Tests hitting api endpoints — 72 lowest"
+      php: 7.2
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - stage: "Tests hitting api endpoints — 73 lowest"
+      php: 7.3
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - stage: "Tests hitting api endpoints — 71"
+      php: 7.1
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""
+    - stage: "Tests hitting api endpoints — 72"
+      php: 7.2
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""
+    - stage: "Tests hitting api endpoints — 73"
+      php: 7.3
+      script: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-text --coverage-clover=coverage.clover
+      env: COMPOSER_FLAGS=""

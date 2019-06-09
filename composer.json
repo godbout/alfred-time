@@ -1,15 +1,50 @@
 {
+    "name": "godbout/alfred-time",
+    "description": "Track your time easily with Alfred",
+    "keywords": [
+        "alfred",
+        "workflow",
+        "time",
+        "toggl",
+        "harvest"
+    ],
+    "homepage": "https://github.com/godbout/alfred-time",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Guill Lo",
+            "email": "guill@sleeplessmind.com.mo",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "joetannenbaum/alfred-workflow": "dev-master",
-        "guzzlehttp/guzzle": "^6.2"
+        "php": "^7.1",
+        "godbout/alfred-workflow-scriptfilter": "^1.5",
+        "godbout/alfred-workflow-config": "^1.1.0",
+        "morningtrain/toggl-api": "^1.0.4",
+        "vlucas/phpdotenv": "^3.3",
+        "wearerequired/harvest-api-php-client": "^0.1.0",
+        "php-http/guzzle6-adapter": "^2.0",
+        "php-http/client-common": "^2.0",
+        "nesbot/carbon": "^2.16"
     },
     "require-dev": {
-        "codedungeon/phpunit-result-printer": "^0.26.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^7.5",
+        "codedungeon/phpunit-result-printer": "^0.26.0"
     },
     "autoload": {
         "psr-4": {
-            "AlfredTime\\": "src/"
+            "Godbout\\Alfred\\Time\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --group=default,timerServicesApiCalls --color=always",
+        "format": "php-cs-fixer fix src tests -vvv --config=.php_cs.dist --ansi"
     }
 }
