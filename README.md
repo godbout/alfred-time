@@ -38,7 +38,7 @@
 
 ![stop](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/stop.gif)
 
-* Continue a timer
+* Continue a timer (using the ⌘ modifier)
 
 ![continue](https://github.com/godbout/alfred-time/blob/master/resources/screenshots/continue.gif)
 
