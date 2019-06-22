@@ -48,13 +48,15 @@ class WorkflowTest extends TestCase
     /** @test */
     public function it_can_disable_all_services_at_once()
     {
-        Workflow::enableService('toggl');
-        Workflow::enableService('harvest');
+        foreach (Workflow::services() as $service) {
+            Workflow::enableService($service);
+        }
 
         Workflow::disableAllServices();
 
-        $this->assertFalse(Workflow::getConfig()->read('toggl.is_active'));
-        $this->assertFalse(Workflow::getConfig()->read('harvest.is_active'));
+        foreach (Workflow::services() as $service) {
+            $this->assertFalse(Workflow::getConfig()->read("$service.is_active"));
+        }
     }
 
     /** @test */
@@ -81,10 +83,12 @@ class WorkflowTest extends TestCase
     {
         Workflow::enableService('toggl');
         Workflow::enableService('harvest');
+        Workflow::enableService('everhour');
 
-        $this->assertTrue(Workflow::getConfig()->read('harvest.is_active'));
+        $this->assertTrue(Workflow::getConfig()->read('everhour.is_active'));
+        $this->assertFalse(Workflow::getConfig()->read('harvest.is_active'));
         $this->assertFalse(Workflow::getConfig()->read('toggl.is_active'));
 
-        $this->assertSame('harvest', (string) Workflow::serviceEnabled());
+        $this->assertSame('everhour', (string) Workflow::serviceEnabled());
     }
 }

@@ -32,6 +32,7 @@ class SetupMenusTest extends TestCase
 
         $this->assertStringContainsString('"toggl_setup"', $output);
         $this->assertStringContainsString('"harvest_setup"', $output);
+        $this->assertStringContainsString('"everhour_setup"', $output);
     }
 
     /** @test */

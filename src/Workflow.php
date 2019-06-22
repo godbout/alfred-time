@@ -6,12 +6,14 @@ use Godbout\Alfred\Workflow\Config;
 use Godbout\Alfred\Time\Services\Toggl;
 use Godbout\Alfred\Time\Services\Harvest;
 use Godbout\Alfred\Workflow\ScriptFilter;
+use Godbout\Alfred\Time\Services\Everhour;
 
 class Workflow
 {
     const SERVICES = [
         'toggl',
-        'harvest'
+        'harvest',
+        'everhour'
     ];
 
     private static $instance = null;
@@ -91,6 +93,11 @@ class Workflow
         return self::getInstance()->serviceStatus($service, false);
     }
 
+    public static function services()
+    {
+        return self::SERVICES;
+    }
+
     protected function serviceStatus($service, $status = false)
     {
         self::getInstance()->disableAllServices();
@@ -112,13 +119,21 @@ class Workflow
     public static function serviceEnabled()
     {
         if (self::getInstance()->getConfig()->read('toggl.is_active')) {
-            return new Toggl(Workflow::getConfig()->read('toggl.api_token'));
+            return new Toggl(
+                Workflow::getConfig()->read('toggl.api_token')
+            );
         }
 
         if (self::getInstance()->getConfig()->read('harvest.is_active')) {
             return new Harvest(
                 Workflow::getConfig()->read('harvest.account_id'),
                 Workflow::getConfig()->read('harvest.api_token')
+            );
+        }
+
+        if (self::getInstance()->getConfig()->read('everhour.is_active')) {
+            return new Everhour(
+                Workflow::getConfig()->read('everhour.api_token')
             );
         }
 

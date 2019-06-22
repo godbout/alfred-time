@@ -91,6 +91,11 @@ class TestCase extends BaseTestCase
         Workflow::getConfig()->write('harvest.api_token', $apitoken);
     }
 
+    protected function everHourApikey($apikey = '507f-ef41-c355b1-992023-06d0dff9')
+    {
+        Workflow::getConfig()->write('everhour.api_token', $apikey);
+    }
+
     protected function harvestAccountId($accountId = '987654')
     {
         Workflow::getConfig()->write('harvest.account_id', $accountId);
@@ -114,6 +119,11 @@ class TestCase extends BaseTestCase
     protected function reachHarvestSetupMenu()
     {
         return $this->reachWorkflowMenu('action=harvest_setup');
+    }
+
+    protected function reachEverhourSetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=everhour_setup');
     }
 
     protected function reachTogglApikeySetupMenu()

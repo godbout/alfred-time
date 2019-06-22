@@ -12,10 +12,9 @@ class Setup extends Menu
     {
         ScriptFilter::add(
             self::toggl(),
-            self::harvest()
+            self::harvest(),
+            self::everhour()
         );
-
-        ScriptFilter::sortItems();
     }
 
     private static function toggl()
@@ -34,5 +33,14 @@ class Setup extends Menu
             ->subtitle('')
             ->icon(Icon::create('resources/icons/harvest.png'))
             ->arg('harvest_setup');
+    }
+
+    private static function everhour()
+    {
+        return Item::create()
+            ->title('Setup Everhour')
+            ->subtitle('')
+            ->icon(Icon::create('resources/icons/everhour.png'))
+            ->arg('everhour_setup');
     }
 }
