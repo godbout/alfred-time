@@ -236,6 +236,13 @@ class TestCase extends BaseTestCase
         putenv('timer_tag_id=' . getenv('HARVEST_TAG_ID'));
     }
 
+    protected function setEverhourTimerAttributes()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project_id=' . getenv('EVERHOUR_PROJECT_ID'));
+        putenv('timer_tag_id=' . getenv('EVERHOUR_TAG_ID'));
+    }
+
     private function buildWorkflowWorld($envVariables = [], $arguments = [])
     {
         $this->buildEnvironmentVariables((array) $envVariables);

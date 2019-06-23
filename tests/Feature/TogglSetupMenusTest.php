@@ -69,6 +69,16 @@ class TogglSetupMenusTest extends TestCase
     }
 
     /** @test */
+    public function it_sets_the_toggl_enabled_argument_to_true_if_the_user_enables_toggl()
+    {
+        Workflow::disableService('toggl');
+
+        $output = $this->reachTogglSetupMenu();
+
+        $this->assertStringContainsString('"toggl_enabled":"true"', $output);
+    }
+
+    /** @test */
     public function it_can_disable_toggl()
     {
         putenv('toggl_enabled=false');
@@ -78,6 +88,16 @@ class TogglSetupMenusTest extends TestCase
         $fileContentAsArray = json_decode(file_get_contents($this->configFile), true);
         $this->assertArrayHasKey('is_active', $fileContentAsArray['toggl']);
         $this->assertSame(false, $fileContentAsArray['toggl']['is_active']);
+    }
+
+    /** @test */
+    public function it_sets_the_toggl_enabled_argument_to_false_if_the_user_disables_toggl()
+    {
+        Workflow::enableService('toggl');
+
+        $output = $this->reachTogglSetupMenu();
+
+        $this->assertStringContainsString('"toggl_enabled":"false"', $output);
     }
 
     /** @test */

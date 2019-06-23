@@ -16,14 +16,4 @@ class WorkflowTest extends TestCase
 
         $this->assertStringContainsString('toggl', Workflow::serviceEnabled());
     }
-
-    /** @test */
-    public function it_sets_the_toggl_enabled_argument_to_true_if_the_user_enables_toggl()
-    {
-        Workflow::disableService('toggl');
-
-        $output = $this->reachTogglSetupMenu();
-
-        $this->assertStringContainsString('"toggl_enabled":"true"', $output);
-    }
 }
