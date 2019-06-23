@@ -136,6 +136,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('action=harvest_setup_credentials');
     }
 
+    protected function reachEverhourApikeySetupMenu()
+    {
+        return $this->reachWorkflowMenu('action=everhour_setup_apikey');
+    }
+
     protected function reachTogglStateSavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=toggl_setup_state'], (array) $envVariables);
@@ -150,6 +155,13 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu($envVariables);
     }
 
+    protected function reachEverhourStateSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['action=everhour_setup_state'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=toggl_setup_apikey_save'], (array) $envVariables);
@@ -160,6 +172,13 @@ class TestCase extends BaseTestCase
     protected function reachHarvestApitokenSavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['action=harvest_setup_apitoken_save'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
+    protected function reachEverhourApikeySavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['action=everhour_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
