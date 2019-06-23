@@ -26,32 +26,13 @@ class SetupMenusTest extends TestCase
     }
 
     /** @test */
-    public function it_proposes_to_setup_toggl_and_harvest_if_setup_is_accepted_and_offers_a_go_back_option()
+    public function it_proposes_to_setup_all_services_if_setup_is_accepted_and_offers_a_go_back_option()
     {
         $output = $this->reachWorkflowSetupMenu();
 
-        $this->assertStringContainsString('"toggl_setup"', $output);
-        $this->assertStringContainsString('"harvest_setup"', $output);
-        $this->assertStringContainsString('"everhour_setup"', $output);
-    }
-
-    /** @test */
-    public function it_proposes_to_enter_toggl_options_if_toggl_setup_is_chosen_and_offers_a_go_back_option()
-    {
-        $output = $this->reachTogglSetupMenu();
-
-        $this->assertStringContainsString('toggl_setup_apikey"', $output);
-        $this->assertStringContainsString('toggl_setup_state"', $output);
-        $this->assertStringContainsString('"setup"', $output);
-    }
-
-    /** @test */
-    public function it_proposes_to_save_toggl_api_key_if_setup_toggl_apikey_is_chosen_and_offers_a_go_back_options()
-    {
-        $output = $this->reachTogglApikeySetupMenu();
-
-        $this->assertStringContainsString('toggl_setup_apikey_save"', $output);
-        $this->assertStringContainsString('toggl_setup"', $output);
+        foreach (Workflow::services() as $service) {
+            $this->assertStringContainsString("\"{$service}_setup\"", $output);
+        }
     }
 
     /** @test */

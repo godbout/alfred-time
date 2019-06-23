@@ -8,6 +8,16 @@ use Godbout\Alfred\Time\Workflow;
 class TogglSetupMenusTest extends TestCase
 {
     /** @test */
+    public function it_proposes_to_enter_service_options_if_service_setup_is_chosen_and_offers_a_go_back_option()
+    {
+        $output = $this->reachTogglSetupMenu();
+
+        $this->assertStringContainsString('toggl_setup_apikey"', $output);
+        $this->assertStringContainsString('toggl_setup_state"', $output);
+        $this->assertStringContainsString('"setup"', $output);
+    }
+
+    /** @test */
     public function it_shows_creating_an_api_key_if_none_is_saved_in_the_config_yet()
     {
         $this->togglApikey('');
@@ -25,6 +35,15 @@ class TogglSetupMenusTest extends TestCase
         $output = $this->reachTogglSetupMenu();
 
         $this->assertStringContainsString('"subtitle":"Current API KEY: e695b4364ad..."', $output);
+    }
+
+    /** @test */
+    public function it_proposes_to_save_service_api_key_if_service_setup_apikey_is_chosen_and_offers_a_go_back_options()
+    {
+        $output = $this->reachTogglApikeySetupMenu();
+
+        $this->assertStringContainsString('toggl_setup_apikey_save"', $output);
+        $this->assertStringContainsString('toggl_setup"', $output);
     }
 
     /** @test */

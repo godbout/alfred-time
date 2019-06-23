@@ -8,6 +8,16 @@ use Godbout\Alfred\Time\Workflow;
 class HarvestSetupMenusTest extends TestCase
 {
     /** @test */
+    public function it_proposes_to_enter_service_options_if_service_setup_is_chosen_and_offers_a_go_back_option()
+    {
+        $output = $this->reachHarvestSetupMenu();
+
+        $this->assertStringContainsString('harvest_setup_credentials"', $output);
+        $this->assertStringContainsString('harvest_setup_state"', $output);
+        $this->assertStringContainsString('"setup"', $output);
+    }
+
+    /** @test */
     public function it_shows_setting_up_credentials_as_a_menu_option()
     {
         $this->harvestApitoken('');
