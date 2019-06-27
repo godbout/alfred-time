@@ -68,20 +68,22 @@ class EverhourTest extends TestCase
         $this->assertSame(getenv('EVERHOUR_TAG_NAME'), $tags[getenv('EVERHOUR_TAG_ID')]);
     }
 
-    // /**
-    //  * @test
-    //  * group timerServicesApiCalls
-    //  */
-    // public function it_can_return_the_list_of_past_timers()
-    // {
-    //     $timerId = $this->toggl->startTimer();
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_return_the_list_of_past_timers()
+    {
+        $this->markTestIncomplete('Continuing a timer is different with Everhour');
 
-    //     $latestTimer = $this->toggl->pastTimers()[0];
+        $timerId = $this->toggl->startTimer();
 
-    //     $this->assertSame($timerId, $latestTimer->id);
-    //     $this->assertObjectHasAttribute('description', $latestTimer);
-    //     $this->assertObjectHasAttribute('duration', $latestTimer);
-    // }
+        $latestTimer = $this->toggl->pastTimers()[0];
+
+        $this->assertSame($timerId, $latestTimer->id);
+        $this->assertObjectHasAttribute('description', $latestTimer);
+        $this->assertObjectHasAttribute('duration', $latestTimer);
+    }
 
     /**
      * @test
@@ -116,15 +118,36 @@ class EverhourTest extends TestCase
         $this->assertNotFalse($this->everhour->runningTimer());
     }
 
+    /**
+     * @test
+     * group timerServicesApiCalls
+     */
+    public function it_can_continue_a_timer()
+    {
+        $this->markTestIncomplete('Continuing a timer is different with Everhour');
+
+        $timerId = $this->toggl->startTimer();
+
+        $this->assertTrue($this->toggl->stopCurrentTimer());
+        $this->assertFalse($this->toggl->runningTimer());
+
+        $restartedTimerId = $this->toggl->continueTimer($timerId);
+
+        $this->assertNotFalse($restartedTimerId);
+        $this->assertSame($restartedTimerId, $this->toggl->runningTimer());
+
+        $this->toggl->deleteTimer($timerId);
+    }
+
     /** @test */
     public function a_Everhour_object_returns_toggl_as_a_string()
     {
         $this->assertSame('everhour', (string) $this->everhour);
     }
 
-    // /** @test */
-    // public function it_allows_empty_project_for_timer()
-    // {
-    //     $this->assertTrue($this->toggl->allowsEmptyProject);
-    // }
+    /** @test */
+    public function it_allows_empty_project_for_timer()
+    {
+        $this->assertTrue($this->everhour->allowsEmptyProject);
+    }
 }

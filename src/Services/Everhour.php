@@ -28,7 +28,7 @@ class Everhour extends TimerService
             $projects = json_decode($response->getBody()->getContents());
 
             return array_column($projects, 'name', 'id');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [];
         }
     }
