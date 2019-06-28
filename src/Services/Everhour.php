@@ -3,6 +3,7 @@
 namespace Godbout\Alfred\Time\Services;
 
 use GuzzleHttp\Client;
+use Carbon\CarbonInterval;
 
 class Everhour extends TimerService
 {
@@ -52,7 +53,19 @@ class Everhour extends TimerService
 
     public function pastTimers()
     {
-        return [];
+        try {
+            $pastTimers = [];
+
+            $response = $this->client->get('users/me');
+            $me = json_decode($response->getBody()->getContents());
+
+            $response = $this->client->get("users/{$me->id}/time?limit=20&offset=0");
+            $everhourTimers = json_decode($response->getBody()->getContents());
+
+            return $this->convertToPastTimers($everhourTimers);
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function startTimer()
@@ -87,7 +100,7 @@ class Everhour extends TimerService
             if (! isset($timer->taskTime) || $timer->status !== 'stopped') {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -104,7 +117,7 @@ class Everhour extends TimerService
             if (! isset($timer->duration) || $timer->status !== 'active') {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -119,5 +132,32 @@ class Everhour extends TimerService
     public function deleteTimer($timerId)
     {
         return false;
+    }
+
+    protected function convertToPastTimers($everhourTimers)
+    {
+        $projects = $this->projects();
+
+        return array_map(function ($everhourTimer) use ($projects) {
+            return $this->buildPastTimerObject($everhourTimer, $projects);
+        }, $everhourTimers);
+    }
+
+    protected function buildPastTimerObject($everhourTimer, $projects)
+    {
+        $pastTimer['id'] = $everhourTimer->id;
+        $pastTimer['description'] = $everhourTimer->comment ?? null;
+
+        if (isset($everhourTimer->task)) {
+            $pastTimer['project_id'] = $everhourTimer->task->projects[0];
+            $pastTimer['project_name'] = $projects[$everhourTimer->task->projects[0]];
+            $pastTimer['tags'] = $everhourTimer->task->name;
+        }
+
+        $pastTimer['duration'] = CarbonInterval::seconds(
+            floor($everhourTimer->time)
+        )->cascade()->format('%H:%I:%S');
+
+        return (object) $pastTimer;
     }
 }

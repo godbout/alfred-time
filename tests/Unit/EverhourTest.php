@@ -19,15 +19,6 @@ class EverhourTest extends TestCase
         $this->setEverhourTimerAttributes();
     }
 
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        if ($timerId = $this->everhour->runningTimer()) {
-            $this->everhour->stopCurrentTimer();
-        }
-    }
-
     /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
@@ -38,7 +29,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_returns_projects_if_the_service_can_authenticate()
     {
@@ -58,7 +49,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_returns_tags_if_the_service_can_authenticate()
     {
@@ -70,33 +61,34 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_return_the_list_of_past_timers()
     {
-        $this->markTestIncomplete('Continuing a timer is different with Everhour');
+        $this->everhour->startTimer();
+        $this->everhour->stopCurrentTimer();
 
-        $timerId = $this->toggl->startTimer();
+        $latestTimer = $this->everhour->pastTimers()[0];
 
-        $latestTimer = $this->toggl->pastTimers()[0];
-
-        $this->assertSame($timerId, $latestTimer->id);
+        $this->assertNotNull($latestTimer->id);
         $this->assertObjectHasAttribute('description', $latestTimer);
         $this->assertObjectHasAttribute('duration', $latestTimer);
     }
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_start_a_timer()
     {
         $this->assertNotFalse($this->everhour->startTimer());
+
+        $this->everhour->stopCurrentTimer();
     }
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_stop_a_timer()
     {
@@ -108,7 +100,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_get_the_running_timer()
     {
@@ -116,6 +108,8 @@ class EverhourTest extends TestCase
 
         $timerId = $this->everhour->startTimer();
         $this->assertNotFalse($this->everhour->runningTimer());
+
+        $this->everhour->stopCurrentTimer();
     }
 
     /**
