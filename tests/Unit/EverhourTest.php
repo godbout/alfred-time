@@ -114,23 +114,22 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_continue_a_timer()
     {
-        $this->markTestIncomplete('Continuing a timer is different with Everhour');
+        $this->everhour->startTimer();
+        $this->everhour->stopCurrentTimer();
+        $previousTimer = $this->everhour->pastTimers()[0];
 
-        $timerId = $this->toggl->startTimer();
+        $success = $this->everhour->continueTimer();
+        $this->everhour->stopCurrentTimer();
+        $latestTimer = $this->everhour->pastTimers()[0];
 
-        $this->assertTrue($this->toggl->stopCurrentTimer());
-        $this->assertFalse($this->toggl->runningTimer());
-
-        $restartedTimerId = $this->toggl->continueTimer($timerId);
-
-        $this->assertNotFalse($restartedTimerId);
-        $this->assertSame($restartedTimerId, $this->toggl->runningTimer());
-
-        $this->toggl->deleteTimer($timerId);
+        $this->assertTrue($success);
+        $this->assertSame($previousTimer->description, $latestTimer->description);
+        $this->assertSame($previousTimer->project_id, $latestTimer->project_id);
+        $this->assertSame($previousTimer->tags, $latestTimer->tags);
     }
 
     /** @test */

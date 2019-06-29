@@ -124,9 +124,14 @@ class Everhour extends TimerService
         return true;
     }
 
-    public function continueTimer($timerId)
+    public function continueTimer($timerId = null)
     {
-        return false;
+        /**
+         * Timer attributes are stored in env variables
+         * gathered in startTimer.
+         */
+
+        return $this->startTimer();
     }
 
     public function deleteTimer($timerId)
@@ -151,6 +156,7 @@ class Everhour extends TimerService
         if (isset($everhourTimer->task)) {
             $pastTimer['project_id'] = $everhourTimer->task->projects[0];
             $pastTimer['project_name'] = $projects[$everhourTimer->task->projects[0]];
+            $pastTimer['tag_id'] = $everhourTimer->task->id;
             $pastTimer['tags'] = $everhourTimer->task->name;
         }
 
