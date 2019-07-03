@@ -149,7 +149,7 @@ class Toggl extends TimerService
     protected function buildPastTimerObject($togglTimer, $projects)
     {
         $pastTimer['id'] = $togglTimer->id;
-        $pastTimer['description'] = $togglTimer->description ?? null;
+        $pastTimer['description'] = $togglTimer->description ?? '';
         $pastTimer['duration'] = CarbonInterval::seconds($togglTimer->duration)->cascade()->format('%H:%I:%S');
 
         if (isset($togglTimer->pid)) {
