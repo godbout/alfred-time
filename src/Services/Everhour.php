@@ -151,7 +151,7 @@ class Everhour extends TimerService
     protected function buildPastTimerObject($everhourTimer, $projects)
     {
         $pastTimer['id'] = $everhourTimer->id;
-        $pastTimer['description'] = $everhourTimer->comment ?? null;
+        $pastTimer['description'] = $everhourTimer->comment ?? '';
 
         if (isset($everhourTimer->task)) {
             $pastTimer['project_id'] = $everhourTimer->task->projects[0];
