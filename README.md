@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-    Basic workflow to start and stop timers for (currently) <a href="https://toggl.com/">Toggl</a> or <a href="https://www.getharvest.com/">Harvest</a> services through <a href="http://alfredapp.com/">Alfred 4</a>.
+    Basic workflow to start, stop and continue timers for (currently) <a href="https://toggl.com/">Toggl</a>, <a href="https://www.getharvest.com/">Harvest</a> or <a href="https://www.everhour.com/">Everhour</a> services through <a href="http://alfredapp.com/">Alfred 4</a>.
 </p>
 
 ---
