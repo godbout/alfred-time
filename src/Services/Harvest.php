@@ -93,8 +93,6 @@ class Harvest extends TimerService
 
             if (! isset($timer['id'])) {
                 throw new \Exception("Can't stop current running timer.", 1);
-
-                return false;
             }
 
             return true;
