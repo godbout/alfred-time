@@ -114,7 +114,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * @group timerServicesApiCalls
+     * group timerServicesApiCalls
      */
     public function it_can_continue_a_timer()
     {
@@ -127,7 +127,7 @@ class EverhourTest extends TestCase
         $latestTimer = $this->everhour->pastTimers()[0];
 
         $this->assertTrue($success);
-        $this->assertSame($previousTimer->description, $latestTimer->description);
+        $this->assertContains($previousTimer->description, $latestTimer->description);
         $this->assertSame($previousTimer->project_id, $latestTimer->project_id);
         $this->assertSame($previousTimer->tags, $latestTimer->tags);
     }
