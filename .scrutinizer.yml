@@ -1,7 +1,7 @@
 build:
   environment:
     php:
-      version: "7.1.11"
+      version: "7.2"
   nodes:
     analysis:
       tests:
