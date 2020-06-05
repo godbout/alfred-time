@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "106ad482fb6f9d77ba72394e96248251",
+    "content-hash": "a19c3d13b019ad42a8174cb6c3db11b7",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -1873,20 +1873,21 @@
         },
         {
             "name": "wearerequired/harvest-api-php-client",
-            "version": "0.1.1",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wearerequired/harvest-api-php-client.git",
-                "reference": "780ed06fa57835f4f55e4a3aa014544edf820f25"
+                "reference": "f08aa69ffade753948f070e59e91a9a7a3a3fd64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wearerequired/harvest-api-php-client/zipball/780ed06fa57835f4f55e4a3aa014544edf820f25",
-                "reference": "780ed06fa57835f4f55e4a3aa014544edf820f25",
+                "url": "https://api.github.com/repos/wearerequired/harvest-api-php-client/zipball/f08aa69ffade753948f070e59e91a9a7a3a3fd64",
+                "reference": "f08aa69ffade753948f070e59e91a9a7a3a3fd64",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1",
+                "ext-json": "*",
+                "php": "^7.1",
                 "php-http/client-common": "^1.6 || ^2.0",
                 "php-http/client-implementation": "^1.0",
                 "php-http/discovery": "^1.0",
@@ -1895,9 +1896,13 @@
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
                 "guzzlehttp/psr7": "^1.0",
                 "php-http/guzzle6-adapter": "^1.1 || ^2.0",
-                "php-http/mock-client": "^1.0"
+                "php-http/mock-client": "^1.2",
+                "phpunit/phpunit": "^7.0 | ^8.0 | ^9.0",
+                "slevomat/coding-standard": "^6.3",
+                "squizlabs/php_codesniffer": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -1933,7 +1938,7 @@
                 "Harvest",
                 "api"
             ],
-            "time": "2019-03-19T17:24:57+00:00"
+            "time": "2020-05-05T20:33:50+00:00"
         }
     ],
     "packages-dev": [
