@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://github.com/godbout/alfred-time/releases/latest"><img src="https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat" alt="GitHub Release"></a>
-<a href="https://www.travis-ci.org/godbout/alfred-time"><img src="https://www.travis-ci.org/godbout/alfred-time.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.travis-ci.com/godbout/alfred-time"><img src="https://www.travis-ci.com/godbout/alfred-time.svg?branch=master" alt="Build Status"></a>
 <a href="https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master"><img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
 <a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/coverage.png?b=master" alt="Code Coverage"></a>
 <a href="https://github.com/godbout/alfred-time/releases"><img src="https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat" alt="GitHub Downloads"></a>
