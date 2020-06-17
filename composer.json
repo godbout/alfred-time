@@ -19,8 +19,8 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "godbout/alfred-workflow-scriptfilter": "^2",
+        "php": "^7.2",
+        "godbout/alfred-workflow-workflow": "^1.0",
         "godbout/alfred-workflow-config": "^1.4.0",
         "morningtrain/toggl-api": "^1.0.4",
         "vlucas/phpdotenv": "^3.3.3",
@@ -30,8 +30,8 @@
         "nesbot/carbon": "^2.19"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5",
-        "codedungeon/phpunit-result-printer": "^0.26.0"
+        "phpunit/phpunit": "^8.5",
+        "codedungeon/phpunit-result-printer": "^0.27.0"
     },
     "autoload": {
         "psr-4": {

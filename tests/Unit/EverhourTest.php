@@ -127,7 +127,7 @@ class EverhourTest extends TestCase
         $latestTimer = $this->everhour->pastTimers()[0];
 
         $this->assertTrue($success);
-        $this->assertContains($previousTimer->description, $latestTimer->description);
+        $this->assertStringContainsString($previousTimer->description, $latestTimer->description);
         $this->assertSame($previousTimer->project_id, $latestTimer->project_id);
         $this->assertSame($previousTimer->tags, $latestTimer->tags);
     }

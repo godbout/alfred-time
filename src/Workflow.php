@@ -5,10 +5,11 @@ namespace Godbout\Alfred\Time;
 use Godbout\Alfred\Workflow\Config;
 use Godbout\Alfred\Time\Services\Toggl;
 use Godbout\Alfred\Time\Services\Harvest;
+use Godbout\Alfred\Workflow\BaseWorkflow;
 use Godbout\Alfred\Workflow\ScriptFilter;
 use Godbout\Alfred\Time\Services\Everhour;
 
-class Workflow
+class Workflow extends BaseWorkflow
 {
     const SERVICES = [
         'toggl',
@@ -16,26 +17,14 @@ class Workflow
         'everhour'
     ];
 
-    private static $instance = null;
-
     private $config = null;
-
-    private $scriptFilter = null;
 
 
     protected function __construct()
     {
         $this->config = Config::ifEmptyStartWith(self::getDefaultConfig());
-        $this->scriptFilter = ScriptFilter::create();
-    }
-
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self;
-        }
-
-        return self::$instance;
+        
+        parent::__construct();
     }
 
     public static function currentMenu()
@@ -164,16 +153,5 @@ class Workflow
     private static function getMenuClassName($action)
     {
         return str_replace('_', '', ucwords($action === false ? 'entrance' : $action, '_'));
-    }
-
-    public static function destroy()
-    {
-        ScriptFilter::destroy();
-
-        self::$instance = null;
-    }
-
-    private function __clone()
-    {
     }
 }

@@ -8,7 +8,7 @@ use Godbout\Alfred\Time\Workflow;
 
 class TimerTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class TimerTest extends TestCase
         $this->setTogglTimerAttributes();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
