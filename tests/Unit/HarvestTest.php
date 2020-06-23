@@ -17,6 +17,8 @@ class HarvestTest extends TestCase
         Workflow::enableService('harvest');
 
         $this->setHarvestTimerAttributes();
+
+        sleep(2);
     }
 
     public function tearDown(): void
