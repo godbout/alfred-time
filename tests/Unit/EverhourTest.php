@@ -17,6 +17,8 @@ class EverhourTest extends TestCase
         Workflow::enableService('everhour');
 
         $this->setEverhourTimerAttributes();
+
+        sleep(5);
     }
 
     /** @test */
