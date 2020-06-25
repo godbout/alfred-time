@@ -4,20 +4,26 @@
     "keywords": [
         "alfred",
         "workflow",
+        "alfred-workflow",
         "time",
         "toggl",
-        "harvest"
+        "harvest",
+        "everhour"
     ],
-    "homepage": "https://github.com/godbout/alfred-time",
+    "homepage": "https://sleeplessmind.com.mo/news/alfred-time-2-0/",
     "license": "MIT",
     "type": "project",
     "authors": [
         {
-            "name": "Guill Lo",
+            "name": "Guillaume Leclerc",
             "email": "guill@sleeplessmind.com.mo",
-            "role": "Developer"
+            "role": "Craftsman"
         }
     ],
+    "support": {
+        "issues": "https://github.com/godbout/alfred-time/issues",
+        "source": "https://github.com/godbout/alfred-time"
+    },
     "require": {
         "php": "^7.2",
         "godbout/alfred-workflow-workflow": "^1.0",
