@@ -40,7 +40,7 @@ class Entrance extends Menu
             ->title('Stop current timer')
             ->subtitle('That timer is currently running!')
             ->arg('do')
-            ->variable('timer_action', 'stop');
+            ->variable('action', 'stop');
     }
 
     private static function startTimer()

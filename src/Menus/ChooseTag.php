@@ -35,7 +35,7 @@ class ChooseTag extends Menu
             ->subtitle('Timer will be created without a tag')
             ->match('')
             ->arg('do')
-            ->variable('timer_action', 'start');
+            ->variable('action', 'start');
     }
 
     private static function getServiceTags($service)
@@ -50,7 +50,7 @@ class ChooseTag extends Menu
                 ->match($name)
                 ->icon(Icon::create("resources/icons/$service.png"))
                 ->arg('do')
-                ->variable('timer_action', 'start');
+                ->variable('action', 'start');
         }
 
         return $tags;

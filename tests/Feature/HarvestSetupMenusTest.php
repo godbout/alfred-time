@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class HarvestSetupMenusTest extends TestCase
 {
@@ -121,7 +121,7 @@ class HarvestSetupMenusTest extends TestCase
         $output = $this->reachHarvestApitokenSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 
     /** @test */
@@ -132,7 +132,7 @@ class HarvestSetupMenusTest extends TestCase
         $output = $this->reachHarvestAccountIdSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 
     /** @test */
@@ -143,6 +143,6 @@ class HarvestSetupMenusTest extends TestCase
         $output = $this->reachHarvestStateSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 }

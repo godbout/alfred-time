@@ -60,7 +60,7 @@ class TestCase extends BaseTestCase
 
     private function resetEnvVariables()
     {
-        putenv('action=');
+        putenv('next=');
     }
 
     private function resetScriptArguments()
@@ -108,101 +108,101 @@ class TestCase extends BaseTestCase
 
     protected function reachWorkflowSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=setup');
+        return $this->reachWorkflowMenu('next=setup');
     }
 
     protected function reachTogglSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=toggl_setup');
+        return $this->reachWorkflowMenu('next=toggl_setup');
     }
 
     protected function reachHarvestSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=harvest_setup');
+        return $this->reachWorkflowMenu('next=harvest_setup');
     }
 
     protected function reachEverhourSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=everhour_setup');
+        return $this->reachWorkflowMenu('next=everhour_setup');
     }
 
     protected function reachTogglApikeySetupMenu()
     {
-        return $this->reachWorkflowMenu('action=toggl_setup_apikey');
+        return $this->reachWorkflowMenu('next=toggl_setup_apikey');
     }
 
     protected function reachHarvestCredentialsSetupMenu()
     {
-        return $this->reachWorkflowMenu('action=harvest_setup_credentials');
+        return $this->reachWorkflowMenu('next=harvest_setup_credentials');
     }
 
     protected function reachEverhourApikeySetupMenu()
     {
-        return $this->reachWorkflowMenu('action=everhour_setup_apikey');
+        return $this->reachWorkflowMenu('next=everhour_setup_apikey');
     }
 
     protected function reachTogglStateSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=toggl_setup_state'], (array) $envVariables);
+        $envVariables = array_merge(['next=toggl_setup_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestStateSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=harvest_setup_state'], (array) $envVariables);
+        $envVariables = array_merge(['next=harvest_setup_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachEverhourStateSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=everhour_setup_state'], (array) $envVariables);
+        $envVariables = array_merge(['next=everhour_setup_state'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=toggl_setup_apikey_save'], (array) $envVariables);
+        $envVariables = array_merge(['next=toggl_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestApitokenSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=harvest_setup_apitoken_save'], (array) $envVariables);
+        $envVariables = array_merge(['next=harvest_setup_apitoken_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachEverhourApikeySavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=everhour_setup_apikey_save'], (array) $envVariables);
+        $envVariables = array_merge(['next=everhour_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachHarvestAccountIdSavedMenu($envVariables = [])
     {
-        $envVariables = array_merge(['action=harvest_setup_account_id_save'], (array) $envVariables);
+        $envVariables = array_merge(['next=harvest_setup_account_id_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
 
     protected function reachWorkflowChooseProjectMenu()
     {
-        return $this->reachWorkflowMenu('action=choose_project');
+        return $this->reachWorkflowMenu('next=choose_project');
     }
 
     protected function reachWorkflowChooseTagMenu()
     {
-        return $this->reachWorkflowMenu('action=choose_tag');
+        return $this->reachWorkflowMenu('next=choose_tag');
     }
 
     protected function reachWorkflowGoAction($envVariables = [])
     {
-        $envVariables = array_merge(['action=do'], (array) $envVariables);
+        $envVariables = array_merge(['next=do'], (array) $envVariables);
 
         return $this->reachWorkflowAction($envVariables);
     }

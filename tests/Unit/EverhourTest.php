@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Time\Services\Everhour;
+use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class EverhourTest extends TestCase
 {

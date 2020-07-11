@@ -2,9 +2,9 @@
 
 namespace Godbout\Alfred\Time\Menus\Harvest;
 
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
-use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
 class SetupApitoken extends Menu

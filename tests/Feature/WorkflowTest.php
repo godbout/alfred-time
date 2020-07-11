@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class WorkflowTest extends TestCase
 {
@@ -21,7 +21,7 @@ class WorkflowTest extends TestCase
     {
         Workflow::enableService('toggl');
 
-        $this->assertFalse($this->reachWorkflowGoAction('timer_action=running'));
+        $this->assertFalse($this->reachWorkflowGoAction('action=running'));
     }
 
     /**

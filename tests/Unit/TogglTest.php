@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Time\Services\Toggl;
+use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class TogglTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class WorkflowTest extends TestCase
 {

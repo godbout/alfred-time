@@ -4,10 +4,10 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Godbout\Alfred\Time\Workflow;
 
-if (getenv('action') === 'do') {
+if (getenv('next') === 'do') {
     $result = Workflow::do();
 
-    if (getenv('timer_action') !== 'exit') {
+    if (getenv('action') !== 'exit') {
         print Workflow::notify($result);
     }
 } else {

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class SetupMenusTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace Godbout\Alfred\Time\Services;
 
-use GuzzleHttp\Client;
 use Carbon\CarbonInterval;
+use GuzzleHttp\Client;
 
 class Everhour extends TimerService
 {

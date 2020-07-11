@@ -5,8 +5,8 @@ namespace Godbout\Alfred\Time\Services;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Required\Harvest\Client;
-use Required\Harvest\Exception\NotFoundException;
 use Required\Harvest\Exception\AuthenticationException;
+use Required\Harvest\Exception\NotFoundException;
 use Required\Harvest\Exception\ValidationFailedException;
 
 class Harvest extends TimerService

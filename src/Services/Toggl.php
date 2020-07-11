@@ -2,9 +2,9 @@
 
 namespace Godbout\Alfred\Time\Services;
 
-use Exception;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Exception;
 use MorningTrain\TogglApi\TogglApi;
 
 class Toggl extends TimerService

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class TogglSetupMenusTest extends TestCase
 {
@@ -130,7 +130,7 @@ class TogglSetupMenusTest extends TestCase
         $output = $this->reachTogglApikeySavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 
     /** @test */
@@ -141,6 +141,6 @@ class TogglSetupMenusTest extends TestCase
         $output = $this->reachTogglStateSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Godbout\Alfred\Time\Workflow;
+use Tests\TestCase;
 
 class EverhourSetupMenusTest extends TestCase
 {
@@ -110,7 +110,7 @@ class EverhourSetupMenusTest extends TestCase
         $output = $this->reachEverhourApikeySavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 
     /** @test */
@@ -121,6 +121,6 @@ class EverhourSetupMenusTest extends TestCase
         $output = $this->reachEverhourStateSavedMenu();
 
         $this->assertStringContainsString('"arg":"do"', $output);
-        $this->assertStringContainsString('"timer_action":"exit"', $output);
+        $this->assertStringContainsString('"action":"exit"', $output);
     }
 }

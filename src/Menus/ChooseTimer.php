@@ -32,7 +32,7 @@ class ChooseTimer extends Menu
                 ->subtitle(self::pastTimerSubtitle($pastTimer))
                 ->icon(Icon::create("resources/icons/$service.png"))
                 ->arg('do')
-                ->variable('timer_action', 'continue')
+                ->variable('action', 'continue')
                 ->variable('timer_id', $pastTimer->id)
                 ->variable('timer_description', $pastTimer->description)
                 ->variable('timer_project_id', $pastTimer->project_id)

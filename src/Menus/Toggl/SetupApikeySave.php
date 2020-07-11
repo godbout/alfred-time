@@ -2,10 +2,10 @@
 
 namespace Godbout\Alfred\Time\Menus\Toggl;
 
+use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Time\Workflow;
 use Godbout\Alfred\Workflow\Icon;
 use Godbout\Alfred\Workflow\Item;
-use Godbout\Alfred\Time\Menus\Menu;
 use Godbout\Alfred\Workflow\ScriptFilter;
 
 class SetupApikeySave extends Menu
@@ -32,7 +32,7 @@ class SetupApikeySave extends Menu
             ->subtitle('You can just press Enter.')
             ->icon(Icon::create('resources/icons/toggl.png'))
             ->arg('do')
-            ->variable('timer_action', 'exit');
+            ->variable('action', 'exit');
     }
 
     private static function back()

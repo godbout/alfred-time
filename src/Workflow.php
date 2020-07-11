@@ -2,12 +2,11 @@
 
 namespace Godbout\Alfred\Time;
 
-use Godbout\Alfred\Workflow\Config;
-use Godbout\Alfred\Time\Services\Toggl;
-use Godbout\Alfred\Time\Services\Harvest;
-use Godbout\Alfred\Workflow\BaseWorkflow;
-use Godbout\Alfred\Workflow\ScriptFilter;
 use Godbout\Alfred\Time\Services\Everhour;
+use Godbout\Alfred\Time\Services\Harvest;
+use Godbout\Alfred\Time\Services\Toggl;
+use Godbout\Alfred\Workflow\BaseWorkflow;
+use Godbout\Alfred\Workflow\Config;
 
 class Workflow extends BaseWorkflow
 {
@@ -27,16 +26,9 @@ class Workflow extends BaseWorkflow
         parent::__construct();
     }
 
-    public static function currentMenu()
-    {
-        self::getCurrentMenuClass()::scriptFilter();
-
-        return self::getInstance()->scriptFilter->output();
-    }
-
     public static function do()
     {
-        $action = getenv('timer_action');
+        $action = getenv('action');
 
         if ($timerId = getenv('timer_id')) {
             return Timer::$action($timerId);
@@ -51,7 +43,7 @@ class Workflow extends BaseWorkflow
 
     public static function notify($result = false)
     {
-        $action = getenv('timer_action');
+        $action = getenv('action');
 
         $service = ucfirst(self::serviceEnabled());
 
@@ -136,18 +128,18 @@ class Workflow extends BaseWorkflow
         }
     }
 
-    private static function getCurrentMenuClass()
+    protected static function getCurrentMenuClass()
     {
-        $args = explode('_', getenv('action'));
+        $args = explode('_', getenv('next'));
 
         if (in_array($args[0], self::SERVICES)) {
             $service = ucfirst($args[0]);
-            $action = substr(getenv('action'), strlen($args[0]));
+            $action = substr(getenv('next'), strlen($args[0]));
 
             return __NAMESPACE__ . "\\Menus\\$service\\" . self::getMenuClassName($action);
         }
 
-        return __NAMESPACE__ . "\\Menus\\" . (self::getMenuClassName(getenv('action')) ?: 'Entrance');
+        return __NAMESPACE__ . "\\Menus\\" . (self::getMenuClassName(getenv('next')) ?: 'Entrance');
     }
 
     private static function getMenuClassName($action)
