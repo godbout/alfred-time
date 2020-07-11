@@ -18,7 +18,7 @@ class EverhourTest extends TestCase
 
         $this->setEverhourTimerAttributes();
 
-        sleep(2);
+        sleep(4);
     }
 
     /** @test */
