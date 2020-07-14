@@ -117,16 +117,16 @@
         },
         {
             "name": "godbout/alfred-workflow-config",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-config.git",
-                "reference": "e010f8b115e474cad3f52a7205529aed6cd2397d"
+                "reference": "fc157198990f49c53c95ecd602cf2b893f1a8a89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/e010f8b115e474cad3f52a7205529aed6cd2397d",
-                "reference": "e010f8b115e474cad3f52a7205529aed6cd2397d",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-config/zipball/fc157198990f49c53c95ecd602cf2b893f1a8a89",
+                "reference": "fc157198990f49c53c95ecd602cf2b893f1a8a89",
                 "shasum": ""
             },
             "require": {
@@ -149,37 +149,38 @@
             ],
             "authors": [
                 {
-                    "name": "Guill Lo",
+                    "name": "Guillaume Leclerc",
                     "email": "guill@sleeplessmind.com.mo",
-                    "role": "Developer"
+                    "role": "Craftsman"
                 }
             ],
             "description": "Manage settings easily for your Alfred 3 or 4 Workflows.",
             "homepage": "https://github.com/godbout/alfred-workflow-config",
             "keywords": [
                 "alfred",
+                "alfred-workflow",
                 "config",
                 "php",
                 "workflow"
             ],
             "support": {
                 "issues": "https://github.com/godbout/alfred-workflow-config/issues",
-                "source": "https://github.com/godbout/alfred-workflow-config/tree/master"
+                "source": "https://github.com/godbout/alfred-workflow-config/tree/1.5.1"
             },
-            "time": "2020-06-14T15:09:26+00:00"
+            "time": "2020-07-13T08:43:45+00:00"
         },
         {
             "name": "godbout/alfred-workflow-scriptfilter",
-            "version": "2.1.0",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-scriptfilter.git",
-                "reference": "eccfc6d42bbe67ebff0766011516fac926c67be4"
+                "reference": "22f689338a245ec942e722f8d8f88a63bb3e4fee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/eccfc6d42bbe67ebff0766011516fac926c67be4",
-                "reference": "eccfc6d42bbe67ebff0766011516fac926c67be4",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-scriptfilter/zipball/22f689338a245ec942e722f8d8f88a63bb3e4fee",
+                "reference": "22f689338a245ec942e722f8d8f88a63bb3e4fee",
                 "shasum": ""
             },
             "require": {
@@ -201,23 +202,26 @@
             ],
             "authors": [
                 {
-                    "name": "Guill Lo",
+                    "name": "Guillaume Leclerc",
                     "email": "guill@sleeplessmind.com.mo",
-                    "role": "Developer"
+                    "role": "Craftsman"
                 }
             ],
-            "description": "Makes it easy and fun to build Alfred 3 or 4 Workflows in PHP.",
+            "description": "Generate Alfred 3 or 4 Workflow Results in PHP with a laugh.",
             "homepage": "https://github.com/godbout/alfred-workflow-scriptfilter",
             "keywords": [
                 "alfred",
+                "alfred-workflow",
                 "php",
+                "results",
+                "scriptfilter",
                 "workflow"
             ],
             "support": {
                 "issues": "https://github.com/godbout/alfred-workflow-scriptfilter/issues",
                 "source": "https://github.com/godbout/alfred-workflow-scriptfilter/tree/master"
             },
-            "time": "2020-06-14T15:10:05+00:00"
+            "time": "2020-07-13T08:38:52+00:00"
         },
         {
             "name": "godbout/alfred-workflow-workflow",
@@ -621,20 +625,20 @@
         },
         {
             "name": "php-http/client-common",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/client-common.git",
-                "reference": "f3985360f3d054292605e9ec7c4bc24ebcf249bb"
+                "reference": "d70de2f7bf575ef19350b8aab504857943ab2922"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/client-common/zipball/f3985360f3d054292605e9ec7c4bc24ebcf249bb",
-                "reference": "f3985360f3d054292605e9ec7c4bc24ebcf249bb",
+                "url": "https://api.github.com/repos/php-http/client-common/zipball/d70de2f7bf575ef19350b8aab504857943ab2922",
+                "reference": "d70de2f7bf575ef19350b8aab504857943ab2922",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
+                "php": "^7.1 || ^8.0",
                 "php-http/httplug": "^2.0",
                 "php-http/message": "^1.6",
                 "php-http/message-factory": "^1.0",
@@ -649,9 +653,8 @@
                 "guzzlehttp/psr7": "^1.4",
                 "nyholm/psr7": "^1.2",
                 "phpspec/phpspec": "^5.1 || ^6.0",
-                "phpspec/prophecy": "^1.8",
-                "phpunit/phpunit": "^7.5",
-                "sebastian/comparator": "^3.0"
+                "phpspec/prophecy": "^1.10.2",
+                "phpunit/phpunit": "^7.5.15 || ^8.5 || ^9.3"
             },
             "suggest": {
                 "ext-json": "To detect JSON responses with the ContentTypePlugin",
@@ -693,33 +696,33 @@
                 "issues": "https://github.com/php-http/client-common/issues",
                 "source": "https://github.com/php-http/client-common/tree/master"
             },
-            "time": "2020-07-02T06:51:04+00:00"
+            "time": "2020-07-13T15:38:36+00:00"
         },
         {
             "name": "php-http/discovery",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "9ab7668fee74a5ad61996095e50917bd50ee8bfe"
+                "reference": "64a18cc891957e05d91910b3c717d6bd11fbede9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/9ab7668fee74a5ad61996095e50917bd50ee8bfe",
-                "reference": "9ab7668fee74a5ad61996095e50917bd50ee8bfe",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/64a18cc891957e05d91910b3c717d6bd11fbede9",
+                "reference": "64a18cc891957e05d91910b3c717d6bd11fbede9",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.1 || ^8.0"
             },
             "conflict": {
                 "nyholm/psr7": "<1.0"
             },
             "require-dev": {
-                "akeneo/phpspec-skip-example-extension": "^4.0",
+                "graham-campbell/phpspec-skip-example-extension": "^5.0",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
-                "phpspec/phpspec": "^5.1",
+                "phpspec/phpspec": "^5.1 || ^6.1",
                 "puli/composer-plugin": "1.0.0-beta10"
             },
             "suggest": {
@@ -760,9 +763,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.9.0"
+                "source": "https://github.com/php-http/discovery/tree/1.9.1"
             },
-            "time": "2020-07-02T11:43:45+00:00"
+            "time": "2020-07-13T15:44:45+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -833,27 +836,27 @@
         },
         {
             "name": "php-http/httplug",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/httplug.git",
-                "reference": "72d2b129a48f0490d55b7f89be0d6aa0597ffb06"
+                "reference": "191a0a1b41ed026b717421931f8d3bd2514ffbf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/httplug/zipball/72d2b129a48f0490d55b7f89be0d6aa0597ffb06",
-                "reference": "72d2b129a48f0490d55b7f89be0d6aa0597ffb06",
+                "url": "https://api.github.com/repos/php-http/httplug/zipball/191a0a1b41ed026b717421931f8d3bd2514ffbf9",
+                "reference": "191a0a1b41ed026b717421931f8d3bd2514ffbf9",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
-                "php-http/promise": "^1.0",
+                "php": "^7.1 || ^8.0",
+                "php-http/promise": "^1.1",
                 "psr/http-client": "^1.0",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
                 "friends-of-phpspec/phpspec-code-coverage": "^4.1",
-                "phpspec/phpspec": "^4.3.4|^5.0|^6.0"
+                "phpspec/phpspec": "^5.1 || ^6.0"
             },
             "type": "library",
             "extra": {
@@ -877,7 +880,8 @@
                 },
                 {
                     "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://sagikazarmark.hu"
                 }
             ],
             "description": "HTTPlug, the HTTP client abstraction for PHP",
@@ -890,7 +894,7 @@
                 "issues": "https://github.com/php-http/httplug/issues",
                 "source": "https://github.com/php-http/httplug/tree/master"
             },
-            "time": "2019-12-27T10:07:11+00:00"
+            "time": "2020-07-13T15:43:23+00:00"
         },
         {
             "name": "php-http/message",
@@ -4007,23 +4011,23 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9"
+                "reference": "75a63c33a8577608444246075ea0af0d052e452a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
-                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/75a63c33a8577608444246075ea0af0d052e452a",
+                "reference": "75a63c33a8577608444246075ea0af0d052e452a",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
-                "php": "^7.0"
+                "php": "^7.2 || ^8.0"
             },
             "type": "library",
             "autoload": {
@@ -4047,7 +4051,13 @@
                 "issues": "https://github.com/theseer/tokenizer/issues",
                 "source": "https://github.com/theseer/tokenizer/tree/master"
             },
-            "time": "2019-06-13T22:48:21+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/theseer",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-07-12T23:59:07+00:00"
         },
         {
             "name": "webmozart/assert",
