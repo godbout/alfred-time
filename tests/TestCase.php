@@ -228,7 +228,6 @@ class TestCase extends BaseTestCase
         putenv('timer_tag=' . getenv('TOGGL_TAG_NAME'));
     }
 
-
     protected function setHarvestTimerAttributes()
     {
         putenv('timer_description=description');
@@ -241,6 +240,13 @@ class TestCase extends BaseTestCase
         putenv('timer_description=description');
         putenv('timer_project_id=' . getenv('EVERHOUR_PROJECT_ID'));
         putenv('timer_tag_id=' . getenv('EVERHOUR_TAG_ID'));
+    }
+
+    protected function setClockifyTimerAttributes()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project_id=' . getenv('CLOCKI_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('CLOCKI_TAG_NAME'));
     }
 
     private function buildWorkflowWorld($envVariables = [], $arguments = [])
