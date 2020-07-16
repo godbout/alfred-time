@@ -30,7 +30,7 @@
         "godbout/alfred-workflow-workflow": "^1.0",
         "godbout/alfred-workflow-config": "^1.4.0",
         "morningtrain/toggl-api": "^1.0.4",
-        "vlucas/phpdotenv": "^3.3.3",
+        "vlucas/phpdotenv": "^5.1",
         "wearerequired/harvest-api-php-client": "^0.2.",
         "php-http/guzzle6-adapter": "^2.0.1",
         "php-http/client-common": "^2.0",

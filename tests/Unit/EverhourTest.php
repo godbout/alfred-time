@@ -18,7 +18,16 @@ class EverhourTest extends TestCase
 
         $this->setEverhourTimerAttributes();
 
-        sleep(4);
+        sleep(2);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        if ($timerId = $this->everhour->runningTimer()) {
+            $this->everhour->stopCurrentTimer();
+        }
     }
 
     /** @test */
@@ -42,7 +51,7 @@ class EverhourTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_zero_tag_if_the_service_annot_authenticate()
+    public function it_returns_zero_tag_if_the_service_cannot_authenticate()
     {
         $everhour = new Everhour('wrong apikey again');
 
@@ -116,7 +125,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_continue_a_timer()
     {
@@ -135,7 +144,7 @@ class EverhourTest extends TestCase
     }
 
     /** @test */
-    public function a_Everhour_object_returns_toggl_as_a_string()
+    public function a_Everhour_object_returns_everhour_as_a_string()
     {
         $this->assertSame('everhour', (string) $this->everhour);
     }

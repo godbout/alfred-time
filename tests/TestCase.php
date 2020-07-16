@@ -72,7 +72,7 @@ class TestCase extends BaseTestCase
     private function loadSecretApikeys()
     {
         if (file_exists(__DIR__ . '/../.env')) {
-            Dotenv::create(__DIR__ . '/..//')->load();
+            (Dotenv::createUnsafeImmutable(__DIR__ . '/..//'))->load();
         }
     }
 
@@ -94,6 +94,11 @@ class TestCase extends BaseTestCase
     protected function everHourApikey($apikey = '507f-ef41-c355b1-992023-06d0dff9')
     {
         Workflow::getConfig()->write('everhour.api_token', $apikey);
+    }
+
+    protected function clockifyApikey($apikey = 'XxBtwrIBtgnj3kPX')
+    {
+        Workflow::getConfig()->write('clockify.api_token', $apikey);
     }
 
     protected function harvestAccountId($accountId = '987654')
@@ -126,6 +131,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('next=everhour_setup');
     }
 
+    protected function reachClockifySetupMenu()
+    {
+        return $this->reachWorkflowMenu('next=clockify_setup');
+    }
+
     protected function reachTogglApikeySetupMenu()
     {
         return $this->reachWorkflowMenu('next=toggl_setup_apikey');
@@ -139,6 +149,11 @@ class TestCase extends BaseTestCase
     protected function reachEverhourApikeySetupMenu()
     {
         return $this->reachWorkflowMenu('next=everhour_setup_apikey');
+    }
+
+    protected function reachClockifyApikeySetupMenu()
+    {
+        return $this->reachWorkflowMenu('next=clockify_setup_apikey');
     }
 
     protected function reachTogglStateSavedMenu($envVariables = [])
@@ -162,6 +177,13 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu($envVariables);
     }
 
+    protected function reachClockifyStateSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['next=clockify_setup_state'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['next=toggl_setup_apikey_save'], (array) $envVariables);
@@ -179,6 +201,13 @@ class TestCase extends BaseTestCase
     protected function reachEverhourApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['next=everhour_setup_apikey_save'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
+    protected function reachClockifyApikeySavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['next=clockify_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }
@@ -228,7 +257,6 @@ class TestCase extends BaseTestCase
         putenv('timer_tag=' . getenv('TOGGL_TAG_NAME'));
     }
 
-
     protected function setHarvestTimerAttributes()
     {
         putenv('timer_description=description');
@@ -241,6 +269,13 @@ class TestCase extends BaseTestCase
         putenv('timer_description=description');
         putenv('timer_project_id=' . getenv('EVERHOUR_PROJECT_ID'));
         putenv('timer_tag_id=' . getenv('EVERHOUR_TAG_ID'));
+    }
+
+    protected function setClockifyTimerAttributes()
+    {
+        putenv('timer_description=description');
+        putenv('timer_project_id=' . getenv('CLOCKIFY_PROJECT_ID'));
+        putenv('timer_tag_id=' . getenv('CLOCKIFY_TAG_ID'));
     }
 
     private function buildWorkflowWorld($envVariables = [], $arguments = [])

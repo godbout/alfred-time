@@ -13,7 +13,8 @@ class Setup extends Menu
         ScriptFilter::add(
             self::toggl(),
             self::harvest(),
-            self::everhour()
+            self::everhour(),
+            self::clockify()
         );
     }
 
@@ -42,5 +43,14 @@ class Setup extends Menu
             ->subtitle('')
             ->icon(Icon::create('resources/icons/everhour.png'))
             ->arg('everhour_setup');
+    }
+
+    private static function clockify()
+    {
+        return Item::create()
+            ->title('Setup Clockify')
+            ->subtitle('')
+            ->icon(Icon::create('resources/icons/clockify.png'))
+            ->arg('clockify_setup');
     }
 }

@@ -9,8 +9,6 @@ class Everhour extends TimerService
 {
     private $client;
 
-    private $data = null;
-
 
     public function __construct($apiToken)
     {
@@ -54,8 +52,6 @@ class Everhour extends TimerService
     public function pastTimers()
     {
         try {
-            $pastTimers = [];
-
             $response = $this->client->get('users/me');
             $me = json_decode($response->getBody()->getContents());
 
@@ -132,11 +128,6 @@ class Everhour extends TimerService
          */
 
         return $this->startTimer();
-    }
-
-    public function deleteTimer($timerId)
-    {
-        return false;
     }
 
     protected function convertToPastTimers($everhourTimers)
