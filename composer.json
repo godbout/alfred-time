@@ -34,7 +34,8 @@
         "wearerequired/harvest-api-php-client": "^0.2.",
         "php-http/guzzle6-adapter": "^2.0.1",
         "php-http/client-common": "^2.0",
-        "nesbot/carbon": "^2.19"
+        "nesbot/carbon": "^2.19",
+        "jdecool/clockify-api": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",

@@ -2,8 +2,7 @@
 
 namespace Godbout\Alfred\Time\Services;
 
-use Carbon\CarbonInterval;
-use GuzzleHttp\Client;
+use JDecool\Clockify\ClientBuilder;
 
 class Clockify extends TimerService
 {
@@ -14,22 +13,27 @@ class Clockify extends TimerService
 
     public function __construct($apiToken)
     {
-        $this->client = new Client([
-            'base_uri' => 'https://api.clockify.me/api/v1',
-            'headers' => [
-                'Api-Key' => $apiToken
-            ]
-        ]);
+        $this->client = (new ClientBuilder())->createClientV1($apiToken);
     }
 
-    protected function workspaces()
+    public function workspaces()
     {
-        return [];
+        try {
+            return $this->client->get('workspaces');
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function projects()
     {
-        return [];
+        try {
+            $workspaceId = getenv('timer_workspace_id');
+
+            return $this->client->get("workspaces/$workspaceId/projects");
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function tags()
