@@ -96,6 +96,11 @@ class TestCase extends BaseTestCase
         Workflow::getConfig()->write('everhour.api_token', $apikey);
     }
 
+    protected function clockifyApikey($apikey = 'XxBtwrIBtgnj3kPX')
+    {
+        Workflow::getConfig()->write('clockify.api_token', $apikey);
+    }
+
     protected function harvestAccountId($accountId = '987654')
     {
         Workflow::getConfig()->write('harvest.account_id', $accountId);
@@ -126,6 +131,11 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu('next=everhour_setup');
     }
 
+    protected function reachClockifySetupMenu()
+    {
+        return $this->reachWorkflowMenu('next=clockify_setup');
+    }
+
     protected function reachTogglApikeySetupMenu()
     {
         return $this->reachWorkflowMenu('next=toggl_setup_apikey');
@@ -139,6 +149,11 @@ class TestCase extends BaseTestCase
     protected function reachEverhourApikeySetupMenu()
     {
         return $this->reachWorkflowMenu('next=everhour_setup_apikey');
+    }
+
+    protected function reachClockifyApikeySetupMenu()
+    {
+        return $this->reachWorkflowMenu('next=clockify_setup_apikey');
     }
 
     protected function reachTogglStateSavedMenu($envVariables = [])
@@ -162,6 +177,13 @@ class TestCase extends BaseTestCase
         return $this->reachWorkflowMenu($envVariables);
     }
 
+    protected function reachClockifyStateSavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['next=clockify_setup_state'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
     protected function reachTogglApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['next=toggl_setup_apikey_save'], (array) $envVariables);
@@ -179,6 +201,13 @@ class TestCase extends BaseTestCase
     protected function reachEverhourApikeySavedMenu($envVariables = [])
     {
         $envVariables = array_merge(['next=everhour_setup_apikey_save'], (array) $envVariables);
+
+        return $this->reachWorkflowMenu($envVariables);
+    }
+
+    protected function reachClockifyApikeySavedMenu($envVariables = [])
+    {
+        $envVariables = array_merge(['next=clockify_setup_apikey_save'], (array) $envVariables);
 
         return $this->reachWorkflowMenu($envVariables);
     }

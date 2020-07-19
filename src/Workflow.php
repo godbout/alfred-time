@@ -13,7 +13,8 @@ class Workflow extends BaseWorkflow
     const SERVICES = [
         'toggl',
         'harvest',
-        'everhour'
+        'everhour',
+        'clockify',
     ];
 
     private $config = null;
@@ -115,6 +116,12 @@ class Workflow extends BaseWorkflow
         if (self::getInstance()->getConfig()->read('everhour.is_active')) {
             return new Everhour(
                 Workflow::getConfig()->read('everhour.api_token')
+            );
+        }
+
+        if (self::getInstance()->getConfig()->read('clockify.is_active')) {
+            return new Clockify(
+                Workflow::getConfig()->read('clockify.api_token')
             );
         }
 
