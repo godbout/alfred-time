@@ -14,7 +14,7 @@ class Setup extends Menu
             self::toggl(),
             self::harvest(),
             self::everhour(),
-            self::clockify(),
+            self::clockify()
         );
     }
 
