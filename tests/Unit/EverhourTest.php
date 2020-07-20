@@ -42,7 +42,7 @@ class EverhourTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_zero_tag_if_the_service_annot_authenticate()
+    public function it_returns_zero_tag_if_the_service_cannot_authenticate()
     {
         $everhour = new Everhour('wrong apikey again');
 
