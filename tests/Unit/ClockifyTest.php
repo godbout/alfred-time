@@ -71,7 +71,7 @@ class ClockifyTest extends TestCase
         $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[getenv('CLOCKIFY_PROJECT_ID')]);
     }
 
-     /** @test */
+    /** @test */
     public function it_returns_zero_tag_if_the_service_cannot_authenticate()
     {
         $clockify = new Clockify('wrong apikey again');

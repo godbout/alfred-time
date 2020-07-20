@@ -77,7 +77,7 @@ class Clockify extends TimerService
     public function stopCurrentTimer()
     {
         $workspaceId = getenv('timer_workspace_id');
-        $userId =  getenv('timer_user_id');
+        $userId = getenv('timer_user_id');
 
         if ($timerId = $this->runningTimer()) {
             $timer = $this->client->patch("workspaces/$workspaceId/user/$userId/time-entries", [
@@ -99,7 +99,7 @@ class Clockify extends TimerService
     public function runningTimer()
     {
         $workspaceId = getenv('timer_workspace_id');
-        $userId =  getenv('timer_user_id');
+        $userId = getenv('timer_user_id');
 
         $timer = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries?in-progress=true");
 
@@ -110,7 +110,7 @@ class Clockify extends TimerService
     {
         try {
             $workspaceId = getenv('timer_workspace_id');
-            $userId =  getenv('timer_user_id');
+            $userId = getenv('timer_user_id');
             $pastTimers = [];
 
             $clockifyTimers = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries", [
