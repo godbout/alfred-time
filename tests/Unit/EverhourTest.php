@@ -116,7 +116,7 @@ class EverhourTest extends TestCase
 
     /**
      * @test
-     * group timerServicesApiCalls
+     * @group timerServicesApiCalls
      */
     public function it_can_continue_a_timer()
     {
@@ -135,7 +135,7 @@ class EverhourTest extends TestCase
     }
 
     /** @test */
-    public function a_Everhour_object_returns_toggl_as_a_string()
+    public function a_Everhour_object_returns_everhour_as_a_string()
     {
         $this->assertSame('everhour', (string) $this->everhour);
     }
