@@ -72,7 +72,7 @@ class TestCase extends BaseTestCase
     private function loadSecretApikeys()
     {
         if (file_exists(__DIR__ . '/../.env')) {
-            (Dotenv::createImmutable(__DIR__ . '/..//'))->load();
+            (Dotenv::createUnsafeImmutable(__DIR__ . '/..//'))->load();
         }
     }
 
@@ -253,31 +253,31 @@ class TestCase extends BaseTestCase
     protected function setTogglTimerAttributes()
     {
         putenv('timer_description=description');
-        putenv('timer_project_id=' . $_ENV['TOGGL_PROJECT_ID']);
-        putenv('timer_tag=' . $_ENV['TOGGL_TAG_NAME']);
+        putenv('timer_project_id=' . getenv('TOGGL_PROJECT_ID'));
+        putenv('timer_tag=' . getenv('TOGGL_TAG_NAME'));
     }
 
     protected function setHarvestTimerAttributes()
     {
         putenv('timer_description=description');
-        putenv('timer_project_id=' . $_ENV['HARVEST_PROJECT_ID']);
-        putenv('timer_tag_id=' . $_ENV['HARVEST_TAG_ID']);
+        putenv('timer_project_id=' . getenv('HARVEST_PROJECT_ID'));
+        putenv('timer_tag_id=' . getenv('HARVEST_TAG_ID'));
     }
 
     protected function setEverhourTimerAttributes()
     {
         putenv('timer_description=description');
-        putenv('timer_project_id=' . $_ENV['EVERHOUR_PROJECT_ID']);
-        putenv('timer_tag_id=' . $_ENV['EVERHOUR_TAG_ID']);
+        putenv('timer_project_id=' . getenv('EVERHOUR_PROJECT_ID'));
+        putenv('timer_tag_id=' . getenv('EVERHOUR_TAG_ID'));
     }
 
     protected function setClockifyTimerAttributes()
     {
         putenv('timer_description=description');
-        putenv('timer_user_id=' . $_ENV['CLOCKIFY_USER_ID']);
-        putenv('timer_workspace_id=' . $_ENV['CLOCKIFY_WORKSPACE_ID']);
-        putenv('timer_project_id=' . $_ENV['CLOCKIFY_PROJECT_ID']);
-        putenv('timer_tag_id=' . $_ENV['CLOCKIFY_TAG_ID']);
+        putenv('timer_user_id=' . getenv('CLOCKIFY_USER_ID'));
+        putenv('timer_workspace_id=' . getenv('CLOCKIFY_WORKSPACE_ID'));
+        putenv('timer_project_id=' . getenv('CLOCKIFY_PROJECT_ID'));
+        putenv('timer_tag_id=' . getenv('CLOCKIFY_TAG_ID'));
     }
 
     private function buildWorkflowWorld($envVariables = [], $arguments = [])
