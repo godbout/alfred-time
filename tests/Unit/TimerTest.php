@@ -18,7 +18,7 @@ class TimerTest extends TestCase
 
         $this->setTogglTimerAttributes();
 
-        sleep(4);
+        sleep(2);
     }
 
     protected function tearDown(): void

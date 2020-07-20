@@ -3,7 +3,7 @@
 namespace Godbout\Alfred\Time\Services;
 
 use Carbon\Carbon;
-use JDecool\Clockify\ClientBuilder;
+use GuzzleHttp\Client;
 
 class Clockify extends TimerService
 {
@@ -14,13 +14,22 @@ class Clockify extends TimerService
 
     public function __construct($apiToken)
     {
-        $this->client = (new ClientBuilder())->createClientV1($apiToken);
+        $this->client = new Client([
+            'base_uri' => 'https://api.clockify.me/api/v1/',
+            'headers' => [
+                'content-type' => 'application/json',
+                'X-Api-Key' => $apiToken
+            ]
+        ]);
     }
 
     public function workspaces()
     {
         try {
-            return $this->client->get('workspaces');
+            $response = $this->client->get('workspaces');
+            $workspaces = json_decode($response->getBody()->getContents());
+
+            return array_column($workspaces, 'name', 'id');
         } catch (\Exception $e) {
             return [];
         }
@@ -31,7 +40,9 @@ class Clockify extends TimerService
         try {
             $workspaceId = getenv('timer_workspace_id');
 
-            $projects = $this->client->get("workspaces/$workspaceId/projects");
+            $response = $this->client->get("workspaces/$workspaceId/projects");
+
+            $projects = json_decode($response->getBody()->getContents());
 
             return array_column($projects, 'name', 'id');
         } catch (\Exception $e) {
@@ -44,7 +55,8 @@ class Clockify extends TimerService
         try {
             $workspaceId = getenv('timer_workspace_id');
 
-            $tags = $this->client->get("workspaces/$workspaceId/tags");
+            $response = $this->client->get("workspaces/$workspaceId/tags");
+            $tags = json_decode($response->getBody()->getContents());
 
             return array_column($tags, 'name', 'id');
         } catch (\Exception $e) {
@@ -57,21 +69,25 @@ class Clockify extends TimerService
         try {
             $workspaceId = getenv('timer_workspace_id');
 
-            $timer = $this->client->post("workspaces/$workspaceId/time-entries", [
-                'start' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
-                'description' => getenv('timer_description'),
-                'projectId' => getenv('timer_project_id'),
-                'tagIds' => getenv('timer_tag_id') ? [getenv('timer_tag_id')] : [''],
+            $response = $this->client->post("workspaces/$workspaceId/time-entries", [
+                'json' => [
+                    'start' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
+                    'description' => getenv('timer_description'),
+                    'projectId' => getenv('timer_project_id'),
+                    'tagIds' => getenv('timer_tag_id') ? [getenv('timer_tag_id')] : [''],
+                ]
             ]);
 
-            if (! isset($timer['id'])) {
+            $timer = json_decode($response->getBody()->getContents());
+
+            if (! isset($timer->id)) {
                 return false;
             }
         } catch (Exception $e) {
             return false;
         }
 
-        return $timer['id'];
+        return $timer->id;
     }
 
     public function stopCurrentTimer()
@@ -80,11 +96,15 @@ class Clockify extends TimerService
         $userId = getenv('timer_user_id');
 
         if ($timerId = $this->runningTimer()) {
-            $timer = $this->client->patch("workspaces/$workspaceId/user/$userId/time-entries", [
-                'end' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
+            $response = $this->client->patch("workspaces/$workspaceId/user/$userId/time-entries", [
+                'json' => [
+                    'end' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
+                ]
             ]) ;
 
-            if (! isset($timer['timeInterval']['end'])) {
+            $timer = json_decode($response->getBody()->getContents());
+
+            if (! isset($timer->timeInterval->end)) {
                 throw new Exception("Can't stop current running timer.", 1);
 
                 return false;
@@ -98,25 +118,35 @@ class Clockify extends TimerService
 
     public function runningTimer()
     {
-        $workspaceId = getenv('timer_workspace_id');
-        $userId = getenv('timer_user_id');
+        try {
+            $workspaceId = getenv('timer_workspace_id');
+            $userId = getenv('timer_user_id');
 
-        $timer = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries?in-progress=true");
+            $response = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries?in-progress=true");
 
-        return $timer[0]['id'] ?? false;
+            $timer = json_decode($response->getBody()->getContents());
+
+            return $timer[0]->id ?? false;
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     public function pastTimers()
     {
         try {
-            $workspaceId = getenv('timer_workspace_id');
-            $userId = getenv('timer_user_id');
             $pastTimers = [];
 
-            $clockifyTimers = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries", [
+            $workspaceId = getenv('timer_workspace_id');
+            $userId = getenv('timer_user_id');
+
+            $response = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries", [
                 'start' => Carbon::today(),
                 'end' => Carbon::today()->subDays(30),
             ]);
+            $clockifyTimers = json_decode($response->getBody()->getContents());
 
             return $this->convertToPastTimers($clockifyTimers);
         } catch (Exception $e) {
@@ -146,20 +176,20 @@ class Clockify extends TimerService
 
     protected function buildPastTimerObject($clockifyTimer, $projects, $tags)
     {
-        $pastTimer['id'] = $clockifyTimer['id'];
-        $pastTimer['description'] = $clockifyTimer['description'];
+        $pastTimer['id'] = $clockifyTimer->id;
+        $pastTimer['description'] = $clockifyTimer->description;
 
-        if (isset($clockifyTimer['projectId'])) {
-            $pastTimer['project_id'] = $clockifyTimer['projectId'];
-            $pastTimer['project_name'] = $projects[$clockifyTimer['projectId']];
+        if (isset($clockifyTimer->projectId)) {
+            $pastTimer['project_id'] = $clockifyTimer->projectId;
+            $pastTimer['project_name'] = $projects[$clockifyTimer->projectId];
         }
 
-        if (isset($clockifyTimer['tagIds'][0])) {
-            $pastTimer['tag_id'] = $clockifyTimer['tagIds'][0];
-            $pastTimer['tags'] = $tags[$clockifyTimer['tagIds'][0]];
+        if (isset($clockifyTimer->tagIds[0])) {
+            $pastTimer['tag_id'] = $clockifyTimer->tagIds[0];
+            $pastTimer['tags'] = $tags[$clockifyTimer->tagIds[0]];
         }
 
-        $pastTimer['duration'] = $clockifyTimer['timeInterval']['duration'];
+        $pastTimer['duration'] = $clockifyTimer->timeInterval->duration;
 
         return (object) $pastTimer;
     }

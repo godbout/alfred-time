@@ -12,13 +12,11 @@ class TogglTest extends TestCase
     {
         parent::setUp();
 
-        $this->toggl = new Toggl(getenv('TOGGL_APIKEY'));
+        $this->toggl = new Toggl($_ENV['TOGGL_APIKEY']);
 
         Workflow::enableService('toggl');
 
         $this->setTogglTimerAttributes();
-
-        sleep(4);
     }
 
     public function tearDown(): void
@@ -47,8 +45,8 @@ class TogglTest extends TestCase
     {
         $projects = $this->toggl->projects();
 
-        $this->assertArrayHasKey(getenv('TOGGL_PROJECT_ID'), $projects);
-        $this->assertSame(getenv('TOGGL_PROJECT_NAME'), $projects[getenv('TOGGL_PROJECT_ID')]);
+        $this->assertArrayHasKey($_ENV['TOGGL_PROJECT_ID'], $projects);
+        $this->assertSame($_ENV['TOGGL_PROJECT_NAME'], $projects[$_ENV['TOGGL_PROJECT_ID']]);
     }
 
     /** @test */
@@ -67,8 +65,8 @@ class TogglTest extends TestCase
     {
         $tags = $this->toggl->tags();
 
-        $this->assertArrayHasKey(getenv('TOGGL_TAG_ID'), $tags);
-        $this->assertSame(getenv('TOGGL_TAG_NAME'), $tags[getenv('TOGGL_TAG_ID')]);
+        $this->assertArrayHasKey($_ENV['TOGGL_TAG_ID'], $tags);
+        $this->assertSame($_ENV['TOGGL_TAG_NAME'], $tags[$_ENV['TOGGL_TAG_ID']]);
     }
 
     /**
@@ -79,8 +77,8 @@ class TogglTest extends TestCase
     {
         $projects = $this->toggl->projects();
 
-        $this->assertArrayNotHasKey(getenv('TOGGL_DELETED_PROJECT_ID'), $projects);
-        $this->assertNotContains(getenv('TOGGL_DELETED_PROJECT_NAME'), $projects);
+        $this->assertArrayNotHasKey($_ENV['TOGGL_DELETED_PROJECT_ID'], $projects);
+        $this->assertNotContains($_ENV['TOGGL_DELETED_PROJECT_NAME'], $projects);
     }
 
     /**

@@ -12,7 +12,7 @@ class ClockifyTest extends TestCase
     {
         parent::setUp();
 
-        $this->clockify = new Clockify(getenv('CLOCKIFY_APIKEY'));
+        $this->clockify = new Clockify($_ENV['CLOCKIFY_APIKEY']);
 
         Workflow::enableService('clockify');
 
@@ -47,8 +47,8 @@ class ClockifyTest extends TestCase
     {
         $workspaces = $this->clockify->workspaces();
 
-        $this->assertSame(getenv('CLOCKIFY_WORKSPACE_ID'), $workspaces[0]['id']);
-        $this->assertSame(getenv('CLOCKIFY_WORKSPACE_NAME'), $workspaces[0]['name']);
+        $this->assertArrayHasKey($_ENV['CLOCKIFY_WORKSPACE_ID'], $workspaces);
+        $this->assertSame($_ENV['CLOCKIFY_WORKSPACE_NAME'], $workspaces[$_ENV['CLOCKIFY_WORKSPACE_ID']]);
     }
 
     /** @test */
@@ -67,8 +67,8 @@ class ClockifyTest extends TestCase
     {
         $projects = $this->clockify->projects();
 
-        $this->assertArrayHasKey(getenv('CLOCKIFY_PROJECT_ID'), $projects);
-        $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[getenv('CLOCKIFY_PROJECT_ID')]);
+        $this->assertArrayHasKey($_ENV['CLOCKIFY_PROJECT_ID'], $projects);
+        $this->assertSame($_ENV['CLOCKIFY_PROJECT_NAME'], $projects[$_ENV['CLOCKIFY_PROJECT_ID']]);
     }
 
     /** @test */
@@ -87,8 +87,8 @@ class ClockifyTest extends TestCase
     {
         $tags = $this->clockify->tags();
 
-        $this->assertArrayHasKey(getenv('CLOCKIFY_TAG_ID'), $tags);
-        $this->assertSame(getenv('CLOCKIFY_TAG_NAME'), $tags[getenv('CLOCKIFY_TAG_ID')]);
+        $this->assertArrayHasKey($_ENV['CLOCKIFY_TAG_ID'], $tags);
+        $this->assertSame($_ENV['CLOCKIFY_TAG_NAME'], $tags[$_ENV['CLOCKIFY_TAG_ID']]);
     }
 
     /**
@@ -130,13 +130,13 @@ class ClockifyTest extends TestCase
 
     /**
      * @test
-     * @group timerServicesApiCalls
+     * @group@ timerServicesApiCalls
      */
     public function it_can_return_the_list_of_past_timers()
     {
         $this->clockify->startTimer();
+        sleep(2);
         $this->clockify->stopCurrentTimer();
-
 
         $latestTimer = $this->clockify->pastTimers()[0];
 
