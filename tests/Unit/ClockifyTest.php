@@ -18,7 +18,7 @@ class ClockifyTest extends TestCase
 
         $this->setClockifyTimerAttributes();
 
-        sleep(4);
+        sleep(2);
     }
 
     public function tearDown(): void
@@ -67,7 +67,93 @@ class ClockifyTest extends TestCase
     {
         $projects = $this->clockify->projects();
 
-        $this->assertSame(getenv('CLOCKIFY_PROJECT_ID'), $projects[0]['id']);
-        $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[0]['name']);
+        $this->assertArrayHasKey(getenv('CLOCKIFY_PROJECT_ID'), $projects);
+        $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[getenv('CLOCKIFY_PROJECT_ID')]);
+    }
+
+     /** @test */
+    public function it_returns_zero_tag_if_the_service_cannot_authenticate()
+    {
+        $clockify = new Clockify('wrong apikey again');
+
+        $this->assertEmpty($clockify->tags());
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_returns_tags_if_the_service_can_authenticate()
+    {
+        $tags = $this->clockify->tags();
+
+        $this->assertArrayHasKey(getenv('CLOCKIFY_TAG_ID'), $tags);
+        $this->assertSame(getenv('CLOCKIFY_TAG_NAME'), $tags[getenv('CLOCKIFY_TAG_ID')]);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_start_a_timer()
+    {
+        $this->assertNotFalse($this->clockify->startTimer());
+
+        $this->clockify->stopCurrentTimer();
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_stop_a_timer()
+    {
+        $this->assertFalse($this->clockify->stopCurrentTimer());
+
+        $this->clockify->startTimer();
+        $this->assertTrue($this->clockify->stopCurrentTimer());
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_get_the_running_timer()
+    {
+        $this->assertFalse($this->clockify->runningTimer());
+
+        $timerId = $this->clockify->startTimer();
+        $this->assertNotFalse($this->clockify->runningTimer());
+
+        $this->clockify->stopCurrentTimer();
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_return_the_list_of_past_timers()
+    {
+        $this->clockify->startTimer();
+        $this->clockify->stopCurrentTimer();
+
+
+        $latestTimer = $this->clockify->pastTimers()[0];
+
+        $this->assertNotNull($latestTimer->id);
+        $this->assertObjectHasAttribute('description', $latestTimer);
+        $this->assertObjectHasAttribute('duration', $latestTimer);
+    }
+
+    /** @test */
+    public function a_Clockify_object_returns_clockify_as_a_string()
+    {
+        $this->assertSame('clockify', (string) $this->clockify);
+    }
+
+    /** @test */
+    public function it_allows_empty_project_for_timer()
+    {
+        $this->assertTrue($this->clockify->allowsEmptyProject);
     }
 }
