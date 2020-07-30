@@ -38,9 +38,11 @@ class Clockify extends TimerService
     public function projects()
     {
         try {
-            $workspaceId = getenv('timer_workspace_id');
+            $user = json_decode(
+                $this->client->get("user")->getBody()->getContents()
+            );
 
-            $response = $this->client->get("workspaces/$workspaceId/projects");
+            $response = $this->client->get("workspaces/{$user->activeWorkspace}/projects");
 
             $projects = json_decode($response->getBody()->getContents());
 
