@@ -2,6 +2,7 @@
 
 namespace Godbout\Alfred\Time;
 
+use Godbout\Alfred\Time\Services\Clockify;
 use Godbout\Alfred\Time\Services\Everhour;
 use Godbout\Alfred\Time\Services\Harvest;
 use Godbout\Alfred\Time\Services\Toggl;

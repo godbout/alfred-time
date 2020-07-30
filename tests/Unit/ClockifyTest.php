@@ -145,6 +145,23 @@ class ClockifyTest extends TestCase
         $this->assertObjectHasAttribute('duration', $latestTimer);
     }
 
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
+    public function it_can_continue_a_timer()
+    {
+        $timerId = $this->clockify->startTimer();
+
+        $this->assertTrue($this->clockify->stopCurrentTimer());
+        $this->assertFalse($this->clockify->runningTimer());
+
+        $restartedTimerId = $this->clockify->continueTimer();
+
+        $this->assertNotFalse($restartedTimerId);
+        $this->assertSame($restartedTimerId, $this->clockify->runningTimer());
+    }
+
     /** @test */
     public function a_Clockify_object_returns_clockify_as_a_string()
     {

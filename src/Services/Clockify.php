@@ -156,7 +156,11 @@ class Clockify extends TimerService
 
     public function continueTimer($timerId = null)
     {
-        return false;
+        /**
+         * Timer attributes are stored in env variables
+         * gathered in startTimer.
+         */
+        return $this->startTimer();
     }
 
     public function deleteTimer($timerId)
