@@ -18,7 +18,7 @@ class ClockifyTest extends TestCase
 
         $this->setClockifyTimerAttributes();
 
-        sleep(2);
+        sleep(3);
     }
 
     public function tearDown(): void
