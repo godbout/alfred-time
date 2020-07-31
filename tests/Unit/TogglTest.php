@@ -17,6 +17,8 @@ class TogglTest extends TestCase
         Workflow::enableService('toggl');
 
         $this->setTogglTimerAttributes();
+
+        sleep(2);
     }
 
     public function tearDown(): void
