@@ -16,7 +16,10 @@ abstract class TimerService
 
     abstract public function continueTimer($timerId);
 
-    abstract public function deleteTimer($timerId);
+    public function deleteTimer($timerId)
+    {
+        return false;
+    }
 
     abstract public function projects();
 

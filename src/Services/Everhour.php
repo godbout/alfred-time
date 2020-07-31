@@ -130,11 +130,6 @@ class Everhour extends TimerService
         return $this->startTimer();
     }
 
-    public function deleteTimer($timerId)
-    {
-        return false;
-    }
-
     protected function convertToPastTimers($everhourTimers)
     {
         $projects = $this->projects();

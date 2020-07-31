@@ -21,16 +21,6 @@ class ClockifyTest extends TestCase
         sleep(3);
     }
 
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        if ($timerId = $this->clockify->runningTimer()) {
-            $this->clockify->stopCurrentTimer();
-            $this->clockify->deleteTimer($timerId);
-        }
-    }
-
     /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
