@@ -18,7 +18,7 @@ class HarvestTest extends TestCase
 
         $this->setHarvestTimerAttributes();
 
-        sleep(3);
+        sleep(4);
     }
 
     public function tearDown(): void
