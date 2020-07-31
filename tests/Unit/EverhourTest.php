@@ -21,6 +21,15 @@ class EverhourTest extends TestCase
         sleep(2);
     }
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        if ($timerId = $this->everhour->runningTimer()) {
+            $this->everhour->stopCurrentTimer();
+        }
+    }
+
     /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
