@@ -97,7 +97,7 @@ class Clockify extends TimerService
             $timer = json_decode($response->getBody()->getContents());
 
             if (! isset($timer->timeInterval->end)) {
-                throw new Exception("Can't stop current running timer.", 1);
+                throw new \Exception("Can't stop current running timer.", 1);
             }
 
             return true;
