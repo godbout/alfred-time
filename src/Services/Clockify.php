@@ -139,7 +139,7 @@ class Clockify extends TimerService
             $clockifyTimers = json_decode($response->getBody()->getContents());
 
             return $this->convertToPastTimers($clockifyTimers);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [];
         }
     }
