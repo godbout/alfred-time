@@ -32,26 +32,6 @@ class ClockifyTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_zero_workspace_if_the_service_cannot_authenticate()
-    {
-        $clockify = new Clockify('wrong apikey');
-
-        $this->assertEmpty($clockify->workspaces());
-    }
-
-    /**
-     * @test
-     * @group timerServicesApiCalls
-     */
-    public function it_returns_workspaces_if_the_service_can_authenticate()
-    {
-        $workspaces = $this->clockify->workspaces();
-
-        $this->assertArrayHasKey(getenv('CLOCKIFY_WORKSPACE_ID'), $workspaces);
-        $this->assertSame(getenv('CLOCKIFY_WORKSPACE_NAME'), $workspaces[getenv('CLOCKIFY_WORKSPACE_ID')]);
-    }
-
-    /** @test */
     public function it_returns_zero_project_if_the_service_cannot_authenticate()
     {
         $clockify = new Clockify('wrong apikey');

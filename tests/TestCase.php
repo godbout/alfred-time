@@ -274,8 +274,6 @@ class TestCase extends BaseTestCase
     protected function setClockifyTimerAttributes()
     {
         putenv('timer_description=description');
-        putenv('timer_user_id=' . getenv('CLOCKIFY_USER_ID'));
-        putenv('timer_workspace_id=' . getenv('CLOCKIFY_WORKSPACE_ID'));
         putenv('timer_project_id=' . getenv('CLOCKIFY_PROJECT_ID'));
         putenv('timer_tag_id=' . getenv('CLOCKIFY_TAG_ID'));
     }

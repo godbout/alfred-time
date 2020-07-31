@@ -3,6 +3,7 @@
 namespace Godbout\Alfred\Time\Services;
 
 use Carbon\Carbon;
+use Godbout\Alfred\Time\Workflow;
 use GuzzleHttp\Client;
 
 class Clockify extends TimerService
@@ -23,24 +24,14 @@ class Clockify extends TimerService
         ]);
     }
 
-    public function workspaces()
-    {
-        try {
-            $response = $this->client->get('workspaces');
-            $workspaces = json_decode($response->getBody()->getContents());
-
-            return array_column($workspaces, 'name', 'id');
-        } catch (\Exception $e) {
-            return [];
-        }
-    }
-
     public function projects()
     {
         try {
             $user = json_decode(
                 $this->client->get("user")->getBody()->getContents()
             );
+
+            Workflow::getConfig()->write('clockify.active_workspace_id', $user->activeWorkspace);
 
             $response = $this->client->get("workspaces/{$user->activeWorkspace}/projects");
 
@@ -55,7 +46,7 @@ class Clockify extends TimerService
     public function tags()
     {
         try {
-            $workspaceId = getenv('timer_workspace_id');
+            $workspaceId = Workflow::getConfig()->read('clockify.active_workspace_id');
 
             $response = $this->client->get("workspaces/$workspaceId/tags");
             $tags = json_decode($response->getBody()->getContents());
@@ -69,7 +60,7 @@ class Clockify extends TimerService
     public function startTimer()
     {
         try {
-            $workspaceId = getenv('timer_workspace_id');
+            $workspaceId = Workflow::getConfig()->read('clockify.active_workspace_id');
 
             $response = $this->client->post("workspaces/$workspaceId/time-entries", [
                 'json' => [
@@ -94,11 +85,12 @@ class Clockify extends TimerService
 
     public function stopCurrentTimer()
     {
-        $workspaceId = getenv('timer_workspace_id');
-        $userId = getenv('timer_user_id');
+        $user = json_decode(
+            $this->client->get("user")->getBody()->getContents()
+        );
 
         if ($timerId = $this->runningTimer()) {
-            $response = $this->client->patch("workspaces/$workspaceId/user/$userId/time-entries", [
+            $response = $this->client->patch("workspaces/{$user->activeWorkspace}/user/{$user->id}/time-entries", [
                 'json' => [
                     'end' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
                 ]
@@ -121,10 +113,13 @@ class Clockify extends TimerService
     public function runningTimer()
     {
         try {
-            $workspaceId = getenv('timer_workspace_id');
-            $userId = getenv('timer_user_id');
+            $user = json_decode(
+                $this->client->get("user")->getBody()->getContents()
+            );
 
-            $response = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries?in-progress=true");
+            $response = $this->client->get(
+                "workspaces/{$user->activeWorkspace}/user/{$user->id}/time-entries?in-progress=true"
+            );
 
             $timer = json_decode($response->getBody()->getContents());
 
@@ -141,10 +136,11 @@ class Clockify extends TimerService
         try {
             $pastTimers = [];
 
-            $workspaceId = getenv('timer_workspace_id');
-            $userId = getenv('timer_user_id');
+            $user = json_decode(
+                $this->client->get("user")->getBody()->getContents()
+            );
 
-            $response = $this->client->get("workspaces/$workspaceId/user/$userId/time-entries", [
+            $response = $this->client->get("workspaces/{$user->activeWorkspace}/user/{$user->id}/time-entries", [
                 'start' => Carbon::today(),
                 'end' => Carbon::today()->subDays(30),
             ]);
