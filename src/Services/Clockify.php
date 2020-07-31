@@ -74,7 +74,7 @@ class Clockify extends TimerService
             if (! isset($timer->id)) {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -123,8 +123,6 @@ class Clockify extends TimerService
         } catch (\Exception $e) {
             return false;
         }
-
-        return true;
     }
 
     public function pastTimers()
