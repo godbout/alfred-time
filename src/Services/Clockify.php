@@ -10,8 +10,6 @@ class Clockify extends TimerService
 {
     private $client;
 
-    private $data = null;
-
 
     public function __construct($apiToken)
     {
@@ -89,7 +87,7 @@ class Clockify extends TimerService
             $this->client->get("user")->getBody()->getContents()
         );
 
-        if ($timerId = $this->runningTimer()) {
+        if ($this->runningTimer()) {
             $response = $this->client->patch("workspaces/{$user->activeWorkspace}/user/{$user->id}/time-entries", [
                 'json' => [
                     'end' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
@@ -100,8 +98,6 @@ class Clockify extends TimerService
 
             if (! isset($timer->timeInterval->end)) {
                 throw new Exception("Can't stop current running timer.", 1);
-
-                return false;
             }
 
             return true;
@@ -134,8 +130,6 @@ class Clockify extends TimerService
     public function pastTimers()
     {
         try {
-            $pastTimers = [];
-
             $user = json_decode(
                 $this->client->get("user")->getBody()->getContents()
             );
@@ -161,11 +155,6 @@ class Clockify extends TimerService
         return $this->startTimer();
     }
 
-    public function deleteTimer($timerId)
-    {
-        return false;
-    }
-
     protected function convertToPastTimers($clockifyTimers)
     {
         $projects = $this->projects();
@@ -178,6 +167,8 @@ class Clockify extends TimerService
 
     protected function buildPastTimerObject($clockifyTimer, $projects, $tags)
     {
+        $pastTimer = [];
+
         $pastTimer['id'] = $clockifyTimer->id;
         $pastTimer['description'] = $clockifyTimer->description;
 

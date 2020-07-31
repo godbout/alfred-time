@@ -32,8 +32,6 @@ class Toggl extends TimerService
     public function pastTimers()
     {
         try {
-            $pastTimers = [];
-
             $togglTimers = $this->client->getTimeEntriesInRange(Carbon::today(), Carbon::today()->subDays(30));
 
             return $this->convertToPastTimers($togglTimers);
