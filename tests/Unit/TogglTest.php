@@ -89,7 +89,7 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        sleep(1);
+        sleep(3);
 
         $latestTimer = $this->toggl->pastTimers()[0];
 
@@ -117,7 +117,7 @@ class TogglTest extends TestCase
 
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(3);
 
         $this->assertTrue($this->toggl->stopCurrentTimer());
 
@@ -134,7 +134,7 @@ class TogglTest extends TestCase
 
         $timerId = $this->toggl->startTimer();
 
-        sleep(1);
+        sleep(3);
 
         $this->assertNotFalse($this->toggl->runningTimer());
     }
@@ -147,7 +147,7 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        sleep(1);
+        sleep(3);
 
         $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
@@ -160,17 +160,17 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(3);
 
         $this->assertTrue($this->toggl->stopCurrentTimer());
 
-        sleep(2);
+        sleep(3);
 
         $this->assertFalse($this->toggl->runningTimer());
 
         $restartedTimerId = $this->toggl->continueTimer($timerId);
 
-        sleep(2);
+        sleep(3);
 
         $this->assertNotFalse($restartedTimerId);
         $this->assertSame($restartedTimerId, $this->toggl->runningTimer());

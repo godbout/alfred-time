@@ -47,7 +47,7 @@ class TimerTest extends TestCase
         $this->assertFalse(Timer::running());
         $this->assertNotFalse(Timer::start());
 
-        sleep(1);
+        sleep(3);
 
         $this->assertNotFalse(Timer::running());
     }
@@ -60,12 +60,12 @@ class TimerTest extends TestCase
     {
         $timerId = Timer::start();
 
-        sleep(1);
+        sleep(3);
 
         $this->assertNotFalse(Timer::running());
         $this->assertTrue(Timer::stop());
 
-        sleep(1);
+        sleep(3);
 
         $this->assertFalse(Timer::running());
 
@@ -80,15 +80,15 @@ class TimerTest extends TestCase
     {
         $timerId = Timer::start();
 
-        sleep(1);
+        sleep(3);
 
         $this->assertTrue(Timer::stop());
 
-        sleep(1);
+        sleep(3);
 
         $this->assertNotFalse(Timer::continue($timerId));
 
-        sleep(1);
+        sleep(3);
 
         Workflow::serviceEnabled()->deleteTimer($timerId);
     }
