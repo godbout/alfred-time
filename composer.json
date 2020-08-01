@@ -26,7 +26,7 @@
         "source": "https://github.com/godbout/alfred-time"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "godbout/alfred-workflow-workflow": "^1.0",
         "godbout/alfred-workflow-config": "^1.4.0",
         "morningtrain/toggl-api": "^1.0.4",
