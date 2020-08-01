@@ -37,6 +37,8 @@ class WorkflowTest extends TestCase
 
         $timerId = $service->startTimer();
 
+        sleep(2);
+
         $this->assertStringContainsString(
             'Stop current timer',
             Workflow::currentMenu()
