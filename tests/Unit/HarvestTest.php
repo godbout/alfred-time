@@ -17,8 +17,6 @@ class HarvestTest extends TestCase
         Workflow::enableService('harvest');
 
         $this->setHarvestTimerAttributes();
-
-        sleep(4);
     }
 
     public function tearDown(): void
@@ -90,6 +88,8 @@ class HarvestTest extends TestCase
     {
         $timerId = $this->harvest->startTimer();
 
+        sleep(1);
+
         $lastestTimer = $this->harvest->pastTimers()[0];
 
         $this->assertSame($timerId, $lastestTimer->id);
@@ -118,6 +118,9 @@ class HarvestTest extends TestCase
         $this->assertFalse($this->harvest->stopCurrentTimer());
 
         $timerId = $this->harvest->startTimer();
+
+        sleep(1);
+
         $this->assertTrue($this->harvest->stopCurrentTimer());
 
         $this->harvest->deleteTimer($timerId);
@@ -132,6 +135,9 @@ class HarvestTest extends TestCase
         $this->assertFalse($this->harvest->runningTimer());
 
         $timerId = $this->harvest->startTimer();
+
+        sleep(1);
+
         $this->assertNotFalse($this->harvest->runningTimer());
     }
 
@@ -143,7 +149,11 @@ class HarvestTest extends TestCase
     {
         $timerId = $this->harvest->startTimer();
 
+        sleep(1);
+
         $this->assertTrue($this->harvest->stopCurrentTimer());
+
+        sleep(1);
 
         $restartedTimerId = $this->harvest->continueTimer($timerId);
 

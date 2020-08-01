@@ -17,15 +17,13 @@ class ClockifyTest extends TestCase
         Workflow::enableService('clockify');
 
         $this->setClockifyTimerAttributes();
-
-        sleep(3);
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
-        if ($timerId = $this->clockify->runningTimer()) {
+        if ($this->clockify->runningTimer()) {
             $this->clockify->stopCurrentTimer();
         }
     }
@@ -114,7 +112,9 @@ class ClockifyTest extends TestCase
     public function it_can_return_the_list_of_past_timers()
     {
         $this->clockify->startTimer();
-        sleep(2);
+
+        sleep(1);
+
         $this->clockify->stopCurrentTimer();
 
         $latestTimer = $this->clockify->pastTimers()[0];

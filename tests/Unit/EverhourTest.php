@@ -17,8 +17,6 @@ class EverhourTest extends TestCase
         Workflow::enableService('everhour');
 
         $this->setEverhourTimerAttributes();
-
-        sleep(2);
     }
 
     public function tearDown(): void
@@ -77,6 +75,9 @@ class EverhourTest extends TestCase
     public function it_can_return_the_list_of_past_timers()
     {
         $this->everhour->startTimer();
+
+        sleep(1);
+
         $this->everhour->stopCurrentTimer();
 
         $latestTimer = $this->everhour->pastTimers()[0];
@@ -94,6 +95,8 @@ class EverhourTest extends TestCase
     {
         $this->assertNotFalse($this->everhour->startTimer());
 
+        sleep(1);
+
         $this->everhour->stopCurrentTimer();
     }
 
@@ -106,6 +109,9 @@ class EverhourTest extends TestCase
         $this->assertFalse($this->everhour->stopCurrentTimer());
 
         $this->everhour->startTimer();
+
+        sleep(1);
+
         $this->assertTrue($this->everhour->stopCurrentTimer());
     }
 
@@ -118,6 +124,9 @@ class EverhourTest extends TestCase
         $this->assertFalse($this->everhour->runningTimer());
 
         $timerId = $this->everhour->startTimer();
+
+        sleep(1);
+
         $this->assertNotFalse($this->everhour->runningTimer());
 
         $this->everhour->stopCurrentTimer();
@@ -130,10 +139,18 @@ class EverhourTest extends TestCase
     public function it_can_continue_a_timer()
     {
         $this->everhour->startTimer();
+
+        sleep(1);
+
         $this->everhour->stopCurrentTimer();
         $previousTimer = $this->everhour->pastTimers()[0];
 
+        sleep(1);
+
         $success = $this->everhour->continueTimer();
+
+        sleep(1);
+
         $this->everhour->stopCurrentTimer();
         $latestTimer = $this->everhour->pastTimers()[0];
 

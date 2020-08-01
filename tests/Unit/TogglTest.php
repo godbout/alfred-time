@@ -17,8 +17,6 @@ class TogglTest extends TestCase
         Workflow::enableService('toggl');
 
         $this->setTogglTimerAttributes();
-
-        sleep(3);
     }
 
     public function tearDown(): void
@@ -91,6 +89,8 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(1);
+
         $latestTimer = $this->toggl->pastTimers()[0];
 
         $this->assertSame($timerId, $latestTimer->id);
@@ -117,7 +117,7 @@ class TogglTest extends TestCase
 
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(1);
 
         $this->assertTrue($this->toggl->stopCurrentTimer());
 
@@ -134,7 +134,7 @@ class TogglTest extends TestCase
 
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(1);
 
         $this->assertNotFalse($this->toggl->runningTimer());
     }
@@ -147,7 +147,7 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(1);
 
         $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
@@ -160,22 +160,20 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
-        sleep(2);
+        sleep(1);
 
         $this->assertTrue($this->toggl->stopCurrentTimer());
 
-        sleep(2);
+        sleep(1);
 
         $this->assertFalse($this->toggl->runningTimer());
 
         $restartedTimerId = $this->toggl->continueTimer($timerId);
 
-        sleep(2);
+        sleep(1);
 
         $this->assertNotFalse($restartedTimerId);
         $this->assertSame($restartedTimerId, $this->toggl->runningTimer());
-
-        sleep(2);
 
         $this->toggl->deleteTimer($timerId);
     }
