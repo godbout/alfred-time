@@ -60,14 +60,10 @@ class Clockify extends TimerService
         try {
             $workspaceId = Workflow::getConfig()->read('clockify.active_workspace_id');
 
-            $response = $this->client->post("workspaces/$workspaceId/time-entries", [
-                'json' => [
-                    'start' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
-                    'description' => getenv('timer_description'),
-                    'projectId' => getenv('timer_project_id'),
-                    'tagIds' => getenv('timer_tag_id') ? [getenv('timer_tag_id')] : [''],
-                ]
-            ]);
+            $response = $this->client->post(
+                "workspaces/$workspaceId/time-entries",
+                $this->buildPayload()
+            );
 
             $timer = json_decode($response->getBody()->getContents());
 
@@ -79,6 +75,26 @@ class Clockify extends TimerService
         }
 
         return $timer->id;
+    }
+
+    protected function buildPayload()
+    {
+        $payload = [
+            'json'=> [
+                'start' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
+                'description' => getenv('timer_description'),
+            ]
+        ];
+
+        if (getenv('timer_project_id') !== false) {
+            $payload['json']['projectId'] = getenv('timer_project_id');
+        }
+
+        if (getenv('timer_tag_id') !== false) {
+            $payload['json']['tagIds'] = [getenv('timer_tag_id')];
+        }
+
+        return $payload;
     }
 
     public function stopCurrentTimer()
