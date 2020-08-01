@@ -80,7 +80,7 @@ class Clockify extends TimerService
     protected function buildPayload()
     {
         $payload = [
-            'json'=> [
+            'json' => [
                 'start' => (new \DateTime())->format('Y-m-d\TH:i:s\Z'),
                 'description' => getenv('timer_description'),
             ]

@@ -18,7 +18,7 @@ class TimerTest extends TestCase
 
         $this->setTogglTimerAttributes();
 
-        sleep(3);
+        sleep(4);
     }
 
     protected function tearDown(): void
@@ -49,6 +49,8 @@ class TimerTest extends TestCase
         $this->assertFalse(Timer::running());
         $this->assertNotFalse(Timer::start());
 
+        sleep(2);
+
         $this->assertNotFalse(Timer::running());
     }
 
@@ -60,8 +62,13 @@ class TimerTest extends TestCase
     {
         $timerId = Timer::start();
 
+        sleep(2);
+
         $this->assertNotFalse(Timer::running());
         $this->assertTrue(Timer::stop());
+
+        sleep(2);
+
         $this->assertFalse(Timer::running());
 
         Workflow::serviceEnabled()->deleteTimer($timerId);
@@ -74,9 +81,16 @@ class TimerTest extends TestCase
     public function it_can_continue_a_timer()
     {
         $timerId = Timer::start();
+
+        sleep(2);
+
         $this->assertTrue(Timer::stop());
 
+        sleep(2);
+
         $this->assertNotFalse(Timer::continue($timerId));
+
+        sleep(2);
 
         Workflow::serviceEnabled()->deleteTimer($timerId);
     }
