@@ -113,8 +113,6 @@ class ClockifyTest extends TestCase
     {
         $this->clockify->startTimer();
 
-        sleep(1);
-
         $this->clockify->stopCurrentTimer();
 
         $latestTimer = $this->clockify->pastTimers()[0];
