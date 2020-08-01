@@ -67,8 +67,6 @@ class Toggl extends TimerService
 
             if (! isset($response->id)) {
                 throw new Exception("Can't stop current running timer.", 1);
-
-                return false;
             }
 
             return true;
