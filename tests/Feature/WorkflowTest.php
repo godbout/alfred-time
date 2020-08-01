@@ -37,7 +37,7 @@ class WorkflowTest extends TestCase
 
         $timerId = $service->startTimer();
 
-        sleep(2);
+        sleep(3);
 
         $this->assertStringContainsString(
             'Stop current timer',
