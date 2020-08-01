@@ -12,11 +12,11 @@ class TimerTest extends TestCase
     {
         parent::setUp();
 
-        $this->togglApikey(getenv('TOGGL_APIKEY'));
+        $this->clockifyApikey(getenv('CLOCKIFY_APIKEY'));
 
-        Workflow::enableService('toggl');
+        Workflow::enableService('clockify');
 
-        $this->setTogglTimerAttributes();
+        $this->setClockifyTimerAttributes();
     }
 
     protected function tearDown(): void
