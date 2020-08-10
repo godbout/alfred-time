@@ -31,7 +31,7 @@ class Clockify extends TimerService
 
             Workflow::getConfig()->write('clockify.active_workspace_id', $user->activeWorkspace);
 
-            $response = $this->client->get("workspaces/{$user->activeWorkspace}/projects");
+            $response = $this->client->get("workspaces/{$user->activeWorkspace}/projects?page-size=148");
 
             $projects = json_decode($response->getBody()->getContents());
 
