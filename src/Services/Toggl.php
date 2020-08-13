@@ -135,7 +135,7 @@ class Toggl extends TimerService
     private function filterOutServerwiseArchivedItemsFromData($items = [])
     {
         return array_filter($items, function ($item) {
-            return $item->active == 1;
+            return isset($item->active) && !!$item->active;
         });
     }
 
