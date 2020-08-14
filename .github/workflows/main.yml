@@ -41,7 +41,7 @@ jobs:
         run: composer update --${{ matrix.dependency-version }}
 
       - name: run non-API tests
-        run: - vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
+        run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
 
       - name: upload code coverage
         run: |
