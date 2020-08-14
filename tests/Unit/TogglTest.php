@@ -123,8 +123,6 @@ class TogglTest extends TestCase
      */
     public function it_can_stop_a_timer()
     {
-        $this->assertFalse($this->toggl->stopCurrentTimer());
-
         $timerId = $this->toggl->startTimer();
 
         $this->assertTrue($this->toggl->stopCurrentTimer());
@@ -139,8 +137,6 @@ class TogglTest extends TestCase
     public function it_can_get_the_running_timer()
     {
         $timerId = $this->toggl->startTimer();
-
-        sleep(5);
 
         $this->assertSame($timerId, $this->toggl->runningTimer());
     }
