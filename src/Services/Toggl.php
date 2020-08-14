@@ -164,7 +164,7 @@ class Toggl extends TimerService
 
         if (isset($togglTimer->pid)) {
             $pastTimer['project_id'] = $togglTimer->pid;
-            $pastTimer['project_name'] = $projects[$togglTimer->pid];
+            $pastTimer['project_name'] = $projects[$togglTimer->pid] ?? $togglTimer->pid;
         }
 
         if (isset($togglTimer->tags)) {
