@@ -110,10 +110,9 @@ class Toggl extends TimerService
             return [];
         }
 
-        $nonDeletedData = $this->filterOutServerwiseDeletedItemsFromData($data->$needle);
-        $nonDeletedOrArchivedData = $this->filterOutServerwiseArchivedItemsFromData($nonDeletedData);
+        $choosableData = $this->filterOutServerwiseDeletedAndArchivedItemsFromData($data->$needle);
 
-        return array_column($nonDeletedOrArchivedData, 'name', 'id');
+        return array_column($choosableData, 'name', 'id');
     }
 
     private function getData()
@@ -125,18 +124,25 @@ class Toggl extends TimerService
         return $this->data;
     }
 
-    private function filterOutServerwiseDeletedItemsFromData($items = [])
+    private function filterOutServerwiseDeletedAndArchivedItemsFromData($items = [])
     {
         return array_filter($items, function ($item) {
-            return ! isset($item->server_deleted_at);
+            return
+                ! $this->itemIsDeletedServerwise($item)
+                && ! $this->itemIsArchivedServerwise($item);
         });
     }
 
-    private function filterOutServerwiseArchivedItemsFromData($items = [])
+    private function itemIsDeletedServerwise($item)
     {
-        return array_filter($items, function ($item) {
-            return isset($item->active) && !!$item->active;
-        });
+        return isset($item->server_deleted_at);
+    }
+
+    private function itemIsArchivedServerwise($item)
+    {
+        return
+            isset($item->active)
+            && $item->active === false;
     }
 
     protected function convertToPastTimers($togglTimers)
