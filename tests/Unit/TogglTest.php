@@ -125,6 +125,8 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(2);
+
         $this->assertTrue($this->toggl->stopCurrentTimer());
 
         $this->toggl->deleteTimer($timerId);
