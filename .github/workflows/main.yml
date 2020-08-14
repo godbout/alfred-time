@@ -10,10 +10,9 @@ on:
 
 jobs:
   tests-non-API:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
         php: [7.4, 7.3]
         dependency-version: [prefer-lowest, prefer-stable]
     steps:
@@ -70,11 +69,10 @@ jobs:
       CLOCKIFY_PROJECT_NAME: "alfred time"
       CLOCKIFY_TAG_ID: ${{ secrets.CLOCKIFY_TAG_ID }}
       CLOCKIFY_TAG_NAME: "alfred-time"
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     strategy:
       max-parallel: 1
       matrix:
-        os: [macos-latest]
         php: [7.4, 7.3]
         dependency-version: [prefer-lowest, prefer-stable]
     steps:
