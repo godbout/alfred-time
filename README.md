@@ -1,11 +1,11 @@
 <h1 align="center">Alfred Time</h1>
 
 <p align="center">
-<a href="https://github.com/godbout/alfred-time/releases/latest"><img src="https://img.shields.io/github/release/godbout/alfred-time.svg?style=flat" alt="GitHub Release"></a>
-<a href="https://www.travis-ci.com/godbout/alfred-time"><img src="https://www.travis-ci.com/godbout/alfred-time.svg?branch=master" alt="Build Status"></a>
-<a href="https://scrutinizer-ci.com/g/godbout/alfred-time/?branch=master"><img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
-<a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://scrutinizer-ci.com/g/godbout/alfred-time/badges/coverage.png?b=master" alt="Code Coverage"></a>
-<a href="https://github.com/godbout/alfred-time/releases"><img src="https://img.shields.io/github/downloads/godbout/alfred-time/total.svg?style=flat" alt="GitHub Downloads"></a>
+<a href="https://github.com/godbout/alfred-time/releases/latest"><img src="https://img.shields.io/github/v/release/godbout/alfred-time" alt="GitHub release"></a>
+<a href="https://github.com/godbout/alfred-time/actions"><img src="https://img.shields.io/github/workflow/status/godbout/alfred-time/tests" alt="build status"></a>
+<a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://img.shields.io/scrutinizer/quality/g/godbout/alfred-time" alt="code quality"></a>
+<a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://img.shields.io/scrutinizer/coverage/g/godbout/alfred-time" alt="code coverage"></a>
+<a href="https://github.com/godbout/alfred-time/releases"><img src="https://img.shields.io/github/downloads/godbout/alfred-time/total" alt="GitHub downloads"></a>
 </p>
 
 <p align="center">
