@@ -40,7 +40,7 @@ jobs:
       - name: install dependencies
         run: composer update --${{ matrix.dependency-version }}
 
-      - name: run non-API tests
+      - name: run non-hitting API tests
         run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
 
       - name: upload code coverage
