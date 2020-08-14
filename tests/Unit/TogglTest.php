@@ -140,6 +140,8 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(2);
+
         $this->assertSame($timerId, $this->toggl->runningTimer());
     }
 
