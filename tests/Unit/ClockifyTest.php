@@ -45,7 +45,7 @@ class ClockifyTest extends TestCase
         $projects = $this->clockify->projects();
 
         $this->assertArrayHasKey(getenv('CLOCKIFY_PROJECT_ID'), $projects);
-        $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[getenv('CLOCKIFY_PROJECT_ID')]);
+        // $this->assertSame(getenv('CLOCKIFY_PROJECT_NAME'), $projects[getenv('CLOCKIFY_PROJECT_ID')]);
     }
 
     /** @test */

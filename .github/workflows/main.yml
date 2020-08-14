@@ -1,0 +1,101 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  tests-non-API:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        php: [7.4, 7.3]
+        dependency-version: [prefer-lowest, prefer-stable]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+      - name: do some magic Composer cache
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: install dependencies
+        run: composer update --${{ matrix.dependency-version }}
+      - name: run non-hitting API tests
+        run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
+      - name: upload code coverage
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+  tests-API:
+    needs: tests-non-API
+    env:
+      HARVEST_ACCOUNT_ID: ${{ secrets.HARVEST_ACCOUNT_ID }}
+      HARVEST_APIKEY: ${{ secrets.HARVEST_APIKEY }}
+      HARVEST_PROJECT_ID: ${{ secrets.HARVEST_PROJECT_ID }}
+      HARVEST_PROJECT_NAME: "Plethora of Projects"
+      HARVEST_TAG_ID: ${{ secrets.HARVEST_TAG_ID }}
+      HARVEST_TAG_ID_FROM_OTHER_PROJET: ${{ secrets.HARVEST_TAG_ID_FROM_OTHER_PROJET }}
+      HARVEST_TAG_NAME: "All Included Package"
+      TOGGL_APIKEY: ${{ secrets.TOGGL_APIKEY }}
+      TOGGL_ARCHIVED_PROJECT_ID: ${{ secrets.TOGGL_ARCHIVED_PROJECT_ID }}
+      TOGGL_ARCHIVED_PROJECT_NAME: "archived project"
+      TOGGL_DELETED_PROJECT_ID: ${{ secrets.TOGGL_DELETED_PROJECT_ID }}
+      TOGGL_DELETED_PROJECT_NAME: "Alfred-Time-Test"
+      TOGGL_PROJECT_ID: ${{ secrets.TOGGL_PROJECT_ID }}
+      TOGGL_PROJECT_NAME: "Alfred-Time"
+      TOGGL_TAG_ID: ${{ secrets.TOGGL_TAG_ID }}
+      TOGGL_TAG_NAME: "All Included Package"
+      EVERHOUR_APIKEY: ${{ secrets.EVERHOUR_APIKEY }}
+      EVERHOUR_PROJECT_ID: ${{ secrets.EVERHOUR_PROJECT_ID }}
+      EVERHOUR_PROJECT_NAME: "Getting Started with Everhour"
+      EVERHOUR_TAG_ID: ${{ secrets.EVERHOUR_TAG_ID }}
+      EVERHOUR_TAG_NAME: "Sample task"
+      CLOCKIFY_APIKEY: ${{ secrets.CLOCKIFY_APIKEY }}
+      CLOCKIFY_PROJECT_ID: ${{ secrets.CLOCKIFY_PROJECT_ID }}
+      CLOCKIFY_PROJECT_NAME: "alfred time"
+      CLOCKIFY_TAG_ID: ${{ secrets.CLOCKIFY_TAG_ID }}
+      CLOCKIFY_TAG_NAME: "alfred-time"
+    runs-on: macos-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        php: [7.4, 7.3]
+        dependency-version: [prefer-lowest, prefer-stable]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+      - name: do some magic Composer cache
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: install dependencies
+        run: composer update --${{ matrix.dependency-version }}
+      - name: run hitting API tests
+        run: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-clover=coverage.clover
+      - name: upload code coverage
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -17,14 +17,20 @@ class TogglTest extends TestCase
         Workflow::enableService('toggl');
 
         $this->setTogglTimerAttributes();
+
+        sleep(1);
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
+        sleep(1);
+
         if ($timerId = $this->toggl->runningTimer()) {
+            sleep(1);
             $this->toggl->stopCurrentTimer();
+            sleep(1);
             $this->toggl->deleteTimer($timerId);
         }
     }
@@ -101,6 +107,8 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(1);
+
         $latestTimer = $this->toggl->pastTimers()[0];
 
         $this->assertSame($timerId, $latestTimer->id);
@@ -123,11 +131,13 @@ class TogglTest extends TestCase
      */
     public function it_can_stop_a_timer()
     {
-        $this->assertFalse($this->toggl->stopCurrentTimer());
-
         $timerId = $this->toggl->startTimer();
 
+        sleep(1);
+
         $this->assertTrue($this->toggl->stopCurrentTimer());
+
+        sleep(1);
 
         $this->toggl->deleteTimer($timerId);
     }
@@ -140,6 +150,8 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(1);
+
         $this->assertSame($timerId, $this->toggl->runningTimer());
     }
 
@@ -150,6 +162,8 @@ class TogglTest extends TestCase
     public function it_can_delete_a_timer()
     {
         $timerId = $this->toggl->startTimer();
+
+        sleep(1);
 
         $this->assertTrue($this->toggl->deleteTimer($timerId));
     }
@@ -162,14 +176,24 @@ class TogglTest extends TestCase
     {
         $timerId = $this->toggl->startTimer();
 
+        sleep(1);
+
         $this->assertTrue($this->toggl->stopCurrentTimer());
+
+        sleep(1);
 
         $this->assertFalse($this->toggl->runningTimer());
 
+        sleep(1);
+
         $restartedTimerId = $this->toggl->continueTimer($timerId);
+
+        sleep(1);
 
         $this->assertNotFalse($restartedTimerId);
         $this->assertSame($restartedTimerId, $this->toggl->runningTimer());
+
+        sleep(1);
 
         $this->toggl->deleteTimer($timerId);
     }
