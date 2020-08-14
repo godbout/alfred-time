@@ -111,8 +111,9 @@ class Toggl extends TimerService
         }
 
         $nonDeletedData = $this->filterOutServerwiseDeletedItemsFromData($data->$needle);
+        $nonDeletedOrArchivedData = $this->filterOutServerwiseArchivedItemsFromData($nonDeletedData);
 
-        return array_column($nonDeletedData, 'name', 'id');
+        return array_column($nonDeletedOrArchivedData, 'name', 'id');
     }
 
     private function getData()
@@ -128,6 +129,13 @@ class Toggl extends TimerService
     {
         return array_filter($items, function ($item) {
             return ! isset($item->server_deleted_at);
+        });
+    }
+
+    private function filterOutServerwiseArchivedItemsFromData($items = [])
+    {
+        return array_filter($items, function ($item) {
+            return isset($item->active) && !!$item->active;
         });
     }
 
