@@ -85,6 +85,18 @@ class TogglTest extends TestCase
      * @test
      * @group timerServicesApiCalls
      */
+    public function it_does_not_show_projects_that_have_been_archived_serverwise()
+    {
+        $projects = $this->toggl->projects();
+
+        $this->assertArrayNotHasKey(getenv('TOGGL_ARCHIVED_PROJECT_ID'), $projects);
+        $this->assertNotContains(getenv('TOGGL_ARCHIVED_PROJECT_NAME'), $projects);
+    }
+
+    /**
+     * @test
+     * @group timerServicesApiCalls
+     */
     public function it_can_return_the_list_of_past_timers()
     {
         $timerId = $this->toggl->startTimer();
