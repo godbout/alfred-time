@@ -10,11 +10,11 @@ on:
 
 jobs:
   tests-non-API:
+    name: non-APIs, on macOS, PHP
     runs-on: macos-latest
     strategy:
       matrix:
         php: [7.4, 7.3]
-        dependency-version: [prefer-lowest, prefer-stable]
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: install dependencies
-        run: composer update --${{ matrix.dependency-version }}
+        run: composer install
       - name: run non-hitting API tests
         run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
       - name: upload code coverage
@@ -41,6 +41,7 @@ jobs:
           php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   tests-API:
+    name: APIs, on macOS, PHP
     needs: tests-non-API
     env:
       HARVEST_ACCOUNT_ID: ${{ secrets.HARVEST_ACCOUNT_ID }}
@@ -74,7 +75,6 @@ jobs:
       max-parallel: 1
       matrix:
         php: [7.4, 7.3]
-        dependency-version: [prefer-lowest, prefer-stable]
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -92,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: install dependencies
-        run: composer update --${{ matrix.dependency-version }}
+        run: composer install
       - name: run hitting API tests
         run: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-clover=coverage.clover
       - name: upload code coverage
