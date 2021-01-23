@@ -27,8 +27,8 @@
     },
     "require": {
         "php": "^7.3",
-        "godbout/alfred-workflow-workflow": "^1.0",
-        "godbout/alfred-workflow-config": "^1.4.0",
+        "godbout/alfred-workflow-workflow": "^1.2",
+        "godbout/alfred-workflow-config": "^1.7.0",
         "morningtrain/toggl-api": "^1.0.4",
         "vlucas/phpdotenv": "^5.1",
         "wearerequired/harvest-api-php-client": "^0.2.",
