@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: install dependencies
-        run: composer install
+        run: composer update
       - name: run non-hitting API tests
         run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
       - name: upload code coverage
@@ -92,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: install dependencies
-        run: composer install
+        run: composer update
       - name: run hitting API tests
         run: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-clover=coverage.clover
       - name: upload code coverage
