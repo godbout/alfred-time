@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer"
-         stopOnFailure="false">
-    <testsuites>
-        <testsuite name="Tests">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-            <exclude>
-                <file>./src/app.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
-    <groups>
-        <include>
-            <group>default</group>
-        </include>
-        <exclude>
-            <group>timerServicesApiCalls</group>
-        </exclude>
-    </groups>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" bootstrap="vendor/autoload.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <exclude>
+      <file>./src/app.php</file>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="Tests">
+      <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+  </testsuites>
+  <groups>
+    <include>
+      <group>default</group>
+    </include>
+    <exclude>
+      <group>timerServicesApiCalls</group>
+    </exclude>
+  </groups>
 </phpunit>
