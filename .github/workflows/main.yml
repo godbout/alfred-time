@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - name: setup PHP
         uses: shivammathur/setup-php@v2
         with:
