@@ -38,9 +38,7 @@ jobs:
       - name: run non-hitting API tests
         run: vendor/bin/phpunit --group=default --coverage-clover=coverage.clover
       - name: upload code coverage
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+        run: php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
 
   tests-API:
     name: APIs, on macOS, PHP
@@ -98,6 +96,4 @@ jobs:
       - name: run hitting API tests
         run: vendor/bin/phpunit --group=timerServicesApiCalls --coverage-clover=coverage.clover
       - name: upload code coverage
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+        run: php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover

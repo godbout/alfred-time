@@ -37,8 +37,9 @@
         "nesbot/carbon": "^2.19"
     },
     "require-dev": {
+        "codedungeon/phpunit-result-printer": "^0.30.1",
         "phpunit/phpunit": "^9.5",
-        "codedungeon/phpunit-result-printer": "^0.30.1"
+        "scrutinizer/ocular": "^1.8"
     },
     "autoload": {
         "psr-4": {
