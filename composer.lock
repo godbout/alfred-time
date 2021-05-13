@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04ac3e39ae60e068e4c3c1bc21faf7a6",
+    "content-hash": "2c4dfb46d0c909c2350d899cd305a7a8",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -239,16 +239,16 @@
         },
         {
             "name": "godbout/alfred-workflow-workflow",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/godbout/alfred-workflow-workflow.git",
-                "reference": "830ec1bd2280cf668642064406d3b7d91276bf95"
+                "reference": "41f4c00139de27b621e60b00ce5695d6f90b729b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/godbout/alfred-workflow-workflow/zipball/830ec1bd2280cf668642064406d3b7d91276bf95",
-                "reference": "830ec1bd2280cf668642064406d3b7d91276bf95",
+                "url": "https://api.github.com/repos/godbout/alfred-workflow-workflow/zipball/41f4c00139de27b621e60b00ce5695d6f90b729b",
+                "reference": "41f4c00139de27b621e60b00ce5695d6f90b729b",
                 "shasum": ""
             },
             "require": {
@@ -289,9 +289,9 @@
             ],
             "support": {
                 "issues": "https://github.com/godbout/alfred-workflow-workflow/issues",
-                "source": "https://github.com/godbout/alfred-workflow-workflow/tree/1.2.0"
+                "source": "https://github.com/godbout/alfred-workflow-workflow/tree/1.2.1"
             },
-            "time": "2021-01-23T17:01:01+00:00"
+            "time": "2021-05-13T12:54:18+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -704,6 +704,65 @@
                 }
             ],
             "time": "2021-05-07T10:08:30+00:00"
+        },
+        {
+            "name": "php-http/cache-plugin",
+            "version": "1.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-http/cache-plugin.git",
+                "reference": "922409f10541b0d581b8ffe5cd810f4efc9e9e32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-http/cache-plugin/zipball/922409f10541b0d581b8ffe5cd810f4efc9e9e32",
+                "reference": "922409f10541b0d581b8ffe5cd810f4efc9e9e32",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "php-http/client-common": "^1.9 || ^2.0",
+                "php-http/message-factory": "^1.0",
+                "psr/cache": "^1.0 || ^2.0",
+                "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0 || ^5.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^5.1 || ^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Http\\Client\\Common\\Plugin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                }
+            ],
+            "description": "PSR-6 Cache plugin for HTTPlug",
+            "homepage": "http://httplug.io",
+            "keywords": [
+                "cache",
+                "http",
+                "httplug",
+                "plugin"
+            ],
+            "support": {
+                "issues": "https://github.com/php-http/cache-plugin/issues",
+                "source": "https://github.com/php-http/cache-plugin/tree/1.7.2"
+            },
+            "time": "2021-04-14T06:06:08+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -1231,6 +1290,55 @@
                 }
             ],
             "time": "2020-07-20T17:29:33+00:00"
+        },
+        {
+            "name": "psr/cache",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/2.0.0"
+            },
+            "time": "2021-02-03T23:23:37+00:00"
         },
         {
             "name": "psr/http-client",
@@ -2393,21 +2501,22 @@
         },
         {
             "name": "wearerequired/harvest-api-php-client",
-            "version": "0.2.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wearerequired/harvest-api-php-client.git",
-                "reference": "8822afae2a61ab190bb1f46121eb27cffc023e0e"
+                "reference": "bcd2280ab6c7ec0505905decbf0541d442c655be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wearerequired/harvest-api-php-client/zipball/8822afae2a61ab190bb1f46121eb27cffc023e0e",
-                "reference": "8822afae2a61ab190bb1f46121eb27cffc023e0e",
+                "url": "https://api.github.com/repos/wearerequired/harvest-api-php-client/zipball/bcd2280ab6c7ec0505905decbf0541d442c655be",
+                "reference": "bcd2280ab6c7ec0505905decbf0541d442c655be",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^7.1",
+                "php": ">=7.2",
+                "php-http/cache-plugin": "^1.7",
                 "php-http/client-common": "^1.6 || ^2.0",
                 "php-http/client-implementation": "^1.0",
                 "php-http/discovery": "^1.0",
@@ -2418,12 +2527,15 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2 || ^0.7.0",
                 "guzzlehttp/psr7": "^1.0",
-                "php-http/guzzle6-adapter": "^1.1 || ^2.0",
+                "php-http/guzzle7-adapter": "^0.1.1 || ^1.0.0",
                 "php-http/mock-client": "^1.2",
+                "phpcompatibility/php-compatibility": "^9.3",
+                "phpstan/phpstan": "^0.12.65",
                 "phpunit/phpunit": "^7.0 | ^8.0 | ^9.0",
                 "slevomat/coding-standard": "^6.3",
                 "squizlabs/php_codesniffer": "^3.3"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2460,9 +2572,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wearerequired/harvest-api-php-client/issues",
-                "source": "https://github.com/wearerequired/harvest-api-php-client/tree/0.2.2"
+                "source": "https://github.com/wearerequired/harvest-api-php-client/tree/master"
             },
-            "time": "2020-11-02T11:06:20+00:00"
+            "time": "2021-05-12T11:14:51+00:00"
         }
     ],
     "packages-dev": [
@@ -4771,11 +4883,13 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "wearerequired/harvest-api-php-client": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3"
+        "php": "^7.3 || ^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
