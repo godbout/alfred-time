@@ -35,10 +35,10 @@ class ChooseTimer extends Menu
                 ->variable('action', 'continue')
                 ->variable('timer_id', $pastTimer->id)
                 ->variable('timer_description', $pastTimer->description)
-                ->variable('timer_project_id', $pastTimer->project_id)
-                ->variable('timer_project_name', $pastTimer->project_name)
-                ->variable('timer_tag_id', $pastTimer->tag_id)
-                ->variable('timer_tag', $pastTimer->tags);
+                ->variable('timer_project_id', $pastTimer->project_id ?? '')
+                ->variable('timer_project_name', $pastTimer->project_name ?? '')
+                ->variable('timer_tag_id', $pastTimer->tag_id ?? '')
+                ->variable('timer_tag', $pastTimer->tags ?? '');
         }
 
         return $pastTimers;
@@ -46,6 +46,9 @@ class ChooseTimer extends Menu
 
     protected static function pastTimerSubtitle($pastTimer)
     {
-        return "$pastTimer->project_name, [$pastTimer->tags], $pastTimer->duration";
+        $projectName = $pastTimer->project_name ?? 'no project';
+        $tags = $pastTimer->tags ?? 'no tag';
+
+        return "$projectName, [$tags], $pastTimer->duration";
     }
 }
