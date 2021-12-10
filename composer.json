@@ -26,7 +26,7 @@
         "source": "https://github.com/godbout/alfred-time"
     },
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "godbout/alfred-workflow-workflow": "^1.2",
         "godbout/alfred-workflow-config": "^1.7.0",
         "morningtrain/toggl-api": "^1.0.5",
@@ -37,7 +37,7 @@
         "nesbot/carbon": "^2.19"
     },
     "require-dev": {
-        "codedungeon/phpunit-result-printer": "^0.30.1",
+        "codedungeon/phpunit-result-printer": "^0.31",
         "phpunit/phpunit": "^9.5",
         "scrutinizer/ocular": "^1.8"
     },
