@@ -1,6 +1,7 @@
 <h1 align="center">Alfred Time</h1>
 
 <p align="center">
+<img src="https://shields.io/badge/PHP-7.4|8.0-blue" alt="PHP Versions Compatibility">
 <a href="https://github.com/godbout/alfred-time/releases/latest"><img src="https://img.shields.io/github/v/release/godbout/alfred-time" alt="GitHub release"></a>
 <a href="https://github.com/godbout/alfred-time/actions"><img src="https://img.shields.io/github/workflow/status/godbout/alfred-time/tests" alt="build status"></a>
 <a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://img.shields.io/scrutinizer/quality/g/godbout/alfred-time" alt="code quality"></a>
