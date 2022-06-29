@@ -191,7 +191,7 @@ class Clockify extends TimerService
             $pastTimer['project_name'] = $projects[$clockifyTimer->projectId];
         }
 
-        if (isset($clockifyTimer->tagIds[0])) {
+        if (isset($clockifyTimer->tagIds[0]) && isset($tags[$clockifyTimer->tagIds[0]])) {
             $pastTimer['tag_id'] = $clockifyTimer->tagIds[0];
             $pastTimer['tags'] = $tags[$clockifyTimer->tagIds[0]];
         }
