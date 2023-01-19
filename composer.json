@@ -34,7 +34,7 @@
         "wearerequired/harvest-api-php-client": "dev-master",
         "php-http/guzzle7-adapter": "^1.0",
         "php-http/client-common": "^2.5",
-        "nesbot/carbon": "^2.19"
+        "nesbot/carbon": "^2.62.1"
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.32",
