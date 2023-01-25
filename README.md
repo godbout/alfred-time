@@ -3,7 +3,7 @@
 <p align="center">
 <img src="https://shields.io/badge/PHP-8.1|8.2-blue" alt="PHP Versions Compatibility">
 <a href="https://github.com/godbout/alfred-time/releases/latest"><img src="https://img.shields.io/github/v/release/godbout/alfred-time" alt="GitHub release"></a>
-<a href="https://github.com/godbout/alfred-time/actions"><img src="https://img.shields.io/github/workflow/status/godbout/alfred-time/tests" alt="build status"></a>
+<a href="https://github.com/godbout/alfred-time/actions"><img src="https://img.shields.io/github/actions/workflow/status/godbout/alfred-time/main.yml" alt="build status"></a>
 <a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://img.shields.io/scrutinizer/quality/g/godbout/alfred-time" alt="code quality"></a>
 <a href="https://scrutinizer-ci.com/g/godbout/alfred-time"><img src="https://img.shields.io/scrutinizer/coverage/g/godbout/alfred-time" alt="code coverage"></a>
 <a href="https://github.com/godbout/alfred-time/releases"><img src="https://img.shields.io/github/downloads/godbout/alfred-time/total" alt="GitHub downloads"></a>
