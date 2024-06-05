@@ -1,3 +1,7 @@
+⚠️⚠️⚠️ this project is archived. i don't use it myself anymore and there's too much work needed to keep it going. (API versions, PHP packages, PHP versions etc.) consider using individual service Workflows like https://github.com/jason0x43/alfred-toggl. ⚠️⚠️⚠️
+
+___
+
 <h1 align="center">Alfred Time</h1>
 
 <p align="center">
